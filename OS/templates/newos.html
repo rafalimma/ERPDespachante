@@ -1,0 +1,535 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Nova Os{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/newos.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <title>Document</title>
+    <style>
+        .custom-container {
+            margin-left: 110px; /* Ajuste conforme necessário */
+            margin-right: 100px; /* Ajuste conforme necessário */
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 5px;
+        margin: 5px 0;
+        }
+        .alert-error {
+        color: rgb(158, 4, 4);
+        background-color: #e3b2b0;
+        border-color: #c3e6cb;
+        padding: 5px;
+        margin: 5px 0;
+        }
+        .lista-sugestoes {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            width: calc(100% - 800px);
+            background-color: white;
+            margin-top: 5px;
+        }
+
+        .sugestao-item {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
+
+        .sugestao-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3 custom-container">
+        <div class="d-flex justify-content-start align-items-center">
+            <h2 class="me-auto text-success">Nova ordem de Serviço</h2>
+        </div>
+    </div>
+    <div class="container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                <p>{{ message }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        <!-- Adicione um menu com abas -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active text-success" id="dadosCliente-tab" data-bs-toggle="tab" data-bs-target="#dadosCliente" type="button" role="tab" aria-controls="dadosCliente" aria-selected="true">Dados do Cliente</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-success" id="dadosVeiculo-tab" data-bs-toggle="tab" data-bs-target="#dadosVeiculo" type="button" role="tab" aria-controls="dadosVeiculo" aria-selected="false">Dados do Veículo</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-success" id="dadosServico-tab" data-bs-toggle="tab" data-bs-target="#dadosServico" type="button" role="tab" aria-controls="dadosServico" aria-selected="false">Dados Do Serviço</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-success" id="dadosDocumentos-tab" data-bs-toggle="tab" data-bs-target="#dadosDocumentos" type="button" role="tab" aria-controls="dadosDocumentos" aria-selected="false">Documentos</button>
+            </li>
+        </ul>
+
+        <!-- AQUI COMEÇA AS ABAS DE CONTEÚDO -->
+        <form id="cadastroForm" action="{% url 'nova_ordem_de_servico' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="tab-content" id="myTabContent">
+                <!-- AQUI COMEÇA A ABA DOS DADOS DO CLIENTE -->
+                    <div class="tab-pane fade show active" id="dadosCliente" role="tabpanel" aria-labelledby="dadosCliente-tab">
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputName" class="form-label text-success">Nome do Cliente *</label>
+                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control" onclick="mostrarSugestoes()">
+                                <div id="lista-sugestoes" class="lista-sugestoes" style="display: none;">
+                                    {% for cliente in clientes %}
+                                        <div class="sugestao-item" onclick="selecionarSugestao('{{ cliente.name }}')">{{ cliente.name }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="hidden" name="id_cliente" id="cliente_id">
+            
+                            <div class="col">
+                                <label for="inputFones" class="form-label">CPF/CNPJ</label>
+                                <input name="cpfcnpj" type="number" class="form-control" id="inputCpfcnpj" placeholder="CPF/CNPJ">
+                            </div>
+                            <div class="col">
+                                <label for="inputFones" class="form-label">Telefone</label>
+                                <input name="telefone" type="number" class="form-control" id="inputFones" placeholder="Telefone">
+                            </div>
+                            <div class="col">
+                                <label for="inputCEP" class="form-label">CEP</label>
+                                <input name="cep" type="number" class="form-control" id="inputCep" placeholder="CEP">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputFones" class="form-label">Cidade</label>
+                                <input name="cidade" type="text" class="form-control" id="inputCidade" placeholder="Cidade">
+                            </div>
+                            <div class="col">
+                                <label for="inputFones" class="form-label">Bairro</label>
+                                <input name="bairro" type="text" class="form-control" id="inputBairro" placeholder="Bairro">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputFones" class="form-label">Número</label>
+                                <input name="numero" type="number" class="form-control" id="inputNum" placeholder="Numero">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- AQUI COMEÇA A ABA DOS DADOS DO VEÍCULO -->
+                    <div class="tab-pane fade" id="dadosVeiculo" role="tabpanel" aria-labelledby="dadosVeiculo-tab">
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputRenavam" class="form-label">Renavam *</label>
+                                <input name="renavam" type="numer" class="form-control" id="inputRenavam" placeholder="Renavam">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Placa *</label>
+                                <input name="placa" type="text" class="form-control" id="inputPlaca" placeholder="Placa">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Valor da Compra *</label>
+                                <input name="valor" type="number" class="form-control" id="inputValor" placeholder="valor">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Chassis</label>
+                                <input name="chassi" type="number" class="form-control" id="inputChassi" placeholder="chassi">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputCor" class="form-label">Cor</label>
+                                <input name="cor" type="text" class="form-control" id="inputCor" placeholder="Cor">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Combustível *</label>
+                                <input name="combustivel" type="text" class="form-control" id="inputCombustível" placeholder="Combustível">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Data de Aquisição</label>
+                                <input name="data" type="date" class="form-control" id="inputDataA" placeholder="Data">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Modelo *</label>
+                                <input name="modelo" type="text" class="form-control" id="inputModelo" placeholder="Modelo">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Ano do Veículo *</label>
+                                <input name="ano" type="number" class="form-control" id="inputAno" placeholder="Ano do Veículo">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- AQUI COMEÇA A ABA DE DADOS DO SERVIÇO -->
+                    <div class="tab-pane fade" id="dadosServico" role="tabpanel" aria-labelledby="dadosServico-tab">
+                        <!-- Campos dos dados iniciais -->
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputServico" class="form-label">Serviço *</label>
+                                <input type="hidden" name="id_servico" id="id_servico">
+                                <input name="servico" type="text" list="lista-servicos" class="form-control" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)">
+                                <datalist id="lista-servicos">
+                                    {% for servico in servicos %}
+                                        <option value="{{ servico.descricao }}"></option>
+                                    {% endfor %}
+                                </datalist> 
+                            </div>
+                            <a href="#" class="btn btn-success me-2" onclick="adicionarInputs(1); return false;" style="width: 35px;height: 35px; margin-top: 32px;">+</a>
+                            <div class="col">
+                                <label for="inputValorservico" class="form-label">Valor do serviço *</label>
+                                <input name="valorservico" id="inputValorservico" type="text" class="form-control" placeholder="Valor do Serviço">
+                            </div>
+                        </div>
+                        <div id="novoservico"></div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputPendencias" class="form-label">Pendências</label>
+                                <input name="pendencias" type="text" class="form-control" id="inputPendencias" placeholder="Pendências">
+                            </div>
+                            <div class="col">
+                                <label for="inputDtentrega" class="form-label">Data de entrega *</label>
+                                <input name="dtentrega" type="date" class="form-control" id="inputdtentrega" placeholder="Data de entrega">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputDesconto" class="form-label">Desconto</label>
+                                <input name="desconto" type="number" class="form-control" id="inputDesconto" placeholder="Desconto R$">
+                            </div>
+                            <div class="col">
+                                <label for="inputvalorfinal" class="form-label">Valor Final do Serviço R$ *</label>
+                                <input name="vfinal" type="text" value="0" class="form-control" id="inputvfinal" placeholder="Valor final R$">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="dadosDocumentos" role="tabpanel" aria-labelledby="dadosDocumentos-tab">
+                        <div class="row">
+                            <div class="col mt-3">
+                                <label for="file_name" class="form-label">Tipo do Documento:</label>
+                                <select name="tipo_doc" id="tipo_doc" class="form-control">
+                                    <option value="CNH">CNH</option>
+                                    <option value="CLRV">CLRV</option>
+                                    <option value="ATPV">ATPV</option>
+                                    <option value="Recibo_compra">Recibo de Compra e venda</option>
+                                </select>
+                            </div>
+                            <div class="col mt-3">
+                                <label for="file">Arquivo: </label>
+                                <input class="form-control" type="file" name="file" id="file" required><br><br>
+                            </div>
+                            <div class="col" style="margin-left: 60px; margin-top: 30px;">
+                                <a href="#" class="btn btn-success me-2" onclick="adicionarDocumento(1); return false;"> Novo documento </a>
+                            </div>
+                        </div>
+                        <div id="novodocumento">
+
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center" style="margin-top: 200px;">
+                            <a href="{% url 'ordem_servico' %}" class="btn btn-secondary me-3 mt-4">Voltar</a>
+                            <button type="submit" class="btn btn-success mt-4">Salvar</button>
+                        </div>
+                    </div>
+            </div>
+        </form> 
+    </div>
+
+    <script>
+        function selecionarSugestao(name) {
+            document.getElementById('nome').value = name;
+            document.getElementById('lista-sugestoes').style.display = 'none';
+            const nome = document.getElementById("nome").value;
+                $.ajax({
+                    url: "{% url 'buscar_cliente' %}",
+                    type: "GET",
+                    data: {
+                        'nome': nome
+                    },
+                    success: function (data) { // data contém a resposta do AJAX
+                        if (data) {
+                            document.getElementById("cliente_id").value = data.id;
+                            document.getElementById("inputCpfcnpj").value = data.cpf_cnpj;
+                            document.getElementById("inputFones").value = data.telefone;
+                            document.getElementById("inputCep").value = data.cep;
+                            document.getElementById("inputCidade").value = data.cidade;
+                            document.getElementById("inputBairro").value = data.bairro;
+                            document.getElementById("inputNum").value = data.numero;
+                        }
+                    }
+                });
+        }
+        document.addEventListener('click', function(event) {
+                var listaSugestoes = document.getElementById('lista-sugestoes');
+                var input = document.getElementById('nome');
+                if (!listaSugestoes.contains(event.target) && event.target !== input) {
+                    listaSugestoes.style.display = 'none';
+                }
+            });
+        function mostrarSugestoes() {
+            document.getElementById('lista-sugestoes').style.display = 'block';
+        }
+
+        function buscarServico(inputElement) {
+            valor_suposto1 = document.getElementById("inputValorservico1");
+            valor_suposto2 = document.getElementById("inputValorservico2");
+            valor_final = document.getElementById("inputvfinal");
+            console.log("esse é o valor final")
+            console.log(valor_final.value)
+            const servico = inputElement.value;
+            const parentDiv = inputElement.closest('.row'); // Encontra a div mais próxima com a classe 'row'
+            const idServicoField = parentDiv.querySelector('input[type="hidden"]').id;
+            const valorServicoField = parentDiv.querySelector('input[id^="inputValorservico"]').id;
+            $.ajax({
+                url: "{% url 'buscar_servico' %}",
+                type: "GET",
+                data: {
+                    'servico': servico
+                },
+                success: function (data) {
+                    if (data) {
+                        document.getElementById(idServicoField).value = data.id_servico;
+                        document.getElementById(valorServicoField).value = data.valor_total;
+                        if (valor_suposto1) {
+                            var valor1 = parseInt(valor_suposto1.value);
+                            console.log('valor do segundo valor adicionado');
+                            console.log(valor1)
+                            var valor_original = parseInt(valor_final.value);
+                            let soma = valor1 + valor_original;
+                            let soma_str = soma.toString();
+                            if (valor_suposto2){
+                                let valor2 = parseInt(valor_suposto2.value);
+                                soma = valor2 + valor_original;
+                                console.log("essa é a soma do 2:", soma);
+                                soma_str = soma.toString();
+                            }
+                            valor_final.value = soma_str + ",00";
+                        } else {
+                            valor_final.value = data.valor_total;
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById("inputDesconto").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Previne a ação padrão do Enter (submeter um formulário, por exemplo)
+                adicionarDesconto(this);
+            }
+        });
+
+        function adicionarDesconto(input) {
+            let valor_do_desconto = parseInt(input.value);
+            let valor_final_input = document.getElementById("inputvfinal");
+            let valor_final = parseInt(valor_final_input.value);
+
+            if (!isNaN(valor_do_desconto) && !isNaN(valor_final)) {
+                let valor_final_desconto = valor_final - valor_do_desconto;
+                valor_final_input.value = valor_final_desconto.toString() + ",00";
+            } else {
+                alert("Por favor, insira valores válidos.");
+            }
+        }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Adiciona um evento de clique para cada botão de aba
+        var tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                // Obtém o ID da aba clicada
+                var target = tab.getAttribute('data-bs-target');
+                // Oculta todas as abas
+                document.querySelectorAll('.tab-pane').forEach(function (pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                // Mostra a aba correspondente ao ID clicado
+                document.querySelector(target).classList.add('show', 'active');
+            });
+        });
+    });
+
+    // var contador = 1;
+    function adicionarInputs(contador) {
+        servico_passado = document.getElementById("inputValorservico1");
+        if (servico_passado){
+            contador = 2
+            // apartir de agora o contador vai ser 2, todos os ids terão 2 no final
+        }
+        if (document.getElementById("inputValorservico2")) {
+            return;
+        }
+        var row = document.createElement("div");
+        row.className = "row mb-3";
+
+        var col1 = document.createElement("div");
+        col1.className = "col";
+        var col2 = document.createElement("div");
+        col2.className = "col";
+
+        var label1 = document.createElement("label");
+        label1.htmlFor = `inputServico${contador}`;
+        label1.className = "form-label";
+        label1.innerText = "Serviço";
+
+        var input1 = document.createElement("input");
+        input1.name = `servico${contador}`;
+        input1.type = "text";
+        input1.className = "form-control";
+        input1.setAttribute("list", "lista-servicos");
+        input1.id = `inputServico${contador}`;
+        input1.placeholder = "Serviço";
+        input1.setAttribute("onchange", "buscarServico(this)"); // Passando o elemento como argumento
+        // input do ID:
+        var input3 = document.createElement("input");
+        input3.name = `id_servico${contador}`; // apenas esse input hidden será passado para o backend
+        input3.type = "hidden";
+        input3.id = `id_servico${contador}`;
+
+        var btnRemove = document.createElement("a");
+        btnRemove.href = "#";
+        btnRemove.className = "btn btn-danger me-2";
+        btnRemove.style.width = "35px";
+        btnRemove.style.height = "35px";
+        btnRemove.style.marginTop = "32px";
+        btnRemove.innerText = "X";
+
+        btnRemove.addEventListener("click", function () {
+            row.remove();
+            var valor_final = document.getElementById("inputvfinal");
+            var valor1 = parseInt(input2.value);
+            if (isNaN(valor1)) {
+                return;
+            }
+            var valor_original = parseInt(valor_final.value);
+            var sub = valor_original - valor1;
+            var sub_str = sub.toString()
+            if (isNaN(sub_str)){
+                sub_str = "00"
+            } 
+            valor_final.value = sub_str + ",00";
+        });
+
+        var label2 = document.createElement("label");
+        label2.htmlFor = `inputValorservico${contador}`;
+        label2.className = "form-label";
+        label2.innerText = "Valor do serviço";
+
+        var input2 = document.createElement("input");
+        input2.name = `valorservico${contador}`;
+        input2.type = "text";
+        input2.className = "form-control";
+        input2.id = `inputValorservico${contador}`;
+        input2.placeholder = "Valor do Serviço";
+
+        col1.appendChild(label1);
+        col1.appendChild(input1);
+        col1.appendChild(input3); // Adicionando o input escondido na mesma coluna
+        col2.appendChild(label2);
+        col2.appendChild(input2);
+
+        row.appendChild(col1);
+        row.appendChild(btnRemove);
+        row.appendChild(col2);
+
+        document.getElementById("novoservico").appendChild(row);
+    }
+
+    function adicionarDocumento(contador) {
+        documento_passado = document.getElementById("tipo_doc1");
+        if (documento_passado) {
+            contador = 2;
+        }
+        if (document.getElementById("tipo_doc2")) {
+            return;
+        }
+        var row = document.createElement("div");
+        row.className = "row mb-3";
+
+        var col1 = document.createElement("div");
+        col1.className = "col";
+        var col2 = document.createElement("div");
+        col2.className = "col";
+        var col3 = document.createElement("div");
+        col3.className = "col";
+
+        var label1 = document.createElement("label");
+        label1.htmlFor = `file_name${contador}`;
+        label1.className = "form-label";
+        label1.innerText = "Tipo do Documento:";
+        var select1 = document.createElement("select");
+        select1.name = `tipo_doc${contador}`;
+        select1.id = `tipo_doc${contador}`;
+        select1.className = "form-control";
+        var options = ['CNH', 'CLRV', 'ATPV', 'Recibo de Compra e venda'];
+        options.forEach(function(optionText) {
+            var option = document.createElement('option');
+            option.value = optionText;
+            option.textContent = optionText;
+            select1.appendChild(option);
+        });
+        var label2 = document.createElement("label");
+        label2.htmlFor = `file${contador}`;
+        label2.innerText = "Arquivo:";
+
+        var inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.name = `file${contador}`;
+        inputFile.id = `file${contador}`;
+        inputFile.required = true;
+        inputFile.className = "form-control";
+
+        var btnRemove = document.createElement("a");
+        btnRemove.href = "#";
+        btnRemove.className = "btn btn-danger mb-4";
+        btnRemove.innerText = "Remover documento";
+        btnRemove.style.marginLeft = "19px";
+        btnRemove.style.marginTop = "30px";
+
+        btnRemove.addEventListener("click", function () {
+            row.remove();
+        });
+
+        col1.appendChild(label1);
+        col1.appendChild(select1);
+        col2.appendChild(label2); // Adicionando o input escondido na mesma coluna
+        col2.appendChild(inputFile);
+        col3.appendChild(btnRemove);
+
+        row.appendChild(col1);
+        row.appendChild(col2);
+        row.appendChild(col3);
+
+        document.getElementById("novodocumento").appendChild(row);
+    }
+    
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
+
+{% endblock %}

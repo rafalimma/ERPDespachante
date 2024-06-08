@@ -1,0 +1,16 @@
+function buscarServico() {
+    const servico = document.getElementById("inputServico").value;
+    $.ajax({
+        url: "{% url 'buscar_servico' %}",
+        type: "GET",
+        data: {
+            'servico': servico
+        },
+        success: function (data) { // data contém a resposta do AJAX
+            if (data) {
+                document.getElementById("id_servico").value = data.id_servico;
+                document.getElementById("inputValorservico").value = data.valor_total;
+            }
+        }
+    })
+}

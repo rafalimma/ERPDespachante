@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Deesp Home{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="{% static "index/css/home.css" %}"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <style>
+        .hover-link {
+          color: black; 
+          transition: color 0.3s ease; 
+        }
+    
+        .hover-link:hover {
+          color: green; 
+          text-decoration: underline; 
+        }
+      </style>
+    <title>Home</title>
+</head>
+<body class="bg-light" style="font-family: 'Poppins', sans-serif;">
+    <div class="container mt-5 d-flex justify-content-start align-items-center">
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -170px;">
+            <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
+                <img src="{% static "images/clientes_icon.png" %}" class="img-fluid" style="width: 122px; height: 123px;">
+                <p class="hover-link" style="margin-left: 31px;">Clientes</p>
+            </a>
+        </div>
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -175px;">
+          <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
+              <img src="{% static "images/os_icon.png" %}" class="img-fluid" style="width: 122px; height: 120px;">
+              <p class="hover-link" style="margin-left: -20px; margin-top: 3px;">Ordem de Serviço</p>
+          </a>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
+{% endblock %}
