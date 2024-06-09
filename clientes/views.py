@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.core.paginator import Paginator
-
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 # Create your views here.
 def teste(request):
     return render(

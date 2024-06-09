@@ -4,7 +4,8 @@ import datetime
 from django.utils import timezone
 
 # Create your models here.
-
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 class OrdemServico(models.Model):
     renavam = models.IntegerField()
     placa = models.CharField(max_length=7)

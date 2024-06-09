@@ -1,7 +1,8 @@
 from django.db import models
 
 # Create your models here.
-
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 #models do cadastro de clientes:
 
 class Cliente(models.Model):

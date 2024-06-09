@@ -2,7 +2,8 @@ from django.urls import path
 from . import views as homeviews
 from clientes import views as clienteviews
 from OS import views as osviews
-
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 
 urlpatterns = [
     path('', homeviews.home, name='home'),

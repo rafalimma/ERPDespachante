@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings

@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+# git -> changing to chenges
+# linha adiocionada para mandar o arquivo para a área de changes no source control
 
 from pathlib import Path
 import os
