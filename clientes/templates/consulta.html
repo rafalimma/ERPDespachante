@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block title %}Consulta Clientes{% endblock %}
-{% comment %} edit {% endcomment %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -17,6 +16,20 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .readonly-input {
+            background-color: #f8f9fa;
+            border: none;
+            box-shadow: none;
+            color: #495057;
+            padding-left: 0;
+        }
+        .readonly-input:focus {
+            border: none;
+            box-shadow: none;
+        }
     </style>
     <title>Consulta Clientes</title>
 </head>
@@ -28,38 +41,50 @@
         </div>
     </div>
     <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-2">
-                <h5 class="text-success">Nome:</h5>
-                <p>{{ cliente.name }}</p>
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Nome:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.name }}" readonly>
             </div>
-            <div class="col-md-2">
-                <h5 class="text-success">CPF:</h5>
-                <p>{{ cliente.cpf_cnpj }}</p>
+            <div class="col-md-4 form-group">
+                <label class="text-success">CPF / CNPJ:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.cpf_cnpj }}" readonly>
             </div>
-            <div class="col-md-2">
-                <h5 class="text-success">Telefone:</h5>
-                <p>{{ cliente.telefone }}</p>
-            </div>
-            <div class="col-md-2">
-                <h5 class="text-success">CEP:</h5>
-                <p>{{ cliente.cep }}</p>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Telefone:</label>
+                <input type="number" class="form-control readonly-input" value="{{ cliente.telefone }}" readonly>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-md-2">
-                <h5 class="text-success">Cidade:</h5>
-                <p>{{ cliente.cidade }}</p>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Email:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.email }}" readonly>
             </div>
-            <div class="col-md-2">
-                <h5 class="text-success">Bairro:</h5>
-                <p>{{ cliente.bairro }}</p>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Cep:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.cep }}" readonly>
             </div>
-            <div class="col-md-2">
-                <h5 class="text-success">Número:</h5>
-                <p>{{ cliente.numero }}</p>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Numero:</label>
+                <input type="number" class="form-control readonly-input" value="{{ cliente.numero }}" readonly>
+            </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Bairro:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.bairro }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Estado:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.estado }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Cidade:</label>
+                <input type="number" class="form-control readonly-input" value="{{ cliente.cidade }}" readonly>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-start align-items-center mt-4">
+        <h2 class="me-auto text-success">Ordens de Serviço</h2>
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

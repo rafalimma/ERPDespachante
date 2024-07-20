@@ -17,6 +17,20 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .readonly-input {
+            background-color: #f8f9fa;
+            border: none;
+            box-shadow: none;
+            color: #495057;
+            padding-left: 0;
+        }
+        .readonly-input:focus {
+            border: none;
+            box-shadow: none;
+        }
     </style>
     <title>Consulta Ordem Serviço</title>
 </head>
@@ -24,6 +38,108 @@
     <div class="container mt-3 custom-container">
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Dados da Ordem de Serviço</h2>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Nome do cliente:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.nome_cliente }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Identificador do cliente:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cliente_id_id }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Identificador da Ordem de serviço:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.id }}" readonly>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Modelo do veículo:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.modelo }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Renavam:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.renavam }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Placa:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.placa }}" readonly>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Chassi:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.chassi }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Cor:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cor }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Combustível:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.combustivel }}" readonly>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Valor do Veículo:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.valor_veiculo }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Ano do Modelo:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.ano_modelo }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Data de aquisição:</label>
+                <input type="date" class="form-control readonly-input" value="{{ data.data_aq }}" readonly>
+            </div>
+        </div>
+        <hr>
+        <div class="row" style="margin-top: -15px;">
+            <h5 class="text-success">Serviços:</h5>
+            {% for servico_os in servicos_os %}
+                <div class="col-md-6 form-group">
+                    <input type="text" class="form-control readonly-input" value="{{ servico_os.servico_id.descricao }} - R$ {{ servico_os.servico_id.valor_total }}" readonly>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">Valor Final:</label>
+                <input type="text" class="form-control readonly-input" style="color: rgb(66, 184, 66);" value="{{ ordem_servico.valor_f }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Desconto:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.desconto }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Data do Serviço:</label>
+                <input type="date" class="form-control readonly-input" value="{{ data.data_servico }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Data da entrega:</label>
+                <input type="date" class="form-control readonly-input" value="{{ data.data_entrega }}" readonly>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h5 class="text-success">Documentos:</h5>
+            {% for documento in documentos %}
+                <div class="col-md-6 document-container">
+                    <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
+                    {% if documento.is_image %}
+                        <img src="{{ documento.arquivo.url }}" alt="{{ documento.tipo_doc }}">
+                    {% endif %}
+                    {% if documento.is_pdf %}
+                        <iframe src="{{ documento.arquivo.url }}" style="width: 100%; height: 150px;" frameborder="0"></iframe>
+                        <a href="{{ documento.arquivo.url }}" class="btn btn-secondary mt-2" download>Download PDF</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 </body>

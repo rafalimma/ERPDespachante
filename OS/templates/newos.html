@@ -292,13 +292,11 @@
         function mostrarSugestoes() {
             document.getElementById('lista-sugestoes').style.display = 'block';
         }
-
+        // busca o serviço conforme o valor passado
         function buscarServico(inputElement) {
             valor_suposto1 = document.getElementById("inputValorservico1");
             valor_suposto2 = document.getElementById("inputValorservico2");
             valor_final = document.getElementById("inputvfinal");
-            console.log("esse é o valor final")
-            console.log(valor_final.value)
             const servico = inputElement.value;
             const parentDiv = inputElement.closest('.row'); // Encontra a div mais próxima com a classe 'row'
             const idServicoField = parentDiv.querySelector('input[type="hidden"]').id;

@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Consulta Clientes{% endblock %}
+{% comment %} edit {% endcomment %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group p {
+            margin-bottom: 0;
+        }
+        .form-group {
+            padding: 10px 0;
+        }
+        .document-container {
+            padding-top: 15px;
+        }
+        .document-container img, .document-container iframe {
+            max-width: 100%;
+            height: auto;
+        }
+        .lista-servico {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            position: absolute;
+            width: calc(100% - 800px);
+            background-color: white;
+            margin-top: 5px;
+        }
+        .sugestao-servico {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
+        .sugestao-servico:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container mt-3 custom-container">
+        <div class="d-flex justify-content-start align-items-center">
+            <h2 class="me-auto text-success">Editar Ordem de Serviço</h2>
+        </div>
+        <hr>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                <p>{{ message }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir este serviço?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        <form id="deleteForm" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="id_ordem_servico" value="{{ ordem_servico.id }}">
+                            <button type="submit" class="btn btn-success">Sim</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form id="editarform" action="{% url 'form_edicao_os' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="row" >
+                <div class="col-md-4 form-group">
+                    <p><strong class="text-success">Nome do cliente:</strong> {{ ordem_servico.nome_cliente }}</p>
+                </div>
+                <div class="col-md-4 form-group">
+                    <p><strong class="text-success">Identificador do cliente:</strong> {{ ordem_servico.cliente_id_id }}</p>
+                </div>
+                <div class="col-md-4 form-group">
+                    <p><strong class="text-success">Identificador da Ordem de serviço:</strong> {{ ordem_servico.id }}</p>
+                </div>
+                <input type="hidden" name="id_ordem_servico" value="{{ ordem_servico.id }}">
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="modelo"><strong class="text-success">Modelo do veículo:</strong></label>
+                    <input type="text" id="modelo" name="modelo" value="{{ data.modelo }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="renavam"><strong class="text-success">Renavam:</strong></label>
+                    <input type="text" id="renavam" name="renavam" value="{{ data.renavam }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="placa"><strong class="text-success">Placa:</strong></label>
+                    <input type="text" id="placa" name="placa" value="{{ data.placa }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="chassi"><strong class="text-success">Chassi:</strong></label>
+                    <input type="text" id="chassi" name="chassi" value="{{ data.chassi }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="cor"><strong class="text-success">Cor do veículo:</strong></label>
+                    <input type="text" id="cor" name="cor" value="{{ data.cor }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="combustivel"><strong class="text-success">Combustível:</strong></label>
+                    <input type="text" id="combustivel" name="combustivel" value="{{ data.combustivel }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="valor_veiculo"><strong class="text-success">Valor do veículo:</strong></label>
+                    <input type="text" id="valor_veiculo" name="valor_veiculo" value="{{ data.valor_veiculo }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="ano_modelo"><strong class="text-success">Ano do modelo:</strong></label>
+                    <input type="text" id="ano_modelo" name="ano_modelo" value="{{ data.ano_modelo }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="data_aq"><strong class="text-success">Data de aquisição do veículo:</strong></label>
+                    <input type="date" id="data_aq" name="data_aq" value="{{ data.data_aq }}">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <h5 class="text-success">Serviços:</h5>
+                {% for servico_os in servicos_os %}
+                    <!-- vai retornar uma instancia de Servico pois servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id') -->
+                    {% with contador=forloop.counter %}
+                        <div class="col-md-4 form-group" id="coluna{{ contador }}">
+                            <p>
+                                <strong class="text-success"> Serviço: </strong>
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" onclick="deletarServico('{{ contador }}')">
+                                    <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
+                                </a>
+                            </p>
+                            <input type="text" id="servico{{ contador }}" name="servico{{ contador }}" value="{{ servico_os.servico_id.descricao }}" onclick="mostrarServicos('{{ contador }}')">
+                            <div id="lista-servico{{ contador }}" class="lista-servico" style="display: none;">
+                                {% for servico in servicos %}
+                                    <div class="sugestao-servico" onclick="SugestaoServico('{{ servico.descricao }}', '{{ contador }}', '{{ servico.valor_total }}', '{{ servico_os.valor_servico }}')">{{ servico.descricao }}</div>
+                                    <!-- chamar uma função que soma os valores do servico -->
+                                {% endfor %}
+                            </div>
+                            <p><strong class="text-success"> Valor serviço: </strong></p>
+                            <input type="text" class="valor-servico" id="valorServicoField{{ contador }}" name="valor_servico{{ contador }}" value="{{ servico_os.valor_servico }}">
+                            <input type="hidden" name="id_servico{{ contador }}" id="idServicoField{{ contador }}" value = "{{ servico_os.servico_id }}">
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="valor_f"><strong class="text-success">Valor final:</strong></label>
+                    <input type="text" id="valor_f" name="valor_f" value="{{ data.valor_f }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="desconto"><strong class="text-success">Desconto:</strong></label>
+                    <input type="text" id="desconto" name="desconto" value="{{ data.desconto }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="data_servico"><strong class="text-success">Data do serviço:</strong></label>
+                    <input type="date" id="data_servico" name="data_servico" value="{{ data.data_servico }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="data_entrega"><strong class="text-success">Data de entrega do serviço:</strong></label>
+                    <input type="date" id="data_entrega" name="data_entrega" value="{{ data.data_entrega }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="pendencias"><strong class="text-success">Pendencias:</strong></label>
+                    <input type="text" id="pendencias" name="pendencias" value="{{ data.pendencias }}">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <h5 class="text-success">Documentos:</h5>
+                {% for documento in documentos %}
+                    <div class="col-md-6 document-container">
+                        <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
+                        {% if documento.is_image %}
+                            <img src="{{ documento.arquivo.url }}" alt="{{ documento.tipo_doc }}">
+                        {% endif %}
+                        {% if documento.is_pdf %}
+                            <iframe src="{{ documento.arquivo.url }}" style="width: 100%; height: 150px;" frameborder="0"></iframe>
+                            <a href="{{ documento.arquivo.url }}" class="btn btn-secondary mt-2" download>Download PDF</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="d-flex justify-content-end align-items-center" style="margin-top: 200px;">
+                    <a href="{% url 'ordem_servico' %}" class="btn btn-secondary me-3 mt-4">Voltar</a>
+                    <button type="submit" id="save-button" class="btn btn-success mt-4">Salvar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let isFormSubmitted = false;
+
+            const form = document.getElementById('editarform');
+            const modal_form = document.getElementById('deleteForm')
+            console.log(form);
+
+            // Monitorar o envio do formulário
+            form.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
+
+            modal_form.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
+
+            window.addEventListener('beforeunload', function (event) {
+                if (!isFormSubmitted) {
+                    console.log('entrou');
+                    const message = 'Você tem alterações não salvas. Tem certeza de que deseja sair?';
+                    event.returnValue = message; // Requerido para alguns navegadores
+                    return message; // Requerido para outros navegadores
+                }
+            });
+        });
+
+        function SugestaoServico(descricao_escolhida, index, valor_servico, valor_anterior) {
+            document.getElementById('lista-servico' + index).style.display = 'none';
+            var id_servico = 'idServicoField' + index
+            var id_valor = 'valorServicoField' + index
+            var servico = 'servico' + index
+            var idServicoField = document.getElementById(id_servico);
+            var valorServicoField = document.getElementById(id_valor);
+            var tipo_servico = document.getElementById(servico);
+            $.ajax({
+                url: "{% url 'buscar_servico' %}",
+                type: "GET",
+                data: {
+                    'servico': descricao_escolhida
+                },
+                success: function (data) {
+                    if (data) {
+                        tipo_servico.value = descricao_escolhida
+                        idServicoField.value = data.id_servico;
+                        valorServicoField.value = data.valor_total;
+                        idServicoField.name = 'id_servico_alterado' + index;
+                        SomaValorFinal();
+                    }
+                }
+            });
+        }
+        function SomaValorFinal() {
+                var descontoElement = document.getElementById('desconto');
+                var desconto = parseInt(descontoElement.value);
+                let sum = 0;
+                const valorServicoFields = document.querySelectorAll('.valor-servico');
+                valorServicoFields.forEach(field => {
+                    let value = parseInt(field.value) || 0;
+                    sum += value;
+                });
+                let valorFinal = sum;
+                if (desconto > 0) {
+                    valorFinal -= desconto;
+                }
+                document.getElementById('valor_f').value = valorFinal + ',00';
+            }
+        
+        document.addEventListener('DOMContentLoaded', (event) => {
+            SomaValorFinal();
+        });
+
+        document.addEventListener('click', function(event) {
+            var listaSugestoes = document.querySelectorAll('.lista-servico');
+            listaSugestoes.forEach(function(lista) {
+                var inputid = lista.id.replace('lista-servico', 'servico');
+                var input = document.getElementById(inputid)
+                if (!lista.contains(event.target) && event.target !== input) {
+                    lista.style.display = 'none';
+                }
+            });
+        });
+
+        function mostrarServicos(index) {
+            document.getElementById('lista-servico'+ index).style.display = 'block';
+        }
+
+        function deletarServico(index) {
+            console.log('deletando servico', index);
+            var col = document.getElementById('coluna' + index);
+            col.remove();
+        }
+
+        document.getElementById("desconto").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Previne a ação padrão do Enter (submeter um formulário, por exemplo)
+                adicionarDesconto(this);
+            }
+        });
+
+        function adicionarDesconto(input) {
+            let valor_do_desconto = parseInt(input.value);
+            let valor_final_input = document.getElementById("valor_f");
+            let valor_final = parseInt(valor_final_input.value);
+
+            if (!isNaN(valor_do_desconto) && !isNaN(valor_final)) {
+                let valor_final_desconto = valor_final - valor_do_desconto;
+                valor_final_input.value = valor_final_desconto.toString() + ",00";
+            } else {
+                alert("Por favor, insira valores válidos.");
+            }
+        }
+
+        $('.delete-button').click(function() {
+            var url = $(this).data('url');
+            $('#deleteForm').attr('action', url);
+        });
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
+
+{% endblock %}

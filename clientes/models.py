@@ -11,5 +11,7 @@ class Cliente(models.Model):
     telefone = models.CharField(max_length=11)
     cep = models.CharField(max_length=50, default='')
     bairro = models.CharField(max_length=30, default='')
+    estado = models.CharField(max_length=30, default='')
     cidade = models.CharField(max_length=15, default='')
     numero = models.CharField(max_length=6, default='')
+    email = models.EmailField(max_length=100, unique=True, null=True, blank=True)

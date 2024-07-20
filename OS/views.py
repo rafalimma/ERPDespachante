@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from .models import OrdemServico, Servico, Servico_os, Documentos
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.urls import reverse
+from time import strftime
+from datetime import date
+
+DEFAULT_DATE = ""
 
 # Create your views here.
 # git -> changing to chenges
@@ -39,7 +43,7 @@ def nova_ordem_de_servico(request):
         data_aq = request.POST.get('data')
         modelo = request.POST.get('modelo')
         ano_veiculo = request.POST.get('ano')
-        pendencias = request.POST.get('ano')
+        pendencias = request.POST.get('pendencias')
         data_entrega = request.POST.get('dtentrega')
         desconto = request.POST.get('desconto')
         valor_f = request.POST.get('vfinal')
@@ -127,10 +131,8 @@ def nova_ordem_de_servico(request):
             if request.FILES.get('file2'):
                 salvar_documentos(arquivo2, tipo_doc2, ordem_de_servico)
             messages.success(request, 'Ordem de Serviço feita com sucesso!')
-    
-    return paginacao(request)
-    # ordens = OrdemServico.objects.all()
-    # return render(request, 'os.html', {'ordens_servicos': ordens})
+    return redirect('ordem_servico')
+    # return paginacao(request)
 
 def salvar_documentos(arquivo, tipo_doc, ordem_de_servico):
     if arquivo:
@@ -188,10 +190,107 @@ def excluir_os(request, id):
 
 def consultar_os(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
-    servico = get_object_or_404(Servico_os, fk=id)
+    servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    documentos_da_os = Documentos.objects.filter(ordem_servico_id=ordem_servico)
+    datas = {
+        'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
+        'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
+        'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
+    }
+    print(documentos_da_os)
     return render(
         request,
         'consultaos.html',
         {'ordem_servico': ordem_servico,
-         'servicos': servico}
+         'servicos_os': servicos_os,
+         'documentos': documentos_da_os,
+         'data': datas}
     )
+
+def editar_os(request, id):
+    ordem_servico = get_object_or_404(OrdemServico, pk=id)
+    servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    print(f"Serviços da os: {servicos_os}")
+    documentos_da_os = Documentos.objects.filter(ordem_servico_id=ordem_servico)
+    dados = {'modelo': ordem_servico.modelo,
+             'renavam': ordem_servico.renavam,
+             'placa': ordem_servico.placa,
+             'chassi': ordem_servico.chassi,
+             'cor': ordem_servico.cor,
+             'combustivel': ordem_servico.combustivel,
+             'valor_veiculo': ordem_servico.valor_veiculo,
+             'ano_modelo': ordem_servico.ano_modelo,
+             'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
+             'valor_f': ordem_servico.valor_f,
+             'desconto': ordem_servico.desconto,
+             'pendencias': ordem_servico.pendencias,
+             'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
+             'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
+             }
+    servicos = Servico.objects.all() #para os tipos de serviços existentes
+    return render(
+        request,
+        'editaros.html',
+        {'ordem_servico': ordem_servico,
+         'servicos_os': servicos_os,
+         'documentos': documentos_da_os,
+         'data': dados,
+
+         'servicos': servicos}
+    )
+
+def form_edicao_os(request):
+    if request.method == 'POST':
+        id_ordem_servico = request.POST.get('id_ordem_servico')
+        ordem_servico = get_object_or_404(OrdemServico, pk=id_ordem_servico)
+        ordem_servico.renavam = request.POST.get('renavam')
+        ordem_servico.placa = request.POST.get('placa')
+        ordem_servico.valor_veiculo = request.POST.get('valor_veiculo')
+        ordem_servico.chassi = request.POST.get('chassi')
+        ordem_servico.cor = request.POST.get('cor')
+        ordem_servico.combustivel = request.POST.get('combustivel')
+        ordem_servico.modelo = request.POST.get('modelo')
+        ordem_servico.ano_modelo = request.POST.get('ano_modelo')
+        ordem_servico.pendencias = request.POST.get('pendencias')
+        ordem_servico.desconto = request.POST.get('desconto')
+        ordem_servico.valor_f = request.POST.get('valor_f')
+        ordem_servico.data_servico = request.POST.get('data_servico')
+        if request.POST.get('data_entrega') is date:
+            ordem_servico.data_entrega = request.POST.get('data_entrega')
+        if request.POST.get('data_aq') is date:
+            ordem_servico.data_aq = request.POST.get('data_aq')
+        ordem_servico.save()
+
+        servicos_os = Servico_os.objects.filter(os_id=ordem_servico)
+        for i, servico_os in enumerate(servicos_os, start=1):
+            #verificar se existe um serviço que foi alterado:
+            servico_id = request.POST.get(f'id_servico_alterado{i}')
+            valor_servico = request.POST.get(f'valor_servico{i}')
+            if servico_id and valor_servico:
+                servico_da_os = Servico.objects.get(pk=servico_id)
+                servico_os.servico_id = servico_da_os
+                servico_os.valor_servico = valor_servico
+                servico_os.save()
+        messages.success(request, 'Ordem de Serviço editada com sucesso!')
+        return redirect('ordem_servico')
+    return redirect('ordem_servico')
+
+def excluir_servico(request, id):
+    if request.method == 'POST':
+        id_ordem_servico = request.POST.get('id_ordem_servico')
+        servico = get_object_or_404(Servico_os, id=id)
+        servico.delete()
+        messages.success(request, 'Serviço excluido com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        print('erro ao excluir')
+        return redirect(reverse('editar_os'))
+
+def filtrar_documentos(request):
+    documentos = Documentos.objects.all()
+    for documento in documentos:
+        documento.is_image()
+        documento.is_pdf()
+    
+    return render(request, 'consultaos.html', {'documentos': documentos})
+

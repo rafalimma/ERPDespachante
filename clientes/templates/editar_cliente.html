@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Novo Cliente{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .readonly-input {
+            background-color: #d4dade;
+            border: none;
+            box-shadow: none;
+            color: #495057;
+            padding-left: 0;
+        }
+        .readonly-input:focus {
+            border: none;
+            box-shadow: none;
+        }
+    </style>
+    <title>Editar Cliente</title>
+</head>
+<body>
+    <div class="container mt-3 custom-container">
+        <div class="d-flex justify-content-start align-items-center">
+            <h2 class="me-auto text-success">Editar Cliente</h2>
+        </div>
+    </div>
+    <div class="container">
+        <form id="formedicao" action="{% url 'form_edicao_cliente' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Identificador do cliente:</label>
+                    <input type="text" name="id_cliente" class="form-control readonly-input" value="{{ cliente.id }}" readonly>
+                </div>
+            </div>
+            <div class="row" style="margin-top: -15px;">
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Nome:</label>
+                    <input type="text" name="name" class="form-control readonly-input" value="{{ cliente.name }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">CPF / CNPJ:</label>
+                    <input type="number" name="cpfcnpj" class="form-control readonly-input" value="{{ cliente.cpf_cnpj }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Telefone:</label>
+                    <input type="number" name="telefone" class="form-control readonly-input" value="{{ cliente.telefone }}">
+                </div>
+            </div>
+            <div class="row" style="margin-top: -15px;">
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Email:</label>
+                    <input type="email" name="email" class="form-control readonly-input" value="{{ cliente.email }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Cep:</label>
+                    <input type="number" name="cep" class="form-control readonly-input" value="{{ cliente.cep }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Numero:</label>
+                    <input type="number" name="numero" class="form-control readonly-input" value="{{ cliente.numero }}">
+                </div>
+            <div class="row" style="margin-top: -15px;">
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Bairro:</label>
+                    <input type="text" name="bairro" class="form-control readonly-input" value="{{ cliente.bairro }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Estado:</label>
+                    <input type="text" name="estado" class="form-control readonly-input" value="{{ cliente.estado }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="text-success">Cidade:</label>
+                    <input type="text" name="cidade" class="form-control readonly-input" value="{{ cliente.cidade }}">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">
+                <button type="submit" class="btn btn-success me-3 mt-4">Salvar</button>
+                <a href="{% url 'clientes' %}" class="btn btn-secondary me-4 mt-4">Voltar</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let isFormSubmitted = false;
+
+            const form = document.getElementById('formedicao');
+
+            // Monitorar o envio do formulário
+            form.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
+
+            window.addEventListener('beforeunload', function (event) {
+                if (!isFormSubmitted) {
+                    const message = 'Você tem alterações não salvas. Tem certeza de que deseja sair?';
+                    event.returnValue = message; // Requerido para alguns navegadores
+                    return message; // Requerido para outros navegadores
+                }
+            });
+        });
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
+
+{% endblock %}

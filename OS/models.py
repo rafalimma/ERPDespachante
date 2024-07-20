@@ -44,3 +44,8 @@ class Documentos(models.Model):
 
     def __str__(self):
         return self.tipo_doc
+    def is_image(self):
+        return self.arquivo.url.lower().endswith(('.jpg', '.jpeg', '.png'))
+    def is_pdf(self):
+        return self.arquivo.url.lower().endswith(('.pdf'))
+    
