@@ -152,7 +152,7 @@
                         <div class="col-md-4 form-group" id="coluna{{ contador }}">
                             <p>
                                 <strong class="text-success"> Serviço: </strong>
-                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" onclick="deletarServico('{{ contador }}')">
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" data-id="{{ contador }}">
                                     <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
                                 </a>
                             </p>
@@ -303,10 +303,35 @@
         }
 
         function deletarServico(index) {
-            console.log('deletando servico', index);
             var col = document.getElementById('coluna' + index);
-            col.remove();
+            if (col) {
+                col.remove();
+                SomaValorFinal();
+            }
         }
+    
+        function modalDelete(index) {
+            const deleteButton = document.querySelector(`[data-id="${index}"]`);
+            if (deleteButton) {
+                deleteButton.addEventListener('click', function () {
+                    const url = deleteButton.getAttribute('data-url');
+                    const modalForm = document.getElementById('deleteForm');
+                    modalForm.setAttribute('action', url);
+                    modalForm.onsubmit = function (event) {
+                        event.preventDefault();
+                        deletarServico(index);
+                        $('#confirmDeleteModal').modal('hide');
+                        this.submit();
+                    };
+                });
+            }
+        }
+    
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            const index = button.getAttribute('data-id');
+            modalDelete(index);
+        });
 
         document.getElementById("desconto").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
@@ -327,11 +352,6 @@
                 alert("Por favor, insira valores válidos.");
             }
         }
-
-        $('.delete-button').click(function() {
-            var url = $(this).data('url');
-            $('#deleteForm').attr('action', url);
-        });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

@@ -25,5 +25,6 @@ urlpatterns = [
     path('consultar_os/<str:id>/', osviews.consultar_os, name='consultar_os'),
     path('editar_os/<str:id>/', osviews.editar_os, name='editar_os'),
     path('form_edicao_os', osviews.form_edicao_os, name='form_edicao_os'),
-    path('excluir_servico/<str:id>', osviews.excluir_servico, name='excluir_servico')
+    path('excluir_servico/<str:id>', osviews.excluir_servico, name='excluir_servico'),
+    path('filtrar_os', osviews.filtrar_os, name='filtrar_os')
 ]

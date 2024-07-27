@@ -49,6 +49,7 @@ def nova_ordem_de_servico(request):
         valor_f = request.POST.get('vfinal')
         id_servico = request.POST.get('id_servico')
         valor_servico = request.POST.get('valorservico')
+        observacoes = request.POST.get('observacoes')
 
         tipo_doc = request.POST.get('tipo_doc')
         arquivo = request.FILES.get('file')
@@ -87,7 +88,7 @@ def nova_ordem_de_servico(request):
             cor=cor, combustivel=combustivel, data_aq=data_aq,
             modelo=modelo, valor_veiculo=valor, ano_modelo=ano_veiculo,
             pendencias=pendencias, data_entrega=data_entrega,
-            desconto=desconto, valor_f=valor_f
+            desconto=desconto, valor_f=valor_f, observacoes=observacoes
             )
         if not all([renavam, placa, cliente, id_cliente, name,
                      valor, combustivel, modelo, ano_veiculo, id_servico,
@@ -293,4 +294,25 @@ def filtrar_documentos(request):
         documento.is_pdf()
     
     return render(request, 'consultaos.html', {'documentos': documentos})
+
+def filtrar_os(request):
+    tipo = request.GET.get('tipo')
+    valor_filtro = request.GET.get('valor_filtro') 
+
+    if tipo == 'nome_cliente':
+        os_filtrada = OrdemServico.objects.filter(nome_cliente__icontains=valor_filtro)
+    elif tipo == 'id_cliente' and valor_filtro.isdigit():
+        os_filtrada = OrdemServico.objects.filter(cliente_id=valor_filtro)
+    elif tipo == 'id_os' and valor_filtro.isdigit():
+        os_filtrada = OrdemServico.objects.filter(id=valor_filtro)
+    elif tipo == 'veiculo':
+        os_filtrada = OrdemServico.objects.filter(modelo__icontains=valor_filtro)
+    else:
+        os_filtrada = OrdemServico.objects.filter(placa=valor_filtro)
+
+    if os_filtrada:
+        return render(request, 'os.html', {'ordens_servicos': os_filtrada})
+    else:
+        messages.error(request, 'Nenhum resultado foi encontrado!')
+    return paginacao(request)
 

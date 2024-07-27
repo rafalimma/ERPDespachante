@@ -23,6 +23,7 @@ class OrdemServico(models.Model):
     data_servico = models.DateField(default=datetime.date.today)
     desconto = models.CharField(max_length=10, default='')
     valor_f = models.CharField(max_length=10, default='')
+    observacoes = models.TextField(blank=True, null=True)
 
 
 class Servico(models.Model):

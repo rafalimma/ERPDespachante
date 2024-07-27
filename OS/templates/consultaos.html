@@ -31,6 +31,33 @@
             border: none;
             box-shadow: none;
         }
+        .document-container {
+            border: 1px solid #d3d3d3;
+            padding: 15;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .document-list {
+            border: 2px solid #d3d3d3;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+        .document-item p {
+            margin: 0;
+        }
+        .document-item img {
+            width: 20px;
+            height: 20px;
+        }
+        .obs {
+            border: 2px solid #d3d3d3;
+        }
     </style>
     <title>Consulta Ordem Serviço</title>
 </head>
@@ -128,18 +155,21 @@
         <hr>
         <div class="row">
             <h5 class="text-success">Documentos:</h5>
-            {% for documento in documentos %}
-                <div class="col-md-6 document-container">
+            <div class="col-12 document-list">
+                {% for documento in documentos %}
+                <div class="document-item">
                     <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
-                    {% if documento.is_image %}
-                        <img src="{{ documento.arquivo.url }}" alt="{{ documento.tipo_doc }}">
-                    {% endif %}
-                    {% if documento.is_pdf %}
-                        <iframe src="{{ documento.arquivo.url }}" style="width: 100%; height: 150px;" frameborder="0"></iframe>
-                        <a href="{{ documento.arquivo.url }}" class="btn btn-secondary mt-2" download>Download PDF</a>
-                    {% endif %}
+                    <p><strong class="text-success">Documento:</strong> {{ documento.arquivo }}</p>
+                    <a href="{{ documento.arquivo.url }}" title="DOWNLOAD" class="btn btn-secondary" download>
+                        <img src="{% static 'images/download.png' %}" alt="Download">
+                    </a>
                 </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+        <hr class="mt-4">
+        <div class="row">
+            <h5 class="me-auto text-success">Observações</h5>
+            <textarea class="form-control readonly-input obs" id="observacoes" name="observacoes" rows="5" cols="40" readonly>{{ ordem_servico.observacoes }}</textarea><br>
         </div>
     </div>
 </body>

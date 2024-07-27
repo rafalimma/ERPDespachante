@@ -199,7 +199,9 @@
                                     {% endfor %}
                                 </datalist> 
                             </div>
-                            <a href="#" class="btn btn-success me-2" onclick="adicionarInputs(1); return false;" style="width: 35px;height: 35px; margin-top: 32px;">+</a>
+                            <a href="#" onclick="adicionarInputs(1); return false;" style="width: 35px;height: 35px; margin-top: 32px;">
+                                <img src="{% static 'images/add.png' %}" title="ADICIONAR SERVICO" style="width: 37px; height: 37px; margin-left: -14px;">
+                            </a>
                             <div class="col">
                                 <label for="inputValorservico" class="form-label">Valor do serviço *</label>
                                 <input name="valorservico" id="inputValorservico" type="text" class="form-control" placeholder="Valor do Serviço">
@@ -230,6 +232,7 @@
                     <div class="tab-pane fade" id="dadosDocumentos" role="tabpanel" aria-labelledby="dadosDocumentos-tab">
                         <div class="row">
                             <div class="col mt-3">
+                                <h4 class="me-auto text-success" style="margin-top: 12px;">Documentos</h4>
                                 <label for="file_name" class="form-label">Tipo do Documento:</label>
                                 <select name="tipo_doc" id="tipo_doc" class="form-control">
                                     <option value="CNH">CNH</option>
@@ -237,13 +240,13 @@
                                     <option value="ATPV">ATPV</option>
                                     <option value="Recibo_compra">Recibo de Compra e venda</option>
                                 </select>
-                            </div>
-                            <div class="col mt-3">
                                 <label for="file">Arquivo: </label>
-                                <input class="form-control" type="file" name="file" id="file" required><br><br>
+                                <input class="form-control" type="file" name="file" id="file"><br><br>
+                                <a href="#" class="btn btn-success me-2" style="margin-top: -70px;" onclick="adicionarDocumento(1); return false;"> Novo documento </a>
                             </div>
                             <div class="col" style="margin-left: 60px; margin-top: 30px;">
-                                <a href="#" class="btn btn-success me-2" onclick="adicionarDocumento(1); return false;"> Novo documento </a>
+                                <h4 class="me-auto text-success">Observações</h4>
+                                <textarea class="form-control" id="observacoes" name="observacoes" rows="5" cols="40"></textarea><br>
                             </div>
                         </div>
                         <div id="novodocumento">
@@ -387,6 +390,8 @@
         col1.className = "col";
         var col2 = document.createElement("div");
         col2.className = "col";
+        // var col3 = document.createElement("div");
+        // col3.className = "col";
 
         var label1 = document.createElement("label");
         label1.htmlFor = `inputServico${contador}`;
@@ -409,11 +414,17 @@
 
         var btnRemove = document.createElement("a");
         btnRemove.href = "#";
-        btnRemove.className = "btn btn-danger me-2";
-        btnRemove.style.width = "35px";
+        // btnRemove.className = "btn btn-danger me-2";
+        btnRemove.style.width = "30px";
         btnRemove.style.height = "35px";
-        btnRemove.style.marginTop = "32px";
-        btnRemove.innerText = "X";
+        btnRemove.style.marginTop = "30px";
+        btnRemove.style.marginRight = "35px";
+
+        var deleteImg = document.createElement("img");
+        deleteImg.src = "{% static 'images/delete.png' %}";
+        deleteImg.width = 38;
+        deleteImg.height = 39;
+        deleteImg.title = "DELETAR SERVIÇO";
 
         btnRemove.addEventListener("click", function () {
             row.remove();
@@ -443,11 +454,13 @@
         input2.id = `inputValorservico${contador}`;
         input2.placeholder = "Valor do Serviço";
 
+        btnRemove.appendChild(deleteImg);
         col1.appendChild(label1);
         col1.appendChild(input1);
         col1.appendChild(input3); // Adicionando o input escondido na mesma coluna
         col2.appendChild(label2);
         col2.appendChild(input2);
+        // col3.appendChild(btnRemove);
 
         row.appendChild(col1);
         row.appendChild(btnRemove);
@@ -465,14 +478,12 @@
             return;
         }
         var row = document.createElement("div");
-        row.className = "row mb-3";
+        row.className = "row justify-content-end mb-2";
 
         var col1 = document.createElement("div");
         col1.className = "col";
         var col2 = document.createElement("div");
         col2.className = "col";
-        var col3 = document.createElement("div");
-        col3.className = "col";
 
         var label1 = document.createElement("label");
         label1.htmlFor = `file_name${contador}`;
@@ -513,13 +524,12 @@
 
         col1.appendChild(label1);
         col1.appendChild(select1);
-        col2.appendChild(label2); // Adicionando o input escondido na mesma coluna
-        col2.appendChild(inputFile);
-        col3.appendChild(btnRemove);
+        col1.appendChild(label2); // Adicionando o input escondido na mesma coluna
+        col1.appendChild(inputFile);
+        col1.appendChild(btnRemove);
 
         row.appendChild(col1);
         row.appendChild(col2);
-        row.appendChild(col3);
 
         document.getElementById("novodocumento").appendChild(row);
     }
