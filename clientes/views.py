@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.core.paginator import Paginator
+from OS.models import OrdemServico
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 # Create your views here.
@@ -25,10 +26,12 @@ def paginacao(request):
 
 def consultar_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
+    ordem_servico = OrdemServico.objects.filter(cliente_id=id)
     return render(
         request,
         'consulta.html',
-        {'cliente': cliente}
+        {'cliente': cliente,
+         'ordem_servicos': ordem_servico}
     )
 
 def novo_cliente(request):

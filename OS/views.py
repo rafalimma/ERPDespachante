@@ -50,6 +50,7 @@ def nova_ordem_de_servico(request):
         id_servico = request.POST.get('id_servico')
         valor_servico = request.POST.get('valorservico')
         observacoes = request.POST.get('observacoes')
+        status = request.POST.get('status')
 
         tipo_doc = request.POST.get('tipo_doc')
         arquivo = request.FILES.get('file')
@@ -71,7 +72,7 @@ def nova_ordem_de_servico(request):
             id_servico3 = request.POST.get('id_servico2')
         # faz verificações se o id do cliente e se as datas não foram preenchidas:
         if not(id_cliente):
-            messages.error(request, 'É necessário preencher todos os campos!')
+            messages.error(request, 'É necessário preencher todos os campos! ID_CLIENTE')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
             return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
@@ -88,12 +89,13 @@ def nova_ordem_de_servico(request):
             cor=cor, combustivel=combustivel, data_aq=data_aq,
             modelo=modelo, valor_veiculo=valor, ano_modelo=ano_veiculo,
             pendencias=pendencias, data_entrega=data_entrega,
-            desconto=desconto, valor_f=valor_f, observacoes=observacoes
+            desconto=desconto, valor_f=valor_f, observacoes=observacoes,
+            status=status
             )
         if not all([renavam, placa, cliente, id_cliente, name,
                      valor, combustivel, modelo, ano_veiculo, id_servico,
-                     valor_servico, valor_f]):
-            messages.error(request, 'É necessário preencher todos os campos!')
+                     valor_servico, valor_f, status]):
+            messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
             return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
@@ -172,7 +174,7 @@ def buscar_servico(request):
     return JsonResponse({})
 
 def paginacao(request):
-    ordens_servicos = OrdemServico.objects.all().values('id', 'nome_cliente', 'modelo', 'placa', 'cor', 'valor_f')
+    ordens_servicos = OrdemServico.objects.all().values('id', 'nome_cliente', 'modelo', 'placa', 'status', 'valor_f')
     ordens_servicos_paginados = Paginator(ordens_servicos, 10)
     page_num = request.GET.get('page')
     ordens_servicos = ordens_servicos_paginados.get_page(page_num)
@@ -299,20 +301,41 @@ def filtrar_os(request):
     tipo = request.GET.get('tipo')
     valor_filtro = request.GET.get('valor_filtro') 
 
-    if tipo == 'nome_cliente':
-        os_filtrada = OrdemServico.objects.filter(nome_cliente__icontains=valor_filtro)
-    elif tipo == 'id_cliente' and valor_filtro.isdigit():
-        os_filtrada = OrdemServico.objects.filter(cliente_id=valor_filtro)
-    elif tipo == 'id_os' and valor_filtro.isdigit():
-        os_filtrada = OrdemServico.objects.filter(id=valor_filtro)
-    elif tipo == 'veiculo':
-        os_filtrada = OrdemServico.objects.filter(modelo__icontains=valor_filtro)
-    else:
-        os_filtrada = OrdemServico.objects.filter(placa=valor_filtro)
+    if valor_filtro:
+        if tipo == 'nome_cliente':
+            os_filtrada = OrdemServico.objects.filter(nome_cliente__icontains=valor_filtro)
+        elif tipo == 'id_cliente' and valor_filtro.isdigit():
+            os_filtrada = OrdemServico.objects.filter(cliente_id=valor_filtro)
+        elif tipo == 'id_os' and valor_filtro.isdigit():
+            os_filtrada = OrdemServico.objects.filter(id=valor_filtro)
+        elif tipo == 'veiculo':
+            os_filtrada = OrdemServico.objects.filter(modelo__icontains=valor_filtro)
+        elif tipo == 'status':
+            os_filtrada = OrdemServico.objects.filter(status__icontains=valor_filtro)
+        else:
+            os_filtrada = OrdemServico.objects.filter(placa=valor_filtro)
 
-    if os_filtrada:
-        return render(request, 'os.html', {'ordens_servicos': os_filtrada})
+        if os_filtrada:
+            return render(request, 'os.html', {'ordens_servicos': os_filtrada})
+        else:
+            messages.error(request, 'Nenhum resultado foi encontrado!')
+    return redirect('ordem_servico')
+
+def atualizar_status(request):
+    if request.method == 'POST':
+        id_ordem_servico = request.POST.get('id_ordem_servicos')
+        novo_status = request.POST.get('novo_status')
+        print('aq ta tudo na paz')
+        ordem_servico = get_object_or_404(OrdemServico, pk=id_ordem_servico)
+
+        ordem_servico.status = novo_status
+        ordem_servico.save()
+        messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
+        return redirect('ordem_servico')
     else:
-        messages.error(request, 'Nenhum resultado foi encontrado!')
-    return paginacao(request)
+        print('ocorreu um erro')
+        return paginacao(request)
+
+
+
 

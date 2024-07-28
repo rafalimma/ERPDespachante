@@ -24,6 +24,7 @@ class OrdemServico(models.Model):
     desconto = models.CharField(max_length=10, default='')
     valor_f = models.CharField(max_length=10, default='')
     observacoes = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=20, default='')
 
 
 class Servico(models.Model):

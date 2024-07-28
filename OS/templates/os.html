@@ -61,6 +61,34 @@
         color: #495057;
         padding-left: 0;
         }
+    .option-box {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        width: 180px;
+        border-radius: 5px;
+    }
+    .option-link {
+        height: 25px;
+        display: block;
+        padding: 10px;
+        color: #333;
+        text-decoration: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 12px;
+    }
+    .option-link:hover {
+        background-color: #f0f0f0;
+    }
+    .option-link:last-child {
+        border-bottom: none;
+    }
+    .modal-content {
+        font-family: 'Poppins', sans-serif;
+    }
 </style>
 <body>
     <div class="container mt-3 custom-container">
@@ -84,6 +112,33 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
+        <!-- FILTRO ORDEM SERVICO -->
+        <div id="divFiltro">
+            <form id="formfiltroOS" action="{% url 'filtrar_os' %}" method="GET" enctype="multipart/form-data">{% csrf_token %}
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label">Selecionar filtro</label>
+                        <select class="form-control readonly-input" id="dropdown" onchange="updateInputId(this)">
+                            <option value="Nome_cliente">Nome do cliente</option>
+                            <option value="Id_Cliente">Id do cliente</option>
+                            <option value="Id_Os">Id da O.S</option>
+                            <option value="veiculo">Veículo</option>
+                            <option value="Placa">Placa</option>
+                            <option value="status">Situação</option>
+                        </select>
+                    </div>
+                    <img src="{% static 'images/filtro.png' %}" style="width: 55px; height: 34px; margin-top: 30px;">
+                    <div class="col">
+                        <label class="form-label">Filtrar por</label>
+                        <input type="text" class="form-control readonly-input" id="InputFiltro">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <button type="button" class="btn btn-secondary me-3" id="btnResetar">Resetar</button>
+                    <button type="button" class="btn btn-success" id="btnFiltrar">Filtrar </button>
+                </div>
+            </form>
+        </div>
         <!-- NAVEGAÇÃO ENTRE A PAGINAÇÃO -->
         {% if ordens_servicos.has_other_pages %}
             <div class="btn-group" role="group" aria-label="Item pagination" style="margin-left: 416px; margin-top: 30px; margin-bottom: -14px;">
@@ -131,31 +186,27 @@
                 </div>
             </div>
         </div>
-        <!-- FILTRO ORDEM SERVICO -->
-        <div id="divFiltro">
-            <form id="formfiltroOS" action="{% url 'filtrar_os' %}" method="GET" enctype="multipart/form-data">{% csrf_token %}
-                <div class="row mb-3">
-                    <div class="col">
-                        <label class="form-label">Selecionar filtro</label>
-                        <select class="form-control readonly-input" id="dropdown" onchange="updateInputId(this)">
-                            <option value="Nome_cliente">Nome do cliente</option>
-                            <option value="Id_Cliente">Id do cliente</option>
-                            <option value="Id_Os">Id da O.S</option>
-                            <option value="veiculo">Veículo</option>
-                            <option value="Placa">Placa</option>
-                        </select>
+        <!-- MODAL PARA ALTERAR O STATUS DA OS -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirmação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <img src="{% static 'images/filtro.png' %}" style="width: 55px; height: 34px; margin-top: 30px;">
-                    <div class="col">
-                        <label class="form-label">Filtrar por</label>
-                        <input type="text" class="form-control readonly-input" id="InputFiltro">
-                    </div>
+                    <form action="{% url 'atualizar_status' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="modal-body">
+                            Tem certeza que deseja alterar a situação da ordem de serviço?
+                        </div>
+                        <input type="hidden" name="id_ordem_servicos" id="os_id">
+                        <input type="hidden" name="novo_status" id="novo_status">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                            <button type="submit" class="btn btn-success">Sim</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="d-flex justify-content-end align-items-center">
-                    <button type="button" class="btn btn-secondary me-3" id="btnResetar">Resetar</button>
-                    <button type="button" class="btn btn-success" id="btnFiltrar">Filtrar </button>
-                </div>
-            </form>
+            </div>
         </div>
         <!-- TABELA QUE ITERA SOBRE AS ORDENS DE SERVIÇO -->
         <table class="table table-striped mt-3">
@@ -165,7 +216,7 @@
                     <th scope="col">Cliente</th>
                     <th scope="col">Veículo</th>
                     <th scope="col">Placa</th>
-                    <th scope="col">Cor</th>
+                    <th scope="col">Situação</th>
                     <th scope="col">Valor Final</th>
                     <th scope="col">Opções</th>
                 </tr>
@@ -173,15 +224,28 @@
             <tbody  id="tbodyOrdens">
                 {% for ordem_servico in ordens_servicos %}
                     <tr>
-                        <th>{{ordem_servico.id}}</th>
+                        <th>
+                            {{ordem_servico.id}}
+                            <a href="#" class="openOptions">
+                                <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
+                            </a>
+                            <div class="option-box" id="box">
+                                <p class="text-success" style="font-size: 12px; border-bottom: 1px solid black; height: 15px; display: block; margin-bottom: -2px;">Alterar Situação:</p>
+                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Em Servico')">Em Serviço</a>
+                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Documento Pendente')">Documento Pendente</a>
+                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Entregue')">Entregue</a>
+                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Servico Faturado')">Serviço Faturado</a>
+                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Pendente')">Pendente</a>
+                            </div>
+                        </th>
                         <td>{{ordem_servico.nome_cliente}}</td>
                         <td>{{ordem_servico.modelo}}</td>
                         <td>{{ordem_servico.placa}}</td>
-                        <td>{{ordem_servico.cor}}</td>
-                        <td style="color: #2ac44e; font-weight: bold;">{{ordem_servico.valor_f}}</td> 
+                        <td>{{ordem_servico.status}}</td>
+                        <td style="color: #2ac44e; font-weight: bold;">{{ordem_servico.valor_f}}</td>
                         <td>
                             <!-- EXCLUIR  ORDEM DE SERVIÇO -->
-                            <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px;">
+                            <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px; margin-left: -12px;">
                                 <img src="{% static 'images/excluir.png' %}" style="width: 24px; height: 22px;">
                             </a>
                         </td>
@@ -233,6 +297,8 @@
                 tipo = 'id_os';
             } else if (filterType == 'veiculo') {
                 tipo = 'veiculo';
+            } else if (filterType == 'status') {
+                tipo = 'status';
             } else {
                 tipo = 'placa';
             }
@@ -244,6 +310,41 @@
             window.location.href = url;
         });
 
+        function AlterarStatus(id_os, novo_status) {
+            console.log('entrando na função');
+            var input_id = document.getElementById('os_id');
+            var input_status = document.getElementById('novo_status');
+            input_id.value = id_os;
+            input_status.value = novo_status;
+        }
+        $(document).ready(function() {
+            $('.openOptions').click(function(event) {
+                event.preventDefault();
+                var optionBox = $(this).siblings('.option-box');
+                var offset = $(this).offset();
+
+                // Esconde todos os option-box antes de mostrar o novo
+                $('.option-box').not(optionBox).hide();
+
+                optionBox.css({
+                    top: offset.top - optionBox.outerHeight() - 10,
+                    left: offset.left
+                }).toggle();
+            });
+
+            // Define o manipulador de clique no documento apenas uma vez
+            $(document).click(function(event) {
+                if (!$(event.target).closest('.openOptions, .option-box').length) {
+                    $('.option-box').hide();
+                }
+            });
+
+            $('.option-link').click(function(event) {
+                event.preventDefault();
+                $('.option-box').hide();
+                $('#confirmationModal').modal('show');
+            });
+        });
         
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
