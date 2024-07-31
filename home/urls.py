@@ -2,6 +2,7 @@ from django.urls import path
 from . import views as homeviews
 from clientes import views as clienteviews
 from OS import views as osviews
+from servicos import views as serviews
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 
@@ -27,5 +28,8 @@ urlpatterns = [
     path('form_edicao_os', osviews.form_edicao_os, name='form_edicao_os'),
     path('excluir_servico/<str:id>', osviews.excluir_servico, name='excluir_servico'),
     path('filtrar_os', osviews.filtrar_os, name='filtrar_os'),
-    path('atualizar_status', osviews.atualizar_status, name='atualizar_status')
+    path('atualizar_status', osviews.atualizar_status, name='atualizar_status'),
+    path('servicos', serviews.servicos, name='servicos'),
+    path('editar_servico/<str:id>', serviews.editar_servico, name='editar_servico'),
+    path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico')
 ]

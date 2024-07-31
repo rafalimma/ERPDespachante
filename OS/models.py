@@ -32,6 +32,8 @@ class Servico(models.Model):
     custo = models.CharField(max_length=10)
     valor_liquido = models.CharField(max_length=10)
     valor_total = models.CharField(max_length=10)
+    taxa_detran = models.CharField(max_length=10, default='')
+    notas = models.TextField(blank=True, null=True)
 
 class Servico_os(models.Model):
     os_id = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
