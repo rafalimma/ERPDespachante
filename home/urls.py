@@ -29,7 +29,11 @@ urlpatterns = [
     path('excluir_servico/<str:id>', osviews.excluir_servico, name='excluir_servico'),
     path('filtrar_os', osviews.filtrar_os, name='filtrar_os'),
     path('atualizar_status', osviews.atualizar_status, name='atualizar_status'),
+    path('imprimir_os/<str:id>', osviews.imprimir_os, name='imprimir_os'),
+    path('pdf_export/<str:id>', osviews.pdf_export, name='pdf_export'),
     path('servicos', serviews.servicos, name='servicos'),
     path('editar_servico/<str:id>', serviews.editar_servico, name='editar_servico'),
-    path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico')
+    path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico'),
+    path('novo_servico', serviews.novo_servico, name='novo_servico'),
+    path('adicao_servico', serviews.adicao_servico, name='adicao_servico'),
 ]
