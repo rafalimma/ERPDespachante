@@ -59,6 +59,13 @@
             padding: 5px;
             z-index: 1000;
         }
+        .readonly-input {
+            background-color: #d4dade;
+            border: none;
+            box-shadow: none;
+            color: #495057;
+            padding-left: 0;
+            }
       </style>
 
     <title>Clientes</title>
@@ -95,7 +102,7 @@
                         <input class="form-check-input" type="checkbox" id="tiponome" value="nome">
                         <label class="form-check-label" for="filtroNome">Nome</label>
                     </div>
-                    <input type="text" class="form-control" name="valor_filtro" value="{{ request.GET.valor_filtro }}" placeholder="Digite aqui...">
+                    <input type="text" class="form-control readonly-input" name="valor_filtro" value="{{ request.GET.valor_filtro }}" placeholder="Digite aqui...">
                 </div>
                 <button type="button" class="btn btn-success" id="btnFiltrar">Filtrar</button>
                 <!-- Tanto o valor do input quando o valor do check-box são passados pela url (JAVA-SCRIPT) -->

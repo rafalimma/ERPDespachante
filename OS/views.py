@@ -1,13 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from .models import OrdemServico, Servico, Servico_os, Documentos
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.urls import reverse
 from time import strftime
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from weasyprint import HTML
+from django.template.loader import render_to_string 
 from datetime import date
-
+import weasyprint
+from django.conf import settings
+from django.contrib.staticfiles import finders
+import tempfile
 DEFAULT_DATE = ""
 
 # Create your views here.
@@ -51,6 +58,8 @@ def nova_ordem_de_servico(request):
         valor_servico = request.POST.get('valorservico')
         observacoes = request.POST.get('observacoes')
         status = request.POST.get('status')
+        cpf_comprador = request.POST.get('cpf_comprador')
+        concessionaria = request.POST.get('concessionaria')
 
         tipo_doc = request.POST.get('tipo_doc')
         arquivo = request.FILES.get('file')
@@ -80,6 +89,7 @@ def nova_ordem_de_servico(request):
             data_aq = None
         if not data_entrega:
             data_entrega = None
+        print('essa é a data de entrega:', data_entrega)
         # pega a chave primária dos clientes
         cliente = Cliente.objects.get(pk=id_cliente)
 
@@ -90,11 +100,11 @@ def nova_ordem_de_servico(request):
             modelo=modelo, valor_veiculo=valor, ano_modelo=ano_veiculo,
             pendencias=pendencias, data_entrega=data_entrega,
             desconto=desconto, valor_f=valor_f, observacoes=observacoes,
-            status=status
+            status=status, concessionaria=concessionaria, cpf_comprador=cpf_comprador
             )
         if not all([renavam, placa, cliente, id_cliente, name,
                      valor, combustivel, modelo, ano_veiculo, id_servico,
-                     valor_servico, valor_f, status]):
+                     valor_servico, valor_f, status, cpf_comprador]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
@@ -238,7 +248,6 @@ def editar_os(request, id):
          'servicos_os': servicos_os,
          'documentos': documentos_da_os,
          'data': dados,
-
          'servicos': servicos}
     )
 
@@ -258,9 +267,9 @@ def form_edicao_os(request):
         ordem_servico.desconto = request.POST.get('desconto')
         ordem_servico.valor_f = request.POST.get('valor_f')
         ordem_servico.data_servico = request.POST.get('data_servico')
-        if request.POST.get('data_entrega') is date:
+        if request.POST.get('data_entrega'):
             ordem_servico.data_entrega = request.POST.get('data_entrega')
-        if request.POST.get('data_aq') is date:
+        if request.POST.get('data_aq'):
             ordem_servico.data_aq = request.POST.get('data_aq')
         ordem_servico.save()
 
@@ -299,7 +308,7 @@ def filtrar_documentos(request):
 
 def filtrar_os(request):
     tipo = request.GET.get('tipo')
-    valor_filtro = request.GET.get('valor_filtro') 
+    valor_filtro = request.GET.get('valor_filtro')
 
     if valor_filtro:
         if tipo == 'nome_cliente':
@@ -335,6 +344,35 @@ def atualizar_status(request):
     else:
         print('ocorreu um erro')
         return paginacao(request)
+    
+def imprimir_os(request, id):
+    ordem_servico = get_object_or_404(OrdemServico, pk=id)
+    servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    return render(request, 'imprimir_os.html', {'ordem_servico': ordem_servico, 'servicos_os': servicos})
+
+def pdf_export(request, id):
+    ordem_servico = get_object_or_404(OrdemServico, pk=id)
+    servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    site_url = settings.SITE_URL
+    datas = {
+        'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
+        'data_servico': ordem_servico.data_servico.strftime('%Y-%m-%d'),
+        'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
+    }
+    context = {'ordem_servico': ordem_servico, 
+                'servicos_os': servicos,
+                'site_url': site_url,
+                'data': datas}
+
+    html_string = render_to_string('os-pdf_export.html', context)
+
+    weasyprint_html = weasyprint.HTML(string=html_string)
+    pdf = weasyprint_html.write_pdf()
+
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="ordem_servico_numero{id}.pdf"'
+
+    return response
 
 
 

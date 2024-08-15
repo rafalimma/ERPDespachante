@@ -14,4 +14,4 @@ class Cliente(models.Model):
     estado = models.CharField(max_length=30, default='')
     cidade = models.CharField(max_length=15, default='')
     numero = models.CharField(max_length=6, default='')
-    email = models.EmailField(max_length=100, unique=True, null=True, blank=True)
+    email = models.EmailField(max_length=100, null=True, blank=True)

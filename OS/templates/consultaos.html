@@ -21,10 +21,10 @@
             margin-bottom: 1rem;
         }
         .readonly-input {
-            background-color: #f8f9fa;
+            background-color: #e3e7e9;
             border: none;
             box-shadow: none;
-            color: #495057;
+            color: #414344;
             padding-left: 0;
         }
         .readonly-input:focus {
@@ -111,6 +111,16 @@
             <div class="col-md-4 form-group">
                 <label class="text-success">Combustível:</label>
                 <input type="text" class="form-control readonly-input" value="{{ ordem_servico.combustivel }}" readonly>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -15px;">
+            <div class="col-md-4 form-group">
+                <label class="text-success">CPF do Comprador:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cpf_comprador }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Concessionária:</label>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.concessionaria }}" readonly>
             </div>
         </div>
         <div class="row" style="margin-top: -15px;">

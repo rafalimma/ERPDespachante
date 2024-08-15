@@ -20,10 +20,10 @@
             margin-bottom: 1rem;
         }
         .readonly-input {
-            background-color: #f8f9fa;
+            background-color: #e3e7e9;
             border: none;
             box-shadow: none;
-            color: #495057;
+            color: #414344;
             padding-left: 0;
         }
         .readonly-input:focus {
@@ -171,7 +171,7 @@
                         </td>
                         <td>
                             <!-- IMPRIMIR ORDEM DE SERVIÇO -->
-                            <a href="#"  title="IMPRIMIR" style="height: 20px; margin-left: -60px;">
+                            <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px; margin-left: -60px;">
                                 <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
                             </a>
                         </td>

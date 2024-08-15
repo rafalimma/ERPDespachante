@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Consulta Clientes{% endblock %}
+{% comment %} edit {% endcomment %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .custom-container {
+            padding-left: 0; /* Remove o padding da esquerda */
+            padding-right: 0; /* Remove o padding da direita */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3 custom-container">
+        <div class="d-flex justify-content-start align-items-center">
+            <h2 class="me-auto text-success">Imprimir Ordem de Serviço</h2>
+        </div>
+        <div class="container mt-3">
+            {% include 'os-pdf_export.html' %}
+        </div>
+        <div class="d-flex justify-content-end align-items-center" style="margin-top: 40px;">
+            <a href="{% url 'ordem_servico' %}" class="btn btn-secondary me-3 mt-4">Voltar</a>
+            <a href="{% url 'pdf_export' ordem_servico.id %}" class="btn btn-secondary mt-4" download>Baixar PDF</a>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+</body>
+</html>
+
+{% endblock %}

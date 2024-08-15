@@ -5,7 +5,7 @@
 {% block content %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,15 +48,11 @@
             margin-bottom: 1rem;
         }
         .readonly-input {
-            background-color: #bac2c6;
-            border: none;
-            box-shadow: none;
-            color: #4f5152;
-            padding-left: 0;
-        }
-        .readonly-input:focus {
-            border: none;
-            box-shadow: none;
+        background-color: #e3e7e9;
+        border: none;
+        box-shadow: none;
+        color: #414344;
+        padding-left: 0;
         }
         .obs {
             border: 2px solid #d3d3d3;
@@ -74,34 +70,34 @@
       <form id="formedicao" action="{% url 'form_edicao_servico' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
         <div class="row">
           <div class="col-md-4 form-group">
-            <label class="text-success">Identificador:</label>
+            <label class="form-label text-success">Identificador:</label>
             <input type="number" name="id_servico" class="form-control readonly-input" readonly value="{{ servico.id }}">
           </div>
           <div class="col-md-4 form-group">
-            <label class="text-success">Descrição:</label>
+            <label class="form-label">Descrição:</label>
             <input type="text" name="descricao" class="form-control readonly-input" value="{{ servico.descricao }}">
           </div>
           <div class="col-md-4 form-group">
-            <label class="text-success">Custo:</label>
+            <label class="form-label">Custo:</label>
             <input type="text" name="custo" class="form-control readonly-input" value="{{ servico.custo }}">
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 form-group">
-            <label class="text-success">Valor liquido:</label>
+            <label class="form-label">Valor liquido:</label>
             <input type="text" name="valor_liquido" class="form-control readonly-input" value="{{ servico.valor_liquido }}">
           </div>
           <div class="col-md-4 form-group">
-            <label class="text-success">Taxa Detran:</label>
+            <label class="form-label">Taxa Detran:</label>
             <input type="text" name="taxa_detran" class="form-control readonly-input" value="{{ servico.taxa_detran }}">
           </div>
           <div class="col-md-4 form-group">
-            <label class="text-success">Valor total:</label>
+            <label class="form-label">Valor total:</label>
             <input type="text" name="valor_total" class="form-control readonly-input" value="{{ servico.valor_total }}">
           </div>
         </div>
         <div class="row">
-          <h5 class="me-auto text-success">Notas adicionais</h5>
+          <h5 class="me-auto">Notas adicionais</h5>
           <textarea class="form-control readonly-input obs" id="notas" name="notas" rows="5" cols="40">{{ servico.notas }}</textarea><br>
         </div>
         <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">

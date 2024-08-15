@@ -17,7 +17,7 @@ class OrdemServico(models.Model):
     modelo = models.CharField(max_length=25, default='')
     valor_veiculo = models.CharField(max_length=6, default='')
     ano_modelo = models.CharField(max_length=5, default='')
-    pendencias = models.CharField(max_length=40, default='')
+    pendencias = models.CharField(max_length=30, default='')
     data_entrega = models.DateField(null=True, blank=True)
     data_aq = models.DateField(null=True, blank=True)
     data_servico = models.DateField(default=datetime.date.today)
@@ -25,6 +25,8 @@ class OrdemServico(models.Model):
     valor_f = models.CharField(max_length=10, default='')
     observacoes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='')
+    cpf_comprador = models.CharField(max_length=20, default='')
+    concessionaria = models.CharField(max_length=30, default='')
 
 
 class Servico(models.Model):

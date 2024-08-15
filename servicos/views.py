@@ -41,3 +41,26 @@ def form_edicao_servico(request):
     else:
         messages.error(request, 'Ocorreu um erro!')
         return redirect('servicos')
+    
+def novo_servico(request):
+    return render(request, 'novo_servico.html')
+
+def adicao_servico(request):
+    if request.method == 'POST':
+        descricao = request.POST.get('descricao')
+        custo = request.POST.get('custo')
+        valor_liquido = request.POST.get('valor_liquido')
+        valor_total = request.POST.get('valor_total')
+        taxa_detran = request.POST.get('taxa_detran')
+        notas = request.POST.get('notas')
+
+        servico = Servico(descricao=descricao, custo=custo,
+                          valor_liquido=valor_liquido, valor_total=valor_total,
+                          taxa_detran=taxa_detran, notas=notas)
+        if not all([descricao, custo, valor_liquido, valor_total]):
+            messages.error(request, 'É necessário preencher todos os campos!')
+            return redirect(reverse('novo_servico'))
+        else:
+            servico.save()
+            messages.success(request, 'Serviço cadastrado com sucesso!')
+    return paginacao(request)

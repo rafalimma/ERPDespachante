@@ -58,13 +58,12 @@
             background-color: #f0f0f0;
         }
         .readonly-input {
-            background-color: #f8f9fa;
+            background-color: #e3e7e9;
             border: none;
             box-shadow: none;
-            color: #495057;
+            color: #414344;
             padding-left: 0;
-            text-align: center;
-        }
+            }
     </style>
 </head>
 <body>
@@ -108,7 +107,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="form-label text-success">Nome do Cliente *</label>
-                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control" onclick="mostrarSugestoes()">
+                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control readonly-input" onclick="mostrarSugestoes()">
                                 <div id="lista-sugestoes" class="lista-sugestoes" style="display: none;">
                                     {% for cliente in clientes %}
                                         <div class="sugestao-item" onclick="selecionarSugestao('{{ cliente.name }}')">{{ cliente.name }}</div>
@@ -121,31 +120,31 @@
             
                             <div class="col">
                                 <label for="inputFones" class="form-label">CPF/CNPJ</label>
-                                <input name="cpfcnpj" type="number" class="form-control" id="inputCpfcnpj" placeholder="CPF/CNPJ">
+                                <input name="cpfcnpj" type="number" class="form-control readonly-input" id="inputCpfcnpj" placeholder="CPF/CNPJ">
                             </div>
                             <div class="col">
                                 <label for="inputFones" class="form-label">Telefone</label>
-                                <input name="telefone" type="number" class="form-control" id="inputFones" placeholder="Telefone">
+                                <input name="telefone" type="number" class="form-control readonly-input" id="inputFones" placeholder="Telefone">
                             </div>
                             <div class="col">
                                 <label for="inputCEP" class="form-label">CEP</label>
-                                <input name="cep" type="number" class="form-control" id="inputCep" placeholder="CEP">
+                                <input name="cep" type="number" class="form-control readonly-input" id="inputCep" placeholder="CEP">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputFones" class="form-label">Cidade</label>
-                                <input name="cidade" type="text" class="form-control" id="inputCidade" placeholder="Cidade">
+                                <input name="cidade" type="text" class="form-control readonly-input" id="inputCidade" placeholder="Cidade">
                             </div>
                             <div class="col">
                                 <label for="inputFones" class="form-label">Bairro</label>
-                                <input name="bairro" type="text" class="form-control" id="inputBairro" placeholder="Bairro">
+                                <input name="bairro" type="text" class="form-control readonly-input" id="inputBairro" placeholder="Bairro">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputFones" class="form-label">Número</label>
-                                <input name="numero" type="number" class="form-control" id="inputNum" placeholder="Numero">
+                                <input name="numero" type="number" class="form-control readonly-input" id="inputNum" placeholder="Numero">
                             </div>
                         </div>
                     </div>
@@ -154,45 +153,55 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputRenavam" class="form-label">Renavam *</label>
-                                <input name="renavam" type="numer" class="form-control" id="inputRenavam" placeholder="Renavam">
+                                <input name="renavam" type="numer" class="form-control readonly-input" id="inputRenavam" placeholder="Renavam">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Placa *</label>
-                                <input name="placa" type="text" class="form-control" id="inputPlaca" placeholder="Placa">
+                                <input name="placa" type="text" class="form-control readonly-input" id="inputPlaca" placeholder="Placa">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Valor da Compra *</label>
-                                <input name="valor" type="number" class="form-control" id="inputValor" placeholder="valor">
+                                <input name="valor" type="number" class="form-control readonly-input" id="inputValor" placeholder="valor">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Chassis</label>
-                                <input name="chassi" type="number" class="form-control" id="inputChassi" placeholder="chassi">
+                                <input name="chassi" type="number" class="form-control readonly-input" id="inputChassi" placeholder="chassi">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputCor" class="form-label">Cor</label>
-                                <input name="cor" type="text" class="form-control" id="inputCor" placeholder="Cor">
+                                <input name="cor" type="text" class="form-control readonly-input" id="inputCor" placeholder="Cor">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Combustível *</label>
-                                <input name="combustivel" type="text" class="form-control" id="inputCombustível" placeholder="Combustível">
+                                <input name="combustivel" type="text" class="form-control readonly-input" id="inputCombustível" placeholder="Combustível">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">CPF do Comprador *</label>
+                                <input name="cpf_comprador" type="text" class="form-control readonly-input" id="inputcpf_comprador" placeholder="CPF do Comprador">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Concessionaria *</label>
+                                <input name="concessionaria" type="text" class="form-control readonly-input" id="inputconcessionaria" placeholder="Concessionaria">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Data de Aquisição</label>
-                                <input name="data" type="date" class="form-control" id="inputDataA" placeholder="Data">
+                                <input name="data" type="date" class="form-control readonly-input" id="inputDataA" placeholder="Data">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Modelo *</label>
-                                <input name="modelo" type="text" class="form-control" id="inputModelo" placeholder="Modelo">
+                                <input name="modelo" type="text" class="form-control readonly-input" id="inputModelo" placeholder="Modelo">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Ano do Veículo *</label>
-                                <input name="ano" type="number" class="form-control" id="inputAno" placeholder="Ano do Veículo">
+                                <input name="ano" type="number" class="form-control readonly-input" id="inputAno" placeholder="Ano do Veículo">
                             </div>
                         </div>
                     </div>
@@ -203,7 +212,7 @@
                             <div class="col">
                                 <label for="inputServico" class="form-label">Serviço *</label>
                                 <input type="hidden" name="id_servico" id="id_servico">
-                                <input name="servico" type="text" list="lista-servicos" class="form-control" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)">
+                                <input name="servico" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)">
                                 <datalist id="lista-servicos">
                                     {% for servico in servicos %}
                                         <option value="{{ servico.descricao }}"></option>
@@ -215,28 +224,28 @@
                             </a>
                             <div class="col">
                                 <label for="inputValorservico" class="form-label">Valor do serviço *</label>
-                                <input name="valorservico" id="inputValorservico" type="text" class="form-control" placeholder="Valor do Serviço">
+                                <input name="valorservico" id="inputValorservico" type="text" class="form-control readonly-input" placeholder="Valor do Serviço">
                             </div>
                         </div>
                         <div id="novoservico"></div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputPendencias" class="form-label">Pendências</label>
-                                <input name="pendencias" type="text" class="form-control" id="inputPendencias" placeholder="Pendências">
+                                <input name="pendencias" type="text" class="form-control readonly-input" id="inputPendencias" placeholder="Pendências">
                             </div>
                             <div class="col">
                                 <label for="inputDtentrega" class="form-label">Data de entrega *</label>
-                                <input name="dtentrega" type="date" class="form-control" id="inputdtentrega" placeholder="Data de entrega">
+                                <input name="dtentrega" type="date" class="form-control readonly-input" id="inputdtentrega" placeholder="Data de entrega">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputDesconto" class="form-label">Desconto</label>
-                                <input name="desconto" type="number" class="form-control" id="inputDesconto" placeholder="Desconto R$">
+                                <input name="desconto" type="text" class="form-control readonly-input" id="inputDesconto" placeholder="Desconto R$">
                             </div>
                             <div class="col">
                                 <label for="inputvalorfinal" class="form-label">Valor Final do Serviço R$ *</label>
-                                <input name="vfinal" type="text" value="0" class="form-control" id="inputvfinal" placeholder="Valor final R$">
+                                <input name="vfinal" type="text" value="0" class="form-control readonly-input" id="inputvfinal" placeholder="Valor final R$">
                             </div>
                         </div>
                     </div>
@@ -245,7 +254,7 @@
                             <div class="col mt-3">
                                 <h4 class="me-auto text-success" style="margin-top: 12px;">Documentos</h4>
                                 <label for="file_name" class="form-label">Tipo do Documento:</label>
-                                <select name="tipo_doc" id="tipo_doc" class="form-control">
+                                <select name="tipo_doc" id="tipo_doc" class="form-control readonly-input">
                                     <option value="CNH">CNH</option>
                                     <option value="CLRV">CLRV</option>
                                     <option value="ATPV">ATPV</option>
@@ -273,6 +282,7 @@
     </div>
 
     <script>
+        
         function selecionarSugestao(name) {
             document.getElementById('nome').value = name;
             document.getElementById('lista-sugestoes').style.display = 'none';
@@ -366,6 +376,24 @@
                 alert("Por favor, insira valores válidos.");
             }
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const desconto = document.getElementById('inputDesconto');
+
+            function formatCurrency(input) {
+                let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+                if (value.length > 0) {
+                    value = (value / 100).toFixed(2); // Divide por 100 e fixa em duas casas decimais
+                    input.value = value.replace('.', ','); // Substitui o ponto decimal por vírgula
+                } else {
+                    input.value = '';
+                }
+            }
+
+            desconto.addEventListener('input', function() {
+                formatCurrency(desconto);
+            })
+            
+        });
 
     document.addEventListener('DOMContentLoaded', function () {
         // Adiciona um evento de clique para cada botão de aba
@@ -412,7 +440,7 @@
         var input1 = document.createElement("input");
         input1.name = `servico${contador}`;
         input1.type = "text";
-        input1.className = "form-control";
+        input1.className = "form-control readonly-input";
         input1.setAttribute("list", "lista-servicos");
         input1.id = `inputServico${contador}`;
         input1.placeholder = "Serviço";
@@ -461,7 +489,7 @@
         var input2 = document.createElement("input");
         input2.name = `valorservico${contador}`;
         input2.type = "text";
-        input2.className = "form-control";
+        input2.className = "form-control readonly-input";
         input2.id = `inputValorservico${contador}`;
         input2.placeholder = "Valor do Serviço";
 
@@ -503,7 +531,7 @@
         var select1 = document.createElement("select");
         select1.name = `tipo_doc${contador}`;
         select1.id = `tipo_doc${contador}`;
-        select1.className = "form-control";
+        select1.className = "form-control readonly-input";
         var options = ['CNH', 'CLRV', 'ATPV', 'Recibo de Compra e venda'];
         options.forEach(function(optionText) {
             var option = document.createElement('option');

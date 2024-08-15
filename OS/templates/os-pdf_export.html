@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .order-details {
+            margin: 0;
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: #f8f9fa;
+        }
+        .order-header {
+            width: 100%; /* Ocupa toda a largura da order-details */
+            background-color: #f8f9fa; /* Cor de fundo */
+            padding: 10px; /* Padding interno */
+            text-align: center; /* Centraliza o texto */
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+        .order-header img {
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+        .order-header h1 {
+            margin: 0 auto; /* Centraliza o texto horizontalmente */
+        }
+        .row {
+            margin-bottom: 10px;
+        }
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .order-details {
+                page-break-after: always;
+            }
+            button {
+                display: none;
+            }
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="order-details">
+            <div class="order-header">
+                <img src="{{ site_url }}{% static 'images/logo1.png' %}" style="width: 85px; height: 85px">
+                <h2 class="text-center">Ordem de Serviço</h2>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <strong class="name">Nome do Cliente:</strong> {{ ordem_servico.nome_cliente }} 
+                </div>
+                <div class="col-md-6">
+                    <strong>Modelo do Veículo:</strong> {{ ordem_servico.modelo }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Renavam:</strong> {{ ordem_servico.renavam }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Placa:</strong> {{ ordem_servico.placa }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Chassi:</strong> {{ ordem_servico.chassi }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Cor:</strong> {{ ordem_servico.cor }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Combustível:</strong> {{ ordem_servico.combustivel }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Valor do Veículo:</strong> {{ ordem_servico.valor_veiculo }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Ano do Modelo:</strong> {{ ordem_servico.ano_modelo }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Data de Aquisição:</strong> {{ data.data_aq }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Data do Serviço:</strong> {{ data.data_servico }}
+                </div>
+                <div class="col-md-6">
+                    <strong>Data da Entrega:</strong> {{ data.data_entrega }}
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h4>Serviços:</h4>
+                <ul>
+                    {% for servico_os in servicos_os %}
+                        <li>{{ servico_os.servico_id.descricao }} - R$ {{ servico_os.servico_id.valor_total }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Desconto:</strong> {{ ordem_servico.desconto }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Valor Final:</strong> R$ {{ ordem_servico.valor_f }}
+                </div>
+            </div>
+        </div>        
+    </div>
+</body>
+</html>

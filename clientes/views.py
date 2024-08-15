@@ -83,8 +83,9 @@ def cadastro_clientes(request):
                         cep=cep, cidade=cidade, bairro=bairro, numero=numero,
                         email=email, estado=estado)
 
-        if not all([name, cpf_cnpj, telefone, cep, cidade, bairro, numero]):
+        if not all([name, cpf_cnpj, telefone]):
             messages.error(request, 'É necessário preencher todos os campos!')
+            return redirect(reverse('novo_cliente'))
         else:
             cliente.save()
             messages.success(request, 'Cadastro de cliente feito com sucesso!')

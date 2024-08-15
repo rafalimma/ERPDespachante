@@ -5,7 +5,7 @@
 
 {% block content %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,22 +27,28 @@
 </head>
 <body class="bg-light" style="font-family: 'Poppins', sans-serif;">
     <div class="container mt-5 d-flex justify-content-start align-items-center">
-        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -170px;">
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -50px;">
             <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
                 <img src="{% static "images/clientes_icon.png" %}" class="img-fluid" style="width: 122px; height: 123px;">
                 <p class="hover-link" style="margin-left: 31px;">Clientes</p>
             </a>
         </div>
-        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -175px;">
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: 30px;">
           <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
               <img src="{% static "images/os_icon.png" %}" class="img-fluid" style="width: 122px; height: 120px;">
               <p class="hover-link" style="margin-left: -20px; margin-top: 3px;">Ordem de Serviço</p>
           </a>
         </div>
-        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -195px;">
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: 10px;">
           <a href="{% url 'servicos' %}" style="text-decoration: none;">
               <img src="{% static "images/servico.png" %}" class="img-fluid" style="width: 140px; height: 126px;">
               <p class="hover-link" style="margin-left: 23px; margin-top: 3px;">Serviços</p>
+          </a>
+        </div>
+        <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -10px;">
+          <a href="#" style="text-decoration: none;">
+              <img src="{% static "images/users.png" %}" class="img-fluid" style="width: 140px; height: 128px;">
+              <p class="hover-link" style="margin-left: 37px; margin-top: 3px;">Usuários</p>
           </a>
         </div>
     </div>

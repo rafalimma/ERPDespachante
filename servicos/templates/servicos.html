@@ -51,7 +51,7 @@
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Serviços</h2>
             <div class="shadow pt-1 bg-success rounded d-flex flex-column align-items-center bg-success" style="width: 110px; margin-left: 85px;">
-                <a href="#" style="text-decoration: none;" id="btnMostrarClientes">
+                <a href="{% url 'novo_servico' %}" style="text-decoration: none;" id="btnMostrarClientes">
                     <p class="hover-link">+ Serviço</p>
                 </a>
             </div>
@@ -107,7 +107,7 @@
                         <td>{{servico.valor_total}}</td>
                         <td>
                             <!-- EDITAR SERVIÇO -->
-                            <a href="{% url 'editar_servico' servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -80px;">
+                            <a href="{% url 'editar_servico' servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -5px;">
                                 <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
                             </a>
                         </td>
