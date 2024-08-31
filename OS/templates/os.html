@@ -286,7 +286,6 @@
         
             // Submeter o formulário ao pressionar Enter no campo InputFiltro
             $("#InputFiltro").on("keypress", function(event) {
-                console.log('aqui foi');
                 if (event.key === "Enter") {
                     event.preventDefault(); // Previne o comportamento padrão do Enter
                     console.log('Submetendo formulário'); // Verificação de debug
@@ -321,7 +320,6 @@
         });
 
         function AlterarStatus(id_os, novo_status) {
-            console.log('entrando na função');
             var input_id = document.getElementById('os_id');
             var input_status = document.getElementById('novo_status');
             input_id.value = id_os;

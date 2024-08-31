@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Usuários {% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <title>Usuários</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .custom-container {
+          margin-left: 110px; /* Ajuste conforme necessário */
+          margin-right: 100px; /* Ajuste conforme necessário */
+        }
+        .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 5px;
+        margin: 5px 0;
+        }
+        .alert-error {
+        color: rgb(158, 4, 4);
+        background-color: #e3b2b0;
+        border-color: #c3e6cb;
+        padding: 5px;
+        margin: 5px 0;
+        }
+        .hover-link {
+          color: black; 
+          transition: color 0.3s ease; 
+        }
+    
+        .hover-link:hover {
+          color: green; 
+          text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3 custom-container">
+        <div class="d-flex justify-content-start align-items-center">
+            <h2 class="me-auto text-success">Usuários</h2>
+            <div class="shadow pt-1 bg-success rounded d-flex flex-column align-items-center bg-success" style="width: 110px; margin-left: 85px;">
+                <a href="{% url 'novo_usuario' %}" style="text-decoration: none;" id="btnMostrarClientes">
+                    <p class="hover-link">+ Usuário</p>
+                </a>
+            </div>
+        </div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                <p>{{ message }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        {% if usuarios.has_other_pages %}
+            <div class="btn-group" role="group" aria-label="Item pagination" style="margin-left: 416px; margin-top: 30px; margin-bottom: -14px;">
+                {% if usuarios.has_previous %}
+                    <a href="?page={{ usuarios.previous_page_number }}" class="btn btn-outline-success btn-sm">&laquo;</a>
+                {% endif %}
+
+                {% for page_number in usuarios.paginator.page_range %}
+                    {% if usuarios.number == page_number %}
+                        <button class="btn btn-outline-success btn-sm active">
+                            <span>{{ page_number }} <span class="sr-only">(Atual)</span></span>
+                        </button>
+                    {% else %}
+                        <a href="?page={{ page_number }}" class="btn btn-outline-success btn-sm">
+                            {{ page_number }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if usuarios.has_next %}
+                    <a href="?page={{ usuarios.next_page_number }}" class="btn btn-outline-success btn-sm">&raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Usuário</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Sobrenome</th>
+                    <th scope="col">Opções</th>
+                </tr>
+            </thead>
+            <tbody  id="tbodyClientes">
+                {% for usuario in usuarios %}
+                    <tr>
+                        <th>{{usuario.id}}</th>
+                        <td>{{usuario.username}}</td>
+                        <td>{{usuario.first_name}}</td>
+                        <td>{{usuario.last_name}}</td>
+                        <td>
+                            <!-- EDITAR USUARIO -->
+                            <a href="{% url 'editar_usuario' usuario.id %}"  title="EDITAR" style="height: 20px; margin-left: -5px;">
+                                <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
+                            </a>
+                        </td>
+                        <td>
+                            {% if usuario.is_active %}
+                                <img src="{% static 'images/active.png' %}" title="USUÁRIO ATIVO" style="width: 22px; height: 16px; margin-left: -120px;">
+                            {% else %}
+                                <img src="{% static 'images/inactive (2).png' %}" title="USUÁRIO INATIVO" style="width: 25px; height: 17px; margin-left: -120px;">
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+{% endblock %}

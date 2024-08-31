@@ -60,6 +60,7 @@ def nova_ordem_de_servico(request):
         status = request.POST.get('status')
         cpf_comprador = request.POST.get('cpf_comprador')
         concessionaria = request.POST.get('concessionaria')
+        tipo_veiculo = request.POST.get('tipo_veiculo')
 
         tipo_doc = request.POST.get('tipo_doc')
         arquivo = request.FILES.get('file')
@@ -100,11 +101,12 @@ def nova_ordem_de_servico(request):
             modelo=modelo, valor_veiculo=valor, ano_modelo=ano_veiculo,
             pendencias=pendencias, data_entrega=data_entrega,
             desconto=desconto, valor_f=valor_f, observacoes=observacoes,
-            status=status, concessionaria=concessionaria, cpf_comprador=cpf_comprador
+            status=status, concessionaria=concessionaria, cpf_comprador=cpf_comprador,
+            tipo_veiculo=tipo_veiculo
             )
         if not all([renavam, placa, cliente, id_cliente, name,
                      valor, combustivel, modelo, ano_veiculo, id_servico,
-                     valor_servico, valor_f, status, cpf_comprador]):
+                     valor_servico, valor_f, status, cpf_comprador, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
@@ -234,9 +236,13 @@ def editar_os(request, id):
              'valor_veiculo': ordem_servico.valor_veiculo,
              'ano_modelo': ordem_servico.ano_modelo,
              'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
+             'cpf_comprador': ordem_servico.cpf_comprador,
+             'concessionaria': ordem_servico.concessionaria,
+             'tipo_veiculo': ordem_servico.tipo_veiculo,
              'valor_f': ordem_servico.valor_f,
              'desconto': ordem_servico.desconto,
              'pendencias': ordem_servico.pendencias,
+             'observacoes': ordem_servico.observacoes,
              'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
              'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
              }
@@ -267,6 +273,10 @@ def form_edicao_os(request):
         ordem_servico.desconto = request.POST.get('desconto')
         ordem_servico.valor_f = request.POST.get('valor_f')
         ordem_servico.data_servico = request.POST.get('data_servico')
+        ordem_servico.cpf_comprador = request.POST.get('cpf_comprador')
+        ordem_servico.concessionaria = request.POST.get('concessionaria')
+        ordem_servico.tipo_veiculo = request.POST.get('tipo_veiculo')
+        ordem_servico.observacoes = request.POST.get('observacoes')
         if request.POST.get('data_entrega'):
             ordem_servico.data_entrega = request.POST.get('data_entrega')
         if request.POST.get('data_aq'):

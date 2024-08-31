@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% load static %}
 {% comment %} edit {% endcomment %}
 {% block title %}Deesp Home{% endblock %}
@@ -45,7 +46,7 @@
           </a>
         </div>
         <div class="w-50 d-flex flex-column align-items-center justify-content-center" style="margin-left: -10px;">
-          <a href="#" style="text-decoration: none;">
+          <a href="{% url 'usuarios' %}" style="text-decoration: none;">
               <img src="{% static "images/users.png" %}" class="img-fluid" style="width: 140px; height: 128px;">
               <p class="hover-link" style="margin-left: 37px; margin-top: 3px;">Usuários</p>
           </a>

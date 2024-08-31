@@ -64,6 +64,12 @@
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Editar Serviço</h2>
         </div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                <p>{{ message }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
     </div>
 
     <div class="container">
@@ -79,21 +85,21 @@
           </div>
           <div class="col-md-4 form-group">
             <label class="form-label">Custo:</label>
-            <input type="text" name="custo" class="form-control readonly-input" value="{{ servico.custo }}">
+            <input type="text" name="custo" id="inputCusto" class="form-control readonly-input" value="{{ servico.custo }}">
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 form-group">
             <label class="form-label">Valor liquido:</label>
-            <input type="text" name="valor_liquido" class="form-control readonly-input" value="{{ servico.valor_liquido }}">
+            <input type="text" name="valor_liquido" id="inputVl" class="form-control readonly-input" value="{{ servico.valor_liquido }}">
           </div>
           <div class="col-md-4 form-group">
             <label class="form-label">Taxa Detran:</label>
-            <input type="text" name="taxa_detran" class="form-control readonly-input" value="{{ servico.taxa_detran }}">
+            <input type="text" name="taxa_detran" id="inputTd" class="form-control readonly-input" value="{{ servico.taxa_detran }}">
           </div>
           <div class="col-md-4 form-group">
             <label class="form-label">Valor total:</label>
-            <input type="text" name="valor_total" class="form-control readonly-input" value="{{ servico.valor_total }}">
+            <input type="text" name="valor_total" id="inputVt" class="form-control readonly-input" value="{{ servico.valor_total }}">
           </div>
         </div>
         <div class="row">
@@ -126,6 +132,40 @@
                 }
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          // Seleciona os campos de valores
+          const valorLiquido = document.getElementById('inputVl');
+          const valorTotal = document.getElementById('inputVt');
+          const taxaDetran = document.getElementById('inputTd');
+          const custo = document.getElementById('inputCusto');
+  
+          function formatCurrency(input) {
+              let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+              if (value.length > 0) {
+                  value = (value / 100).toFixed(2); // Divide por 100 e fixa em duas casas decimais
+                  input.value = value.replace('.', ','); // Substitui o ponto decimal por vírgula
+              } else {
+                  input.value = '';
+              }
+          }
+  
+          // Adiciona evento de input para formatar conforme o usuário digita
+          valorLiquido.addEventListener('input', function() {
+              formatCurrency(valorLiquido);
+          });
+  
+          valorTotal.addEventListener('input', function() {
+              formatCurrency(valorTotal);
+          });
+  
+          taxaDetran.addEventListener('input', function() {
+              formatCurrency(taxaDetran);
+          });
+          custo.addEventListener('input', function() {
+              formatCurrency(custo);
+          });
+      });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

@@ -35,6 +35,10 @@ def form_edicao_servico(request):
         servico.valor_total = request.POST.get('valor_total')
         servico.notas = request.POST.get('notas')
 
+        if servico.descricao == '' or servico.valor_liquido == '':
+            messages.error(request, 'Os dados não podem ser nulos!')
+            return redirect(f"editar_servico/{servico_id}")
+        
         servico.save()
         messages.success(request, 'Serviço alterado com sucesso!')
         return redirect('servicos')

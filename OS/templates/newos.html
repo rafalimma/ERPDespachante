@@ -71,7 +71,7 @@
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Nova ordem de Serviço</h2>
             <label class="text-success me-2">Situação:</label>
-            <input style="width: 110px;" name="status" type="text" class="form-control readonly-input" value="Pendente" readonly>
+            <input style="width: 190px;" name="status" type="text" class="form-control readonly-input" value="Pendente" readonly>
         </div>
     </div>
     <div class="container">
@@ -189,6 +189,15 @@
                                 <label for="inputCpfCnpj" class="form-label">Concessionaria *</label>
                                 <input name="concessionaria" type="text" class="form-control readonly-input" id="inputconcessionaria" placeholder="Concessionaria">
                             </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Tipo do veículo *</label>
+                                <select name="tipo_veiculo" class="form-control readonly-input" id="inputtipoveiculo">
+                                    <option value="Carro">Carro</option>
+                                    <option value="Moto">Moto</option>
+                                    <option value="Caminhão">Caminhão</option>
+                                    <option value="Onibus">Onibus</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -231,7 +240,11 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputPendencias" class="form-label">Pendências</label>
-                                <input name="pendencias" type="text" class="form-control readonly-input" id="inputPendencias" placeholder="Pendências">
+                                <input type="text" list="lista-pendencias" name="pendencias" id="inputPendencias" class="form-control readonly-input">
+                                    <datalist id="lista-pendencias">
+                                        <option value="Nenhuma">nenhuma</option>
+                                        <option value="Documento">documento</option>
+                                    </datalist>
                             </div>
                             <div class="col">
                                 <label for="inputDtentrega" class="form-label">Data de entrega *</label>

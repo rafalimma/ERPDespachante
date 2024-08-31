@@ -27,14 +27,15 @@ class OrdemServico(models.Model):
     status = models.CharField(max_length=20, default='')
     cpf_comprador = models.CharField(max_length=20, default='')
     concessionaria = models.CharField(max_length=30, default='')
+    tipo_veiculo = models.CharField(max_length=15, default='')
 
 
 class Servico(models.Model):
     descricao = models.CharField(max_length=50)
-    custo = models.CharField(max_length=10)
-    valor_liquido = models.CharField(max_length=10)
-    valor_total = models.CharField(max_length=10)
-    taxa_detran = models.CharField(max_length=10, default='')
+    custo = models.CharField(max_length=10, default='0')
+    valor_liquido = models.CharField(max_length=10, default='0')
+    valor_total = models.CharField(max_length=10, default='0')
+    taxa_detran = models.CharField(max_length=10, default='0')
     notas = models.TextField(blank=True, null=True)
 
 class Servico_os(models.Model):

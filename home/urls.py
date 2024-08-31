@@ -3,6 +3,7 @@ from . import views as homeviews
 from clientes import views as clienteviews
 from OS import views as osviews
 from servicos import views as serviews
+from login import views as loginviews
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 
@@ -36,4 +37,9 @@ urlpatterns = [
     path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico'),
     path('novo_servico', serviews.novo_servico, name='novo_servico'),
     path('adicao_servico', serviews.adicao_servico, name='adicao_servico'),
+    path('usuarios', loginviews.usuarios, name='usuarios'),
+    path('novo_usuario', loginviews.novo_usuario, name='novo_usuario'),
+    path('cadastro_usuario', loginviews.cadastro_usuario, name='cadastro_usuario'),
+    path('editar_usuario/<str:id>', loginviews.editar_usuario, name='editar_usuario'),
+    path('form_edicao_usuario', loginviews.form_edicao_usuario, name='form_edicao_usuario'),
 ]

@@ -18,10 +18,10 @@
             font-family: 'Poppins', sans-serif;
         }
         .form-group p {
-            margin-bottom: 0;
+            margin-bottom: 0px;
         }
         .form-group {
-            padding: 10px 0;
+            padding: -10px 0;
         }
         .document-container {
             padding-top: 15px;
@@ -48,6 +48,40 @@
         .sugestao-servico:hover {
             background-color: #f0f0f0;
         }
+        .readonly-input {
+            background-color: #e3e7e9;
+            border: none;
+            box-shadow: none;
+            color: #414344;
+            padding-left: 0;
+        }
+        .document-container {
+            border: 1px solid #d3d3d3;
+            padding: 15;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .document-list {
+            border: 2px solid #d3d3d3;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+        }
+        .document-item p {
+            margin: 0;
+        }
+        .document-item img {
+            width: 20px;
+            height: 20px;
+        }
+        .obs {
+            border: 2px solid #d3d3d3;
+        }
     </style>
     <title>Document</title>
 </head>
@@ -56,7 +90,7 @@
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Editar Ordem de Serviço</h2>
             <label class="text-success me-2">Situação:</label>
-            <input style="width: 124px;" name="status" type="text" class="form-control readonly-input" value="{{ ordem_servico.status }}" readonly>
+            <input style="width: 190px;" name="status" type="text" class="form-control readonly-input" value="{{ ordem_servico.status }}" readonly>
         </div>
         <hr>
         {% for message in messages %}
@@ -90,131 +124,163 @@
                 </div>
             </div>
         </div>
-        <form id="editarform" action="{% url 'form_edicao_os' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-            <div class="row" >
-                <div class="col-md-4 form-group">
-                    <p><strong class="text-success">Nome do cliente:</strong> {{ ordem_servico.nome_cliente }}</p>
-                </div>
-                <div class="col-md-4 form-group">
-                    <p><strong class="text-success">Identificador do cliente:</strong> {{ ordem_servico.cliente_id_id }}</p>
-                </div>
-                <div class="col-md-4 form-group">
-                    <p><strong class="text-success">Identificador da Ordem de serviço:</strong> {{ ordem_servico.id }}</p>
-                </div>
-                <input type="hidden" name="id_ordem_servico" value="{{ ordem_servico.id }}">
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label for="modelo"><strong class="text-success">Modelo do veículo:</strong></label>
-                    <input type="text" id="modelo" name="modelo" value="{{ data.modelo }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="renavam"><strong class="text-success">Renavam:</strong></label>
-                    <input type="text" id="renavam" name="renavam" value="{{ data.renavam }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="placa"><strong class="text-success">Placa:</strong></label>
-                    <input type="text" id="placa" name="placa" value="{{ data.placa }}">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label for="chassi"><strong class="text-success">Chassi:</strong></label>
-                    <input type="text" id="chassi" name="chassi" value="{{ data.chassi }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="cor"><strong class="text-success">Cor do veículo:</strong></label>
-                    <input type="text" id="cor" name="cor" value="{{ data.cor }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="combustivel"><strong class="text-success">Combustível:</strong></label>
-                    <input type="text" id="combustivel" name="combustivel" value="{{ data.combustivel }}">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label for="valor_veiculo"><strong class="text-success">Valor do veículo:</strong></label>
-                    <input type="text" id="valor_veiculo" name="valor_veiculo" value="{{ data.valor_veiculo }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="ano_modelo"><strong class="text-success">Ano do modelo:</strong></label>
-                    <input type="text" id="ano_modelo" name="ano_modelo" value="{{ data.ano_modelo }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="data_aq"><strong class="text-success">Data de aquisição do veículo:</strong></label>
-                    <input type="date" id="data_aq" name="data_aq" value="{{ data.data_aq }}">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <h5 class="text-success">Serviços:</h5>
-                {% for servico_os in servicos_os %}
-                    <!-- vai retornar uma instancia de Servico pois servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id') -->
-                    {% with contador=forloop.counter %}
-                        <div class="col-md-4 form-group" id="coluna{{ contador }}">
-                            <p>
-                                <strong class="text-success"> Serviço: </strong>
-                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" data-id="{{ contador }}">
-                                    <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
-                                </a>
-                            </p>
-                            <input type="text" id="servico{{ contador }}" name="servico{{ contador }}" value="{{ servico_os.servico_id.descricao }}" onclick="mostrarServicos('{{ contador }}')">
-                            <div id="lista-servico{{ contador }}" class="lista-servico" style="display: none;">
-                                {% for servico in servicos %}
-                                    <div class="sugestao-servico" onclick="SugestaoServico('{{ servico.descricao }}', '{{ contador }}', '{{ servico.valor_total }}', '{{ servico_os.valor_servico }}')">{{ servico.descricao }}</div>
-                                    <!-- chamar uma função que soma os valores do servico -->
-                                {% endfor %}
-                            </div>
-                            <p><strong class="text-success"> Valor serviço: </strong></p>
-                            <input type="text" class="valor-servico" id="valorServicoField{{ contador }}" name="valor_servico{{ contador }}" value="{{ servico_os.valor_servico }}">
-                            <input type="hidden" name="id_servico{{ contador }}" id="idServicoField{{ contador }}" value = "{{ servico_os.servico_id }}">
-                        </div>
-                    {% endwith %}
-                {% endfor %}
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label for="valor_f"><strong class="text-success">Valor final:</strong></label>
-                    <input type="text" id="valor_f" name="valor_f" value="{{ data.valor_f }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="desconto"><strong class="text-success">Desconto:</strong></label>
-                    <input type="text" id="desconto" name="desconto" value="{{ data.desconto }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="data_servico"><strong class="text-success">Data do serviço:</strong></label>
-                    <input type="date" id="data_servico" name="data_servico" value="{{ data.data_servico }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="data_entrega"><strong class="text-success">Data de entrega do serviço:</strong></label>
-                    <input type="date" id="data_entrega" name="data_entrega" value="{{ data.data_entrega }}">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="pendencias"><strong class="text-success">Pendencias:</strong></label>
-                    <input type="text" id="pendencias" name="pendencias" value="{{ data.pendencias }}">
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <h5 class="text-success">Documentos:</h5>
-                {% for documento in documentos %}
-                    <div class="col-md-6 document-container">
-                        <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
-                        {% if documento.is_image %}
-                            <img src="{{ documento.arquivo.url }}" alt="{{ documento.tipo_doc }}">
-                        {% endif %}
-                        {% if documento.is_pdf %}
-                            <iframe src="{{ documento.arquivo.url }}" style="width: 100%; height: 150px;" frameborder="0"></iframe>
-                            <a href="{{ documento.arquivo.url }}" class="btn btn-secondary mt-2" download>Download PDF</a>
-                        {% endif %}
+        <div class="container">
+            <form id="editarform" action="{% url 'form_edicao_os' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">Nome do cliente:</label>
+                        <input type="text" class="form-control readonly-input" value="{{ ordem_servico.nome_cliente }}" readonly>
                     </div>
-                {% endfor %}
-                <div class="d-flex justify-content-end align-items-center" style="margin-top: 200px;">
+                    <div class="col-md-4">
+                        <label class="text-success">Identificador do cliente:</label>
+                        <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cliente_id_id }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Identificador da ordem de serviço:</label>
+                        <input type="text" class="form-control readonly-input" value="{{ ordem_servico.id }}" readonly>
+                    </div>
+                    <input type="hidden" name="id_ordem_servico" value="{{ ordem_servico.id }}">
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">Modelo do Veículo:</label>
+                        <input type="text" name="modelo" class="form-control readonly-input" value="{{ data.modelo }}">
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label class="text-success">Renavam:</label>
+                        <input type="text" name="renavam" class="form-control readonly-input" value="{{ data.renavam }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Placa:</label>
+                        <input type="text" name="placa" class="form-control readonly-input" value="{{ data.placa }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">Chassi:</label>
+                        <input type="text" name="chassi" class="form-control readonly-input" value="{{ data.chassi }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Cor:</label>
+                        <input type="text" name="cor" class="form-control readonly-input" value="{{ data.cor }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Combustível:</label>
+                        <input type="text" name="combustivel" class="form-control readonly-input" value="{{ data.combustivel }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">CPF do Comprador:</label>
+                        <input type="text" name="cpf_comprador" class="form-control readonly-input" value="{{ data.cpf_comprador }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Concessionária:</label>
+                        <input type="text" name="concessionaria" class="form-control readonly-input" value="{{ data.concessionaria }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Tipo do Veículo:</label>
+                        <select name="tipo_veiculo" class="form-control readonly-input" id="inputtipoveiculo" value="{{ data.tipo_veiculo }}">
+                            <option value="Carro">Carro</option>
+                            <option value="Moto">Moto</option>
+                            <option value="Caminhão">Caminhão</option>
+                            <option value="Onibus">Onibus</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">Valor do Veiculo:</label>
+                        <input type="text" name="valor_veiculo" class="form-control readonly-input" value="{{ data.valor_veiculo }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Ano do Modelo:</label>
+                        <input type="text" name="ano_modelo" class="form-control readonly-input" value="{{ data.ano_modelo }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Data de aquisição do veículo:</label>
+                        <input type="text" name="data_aq" class="form-control readonly-input" value="{{ data.data_aq }}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <h5 class="text-success">Serviços:</h5>
+                    {% for servico_os in servicos_os %}
+                        <!-- vai retornar uma instancia de Servico pois servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id') -->
+                        {% with contador=forloop.counter %}
+                            <div class="col-md-4 form-group" id="coluna{{ contador }}">
+                                <p>
+                                    <strong class="text-success"> Serviço: </strong>
+                                    <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" data-id="{{ contador }}">
+                                        <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
+                                    </a>
+                                </p>
+                                <input type="text" name="servico{{ contador }}" id="servico{{ contador }}" class="form-control readonly-input" value="{{ servico_os.servico_id.descricao }}" onclick="mostrarServicos('{{ contador }}')">
+                                <div id="lista-servico{{ contador }}" class="lista-servico" style="display: none;">
+                                    {% for servico in servicos %}
+                                        <div class="sugestao-servico" onclick="SugestaoServico('{{ servico.descricao }}', '{{ contador }}', '{{ servico.valor_total }}', '{{ servico_os.valor_servico }}')">{{ servico.descricao }}</div>
+                                        <!-- chamar uma função que soma os valores do servico -->
+                                    {% endfor %}
+                                </div>
+                                <p><strong class="text-success"> Valor serviço: </strong></p>
+                                <input type="text" class="valor-servico form-control readonly-input" id="valorServicoField{{ contador }}" name="valor_servico{{ contador }}" value="{{ servico_os.valor_servico }}">
+                                <input type="hidden" name="id_servico{{ contador }}" id="idServicoField{{ contador }}" value = "{{ servico_os.servico_id }}">
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="text-success">Valor final:</label>
+                        <input type="text" name="valor_f" class="form-control readonly-input" id="valor_f" value="{{ data.valor_f }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Desconto:</label>
+                        <input type="text" name="desconto" class="form-control readonly-input" id="desconto" value="{{ data.desconto }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Data do serviço:</label>
+                        <input type="date" name="data_servico" class="form-control readonly-input" id="data_servico" value="{{ data.data_servico }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Data de entrega:</label>
+                        <input type="date" id="data_entrega" name="data_entrega" class="form-control readonly-input" id="data_servico" value="{{ data.data_entrega }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-success">Pendências</label>
+                        <input type="text" list="lista-pendencias" name="pendencias" id="pendencias" class="form-control readonly-input" value="{{ data.pendencias }}">
+                            <datalist id="lista-pendencias">
+                                <option value="Nenhuma">nenhuma</option>
+                                <option value="Documento">documento</option>
+                            </datalist>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <h5 class="text-success">Documentos:</h5>
+                    <div class="col-12 document-list">
+                        {% for documento in documentos %}
+                        <div class="document-item">
+                            <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
+                            <p><strong class="text-success">Documento:</strong> {{ documento.arquivo }}</p>
+                            <a href="{{ documento.arquivo.url }}" title="DOWNLOAD" class="btn btn-secondary" download>
+                                <img src="{% static 'images/download.png' %}" alt="Download">
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                <hr class="mt-4">
+                <div class="row">
+                    <h5 class="me-auto text-success">Observações</h5>
+                    <textarea class="form-control readonly-input obs" id="observacoes" name="observacoes" rows="5" cols="40">{{ ordem_servico.observacoes }}</textarea><br>
+                </div>
+                <div class="d-flex justify-content-end align-items-center" style="margin-top: 16px;">
                     <a href="{% url 'ordem_servico' %}" class="btn btn-secondary me-3 mt-4">Voltar</a>
                     <button type="submit" id="save-button" class="btn btn-success mt-4">Salvar</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
     <script>
 
@@ -354,6 +420,24 @@
                 alert("Por favor, insira valores válidos.");
             }
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const desconto = document.getElementById('desconto');
+
+            function formatCurrency(input) {
+                let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+                if (value.length > 0) {
+                    value = (value / 100).toFixed(2); // Divide por 100 e fixa em duas casas decimais
+                    input.value = value.replace('.', ','); // Substitui o ponto decimal por vírgula
+                } else {
+                    input.value = '';
+                }
+            }
+
+            desconto.addEventListener('input', function() {
+                formatCurrency(desconto);
+            })
+            
+        });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

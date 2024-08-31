@@ -61,6 +61,9 @@ def form_edicao_cliente(request):
         cliente.numero = request.POST.get('numero')
         cliente.email = request.POST.get('email')
         cliente.estado = request.POST.get('estado')
+        if cliente.name == '' or cliente.cpf_cnpj == '':
+            messages.error(request, 'Os dados não podem ser nulos!')
+            return redirect(f"editar_cliente/{id_cliente}")
         cliente.save()
         messages.success(request, 'Cliente editado com sucesso!')
         return redirect('clientes')
