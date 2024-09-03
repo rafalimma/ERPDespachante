@@ -17,9 +17,6 @@ from django.contrib.staticfiles import finders
 import tempfile
 DEFAULT_DATE = ""
 
-# Create your views here.
-# git -> changing to chenges
-# linha adiocionada para mandar o arquivo para a área de changes no source control
 
 def teste(request):
     clientes = Cliente.objects.all()
@@ -58,7 +55,7 @@ def nova_ordem_de_servico(request):
         valor_servico = request.POST.get('valorservico')
         observacoes = request.POST.get('observacoes')
         status = request.POST.get('status')
-        cpf_comprador = request.POST.get('cpf_comprador')
+        cpf_vendedor = request.POST.get('cpf_vendedor')
         concessionaria = request.POST.get('concessionaria')
         tipo_veiculo = request.POST.get('tipo_veiculo')
 
@@ -101,12 +98,12 @@ def nova_ordem_de_servico(request):
             modelo=modelo, valor_veiculo=valor, ano_modelo=ano_veiculo,
             pendencias=pendencias, data_entrega=data_entrega,
             desconto=desconto, valor_f=valor_f, observacoes=observacoes,
-            status=status, concessionaria=concessionaria, cpf_comprador=cpf_comprador,
+            status=status, concessionaria=concessionaria, cpf_vendedor=cpf_vendedor,
             tipo_veiculo=tipo_veiculo
             )
         if not all([renavam, placa, cliente, id_cliente, name,
-                     valor, combustivel, modelo, ano_veiculo, id_servico,
-                     valor_servico, valor_f, status, cpf_comprador, tipo_veiculo]):
+                     valor, combustivel, modelo, ano_veiculo, id_servico, data_entrega,
+                     valor_servico, valor_f, status, cpf_vendedor, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
@@ -236,7 +233,7 @@ def editar_os(request, id):
              'valor_veiculo': ordem_servico.valor_veiculo,
              'ano_modelo': ordem_servico.ano_modelo,
              'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
-             'cpf_comprador': ordem_servico.cpf_comprador,
+             'cpf_vendedor': ordem_servico.cpf_vendedor,
              'concessionaria': ordem_servico.concessionaria,
              'tipo_veiculo': ordem_servico.tipo_veiculo,
              'valor_f': ordem_servico.valor_f,
@@ -273,7 +270,7 @@ def form_edicao_os(request):
         ordem_servico.desconto = request.POST.get('desconto')
         ordem_servico.valor_f = request.POST.get('valor_f')
         ordem_servico.data_servico = request.POST.get('data_servico')
-        ordem_servico.cpf_comprador = request.POST.get('cpf_comprador')
+        ordem_servico.cpf_vendedor = request.POST.get('cpf_vendedor')
         ordem_servico.concessionaria = request.POST.get('concessionaria')
         ordem_servico.tipo_veiculo = request.POST.get('tipo_veiculo')
         ordem_servico.observacoes = request.POST.get('observacoes')
