@@ -55,7 +55,12 @@
         <div class="navbar-divider"></div>
 
         <div class="container user-div" id="profile" style="width: 200px; cursor: pointer;">
-            <img src="{% static 'images/admin_profile.png' %}" title="VOLTAR PARA A HOME" style="width: 30px; margin-right: 0px;">
+            {% if user.is_superuser %}
+                <img src="{% static 'images/master.png' %}" title="MASTER USER" style="width: 30px; margin-right: 0px;">
+            {% else %}
+                <img src="{% static 'images/user_profile.png' %}" title="USUÁRIO" style="width: 26px; margin-right: 0px;">
+            {% endif %}
+
             {% if user.is_authenticated %}
                 <h5 class="text-white mt-2" style="font-size: large;">{{ user.username }}</h5>
             {% endif %}
