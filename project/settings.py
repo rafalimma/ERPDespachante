@@ -9,8 +9,6 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-# git -> changing to chenges
-# linha adiocionada para mandar o arquivo para a área de changes no source control
 
 from pathlib import Path
 import os
@@ -153,13 +151,13 @@ MESSAGES_TAGS = {
     messages.ERROR: 'danger',
 }
 
-#essas configurações de segurança foram comentadas no servidor pois no momento esta apenas em HTTP
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True # commented on the server
-SECURE_HSTS_SECONDS = 3600
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
+#essas configurações de segurança foram comentadas no servidor e estarão apenas no local_settings.py
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True # commented on the server
+# SECURE_HSTS_SECONDS = 3600
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# X_FRAME_OPTIONS = 'DENY'
 
 try:
     from project.local_settings import *
