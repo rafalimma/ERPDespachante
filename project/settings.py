@@ -43,7 +43,7 @@ SECRET_KEY = 'django-insecure--94sqwv3m4pp13un4)i4e0o3icm7eyxiq+gx^q4*$_#!1*gnbg
 DEBUG = True # motra todos os erros na tela
 
 ALLOWED_HOSTS = []
-
+LOGIN_REDIRECT_URL = '/home/' #test
 
 # Application definition
 
@@ -142,6 +142,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # collect static
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -152,8 +153,9 @@ MESSAGES_TAGS = {
     messages.ERROR: 'danger',
 }
 
+#essas configurações de segurança foram comentadas no servidor pois no momento esta apenas em HTTP
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True # commented on the server
 SECURE_HSTS_SECONDS = 3600
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True

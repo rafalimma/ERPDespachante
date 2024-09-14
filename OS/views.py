@@ -88,7 +88,7 @@ def nova_ordem_de_servico(request):
         if not data_entrega:
             data_entrega = None
         print('essa é a data de entrega:', data_entrega)
-        # pega a chave primária dos clientes
+        # pega a chave primária do cliente
         cliente = Cliente.objects.get(pk=id_cliente)
 
         ordem_de_servico = OrdemServico(
@@ -101,7 +101,7 @@ def nova_ordem_de_servico(request):
             status=status, concessionaria=concessionaria, cpf_vendedor=cpf_vendedor,
             tipo_veiculo=tipo_veiculo
             )
-        if not all([renavam, placa, cliente, id_cliente, name,
+        if not all([renavam, placa, cliente, name,
                      valor, combustivel, modelo, ano_veiculo, id_servico, data_entrega,
                      valor_servico, valor_f, status, cpf_vendedor, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')

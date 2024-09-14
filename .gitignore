@@ -6,6 +6,8 @@ __pycache__
 db.sqlite3
 media
 project/local_settings.py
+GUNICORN.txt
+INGINX.txt
 
 # Backup files # 
 *.bak 

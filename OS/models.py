@@ -8,14 +8,14 @@ from django.utils import timezone
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 class OrdemServico(models.Model):
     renavam = models.IntegerField()
-    placa = models.CharField(max_length=7)
+    placa = models.CharField(max_length=10)
     cliente_id = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=40)
     chassi = models.CharField(max_length=30, default='')
     cor = models.CharField(max_length=14, default='')
     combustivel = models.CharField(max_length=15, default='')
     modelo = models.CharField(max_length=25, default='')
-    valor_veiculo = models.CharField(max_length=6, default='')
+    valor_veiculo = models.CharField(max_length=10, default='')
     ano_modelo = models.CharField(max_length=5, default='')
     pendencias = models.CharField(max_length=30, default='')
     data_entrega = models.DateField(null=True, blank=True)
