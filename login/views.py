@@ -51,6 +51,7 @@ def cadastro_usuario(request):
         email = request.POST.get('email')
         group_id = request.POST.get('group')
         status = request.POST.get('status')
+        password = request.POST.get('senha')
 
         if User.objects.filter(username=nome_usuario).exists():
             messages.error(request, "Usuário já existente!")
@@ -64,7 +65,7 @@ def cadastro_usuario(request):
             return redirect(novo_usuario)
         
         usuario = User.objects.create_user(first_name=first_name, last_name=second_name,
-                       email=email, username=nome_usuario, is_active=status)
+                       email=email, username=nome_usuario, is_active=status, password=password)
         
         group = Group.objects.get(id=group_id)
         usuario.groups.add(group)

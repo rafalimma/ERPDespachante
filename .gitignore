@@ -2,12 +2,12 @@
 *.log
 *.pot
 *.pyc
-__pycache__
+__pycache__/
 db.sqlite3
 media
 project/local_settings.py
-GUNICORN.txt
-INGINX.txt
+project/__pycache__
+login/__pycache__
 
 # Backup files # 
 *.bak 
