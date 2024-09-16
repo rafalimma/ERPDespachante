@@ -7,7 +7,7 @@ from django.utils import timezone
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 class OrdemServico(models.Model):
-    renavam = models.IntegerField()
+    renavam = models.CharField(max_length=50)
     placa = models.CharField(max_length=10)
     cliente_id = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=40)
@@ -16,7 +16,7 @@ class OrdemServico(models.Model):
     combustivel = models.CharField(max_length=15, default='')
     modelo = models.CharField(max_length=25, default='')
     valor_veiculo = models.CharField(max_length=10, default='')
-    ano_modelo = models.CharField(max_length=5, default='')
+    ano_modelo = models.CharField(max_length=10, default='')
     pendencias = models.CharField(max_length=30, default='')
     data_entrega = models.DateField(null=True, blank=True)
     data_aq = models.DateField(null=True, blank=True)
