@@ -75,21 +75,21 @@
         <form id="formadicao" action="{% url 'adicao_servico' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="row">
                 <div class="col">
-                    <label for="inputDescricao" class="form-label">Descrição</label>
+                    <label for="inputDescricao" class="form-label">Descrição *</label>
                     <input name="descricao" type="text" class="form-control readonly-input" id="inputDescricao">
                 </div>
                 <div class="col">
-                    <label for="inputCusto" class="form-label">Custo do Serviço</label>
+                    <label for="inputCusto" class="form-label">Custo do Serviço *</label>
                     <input name="custo" type="text" class="form-control readonly-input" id="inputCusto">
                 </div>
                 <div class="col">
-                    <label for="inputVl" class="form-label">Valor liquido</label>
+                    <label for="inputVl" class="form-label">Valor liquido *</label>
                     <input name="valor_liquido" type="text" class="form-control readonly-input" id="inputVl">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="inputVt" class="form-label">Valor Total</label>
+                    <label for="inputVt" class="form-label">Valor Total *</label>
                     <input name="valor_total" type="text" class="form-control readonly-input" id="inputVt">
                 </div>
                 <div class="col">

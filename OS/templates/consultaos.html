@@ -116,7 +116,7 @@
         <div class="row" style="margin-top: -15px;">
             <div class="col-md-4 form-group">
                 <label class="text-success">CPF do Vendedor:</label>
-                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cpf_comprador }}" readonly>
+                <input type="text" class="form-control readonly-input" value="{{ ordem_servico.cpf_vendedor }}" readonly>
             </div>
             <div class="col-md-4 form-group">
                 <label class="text-success">Concessionária:</label>
@@ -182,6 +182,9 @@
         <div class="row">
             <h5 class="me-auto text-success">Observações</h5>
             <textarea class="form-control readonly-input obs" id="observacoes" name="observacoes" rows="5" cols="40" readonly>{{ ordem_servico.observacoes }}</textarea><br>
+        </div>
+        <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">
+            <a href="{% url 'ordem_servico' %}" class="btn btn-secondary me-4 mt-4">Voltar</a>
         </div>
     </div>
 </body>
