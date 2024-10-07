@@ -107,7 +107,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="form-label text-success">Nome do Cliente *</label>
-                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control readonly-input" onclick="mostrarSugestoes()">
+                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control readonly-input" onclick="mostrarSugestoes()" style="text-transform: uppercase";>
                                 <div id="lista-sugestoes" class="lista-sugestoes" style="display: none;">
                                     {% for cliente in clientes %}
                                         <div class="sugestao-item" onclick="selecionarSugestao('{{ cliente.name }}')">{{ cliente.name }}</div>
@@ -229,7 +229,7 @@
                                 <input name="servico" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)">
                                 <datalist id="lista-servicos">
                                     {% for servico in servicos %}
-                                        <option value="{{ servico.descricao }}"></option>
+                                        <option value="{{ servico.nome }}"></option>
                                     {% endfor %}
                                 </datalist> 
                             </div>
@@ -355,8 +355,6 @@
                         document.getElementById(valorServicoField).value = data.valor_total;
                         if (valor_suposto1) {
                             var valor1 = parseInt(valor_suposto1.value);
-                            console.log('valor do segundo valor adicionado');
-                            console.log(valor1)
                             var valor_original = parseInt(valor_final.value);
                             let soma = valor1 + valor_original;
                             let soma_str = soma.toString();

@@ -75,6 +75,12 @@
         <form id="formadicao" action="{% url 'adicao_servico' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="row">
                 <div class="col">
+                    <label for="inputNome" class="form-label">Nome do serviço *</label>
+                    <input name="nome" type="text" class="form-control readonly-input" id="inputNome">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <label for="inputDescricao" class="form-label">Descrição *</label>
                     <input name="descricao" type="text" class="form-control readonly-input" id="inputDescricao">
                 </div>

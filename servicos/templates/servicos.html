@@ -91,7 +91,7 @@
             <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Descriçao do Serviço</th>
+                    <th scope="col">Nome do Serviço</th>
                     <th scope="col">Valor Liquido</th>
                     <th scope="col">Valor Total</th>
                     <th scope="col">Opções</th>
@@ -101,7 +101,7 @@
                 {% for servico in servicos %}
                     <tr>
                         <th>{{servico.id}}</th>
-                        <td>{{servico.descricao}}</td>
+                        <td>{{servico.nome}}</td>
                         <td>{{servico.valor_liquido}}</td>
                         <td>{{servico.valor_total}}</td>
                         <td>

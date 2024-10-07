@@ -79,6 +79,12 @@
             <label class="form-label text-success">Identificador:</label>
             <input type="number" name="id_servico" class="form-control readonly-input" readonly value="{{ servico.id }}">
           </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 form-group">
+            <label class="form-label">Nome do serviço:</label>
+            <input type="text" name="nome" class="form-control readonly-input" value="{{ servico.nome }}">
+          </div>
           <div class="col-md-4 form-group">
             <label class="form-label">Descrição:</label>
             <input type="text" name="descricao" class="form-control readonly-input" value="{{ servico.descricao }}">

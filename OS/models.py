@@ -32,6 +32,7 @@ class OrdemServico(models.Model):
 
 class Servico(models.Model):
     descricao = models.CharField(max_length=50)
+    nome = models.CharField(max_length=50, default='')
     custo = models.CharField(max_length=10, default='0')
     valor_liquido = models.CharField(max_length=10, default='0')
     valor_total = models.CharField(max_length=10, default='0')

@@ -173,11 +173,11 @@ def buscar_cliente(request):
 def buscar_servico(request):
     servico = request.GET.get('servico', None)
     if servico:
-        descricao = Servico.objects.filter(descricao=servico).first()
-        if descricao:
+        servico_escolhido = Servico.objects.filter(nome=servico).first()
+        if servico_escolhido:
             data = {
-                'id_servico': descricao.pk,
-                'valor_total': descricao.valor_total,
+                'id_servico': servico_escolhido.pk,
+                'valor_total': servico_escolhido.valor_total,
             }
             return JsonResponse(data)
     return JsonResponse({})

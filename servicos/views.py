@@ -12,7 +12,7 @@ def servicos(request):
     return paginacao(request)
 
 def paginacao(request):
-    servicos = Servico.objects.all().values('id', 'descricao', 'valor_liquido', 'valor_total')
+    servicos = Servico.objects.all().values('id', 'nome', 'valor_liquido', 'valor_total')
     servicos_paginados = Paginator(servicos, 10)
     page_num = request.GET.get('page')
     servicos = servicos_paginados.get_page(page_num)
@@ -34,8 +34,9 @@ def form_edicao_servico(request):
         servico.taxa_detran = request.POST.get('taxa_detran')
         servico.valor_total = request.POST.get('valor_total')
         servico.notas = request.POST.get('notas')
+        servico.nome = request.POST.get('nome')
 
-        if servico.descricao == '' or servico.valor_liquido == '':
+        if servico.nome == '' or servico.valor_liquido == '':
             messages.error(request, 'Os dados não podem ser nulos!')
             return redirect(f"editar_servico/{servico_id}")
         
@@ -57,11 +58,12 @@ def adicao_servico(request):
         valor_total = request.POST.get('valor_total')
         taxa_detran = request.POST.get('taxa_detran')
         notas = request.POST.get('notas')
+        nome = request.POST.get('nome')
 
-        servico = Servico(descricao=descricao, custo=custo,
+        servico = Servico(nome=nome, descricao=descricao, custo=custo,
                           valor_liquido=valor_liquido, valor_total=valor_total,
                           taxa_detran=taxa_detran, notas=notas)
-        if not all([descricao, custo, valor_liquido, valor_total]):
+        if not all([nome, descricao, custo, valor_liquido, valor_total]):
             messages.error(request, 'É necessário preencher todos os campos!')
             return redirect(reverse('novo_servico'))
         else:
