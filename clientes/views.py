@@ -18,7 +18,7 @@ def teste(request):
 
 def paginacao(request):
     clientes = Cliente.objects.all().values('id', 'name', 'cpf_cnpj', 'telefone')
-    clientes_paginados = Paginator(clientes, 10)
+    clientes_paginados = Paginator(clientes, 15)
     page_num = request.GET.get('page')
     clientes = clientes_paginados.get_page(page_num)
 

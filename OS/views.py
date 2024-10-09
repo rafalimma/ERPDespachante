@@ -206,7 +206,7 @@ def buscar_servico(request):
 
 def paginacao(request):
     ordens_servicos = OrdemServico.objects.all().values('id', 'nome_cliente', 'modelo', 'placa', 'status', 'valor_f')
-    ordens_servicos_paginados = Paginator(ordens_servicos, 10)
+    ordens_servicos_paginados = Paginator(ordens_servicos, 15)
     page_num = request.GET.get('page')
     ordens_servicos = ordens_servicos_paginados.get_page(page_num)
 
