@@ -240,7 +240,8 @@
                             <div class="col">
                                 <label for="inputServico" class="form-label">Serviço *</label>
                                 <input type="hidden" name="id_servico" id="id_servico">
-                                <input name="servico" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)">
+                                <input name="servico" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)" autocomplete="off">
+                                <span id="status_servico"></span>
                                 <datalist id="lista-servicos">
                                     {% for servico in servicos %}
                                         <option value="{{ servico.nome }}"></option>
@@ -314,6 +315,37 @@
     </div>
 
     <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const data_list = document.getElementById('lista-servicos');
+            
+            // Captura eventos de 'change' em inputs com id que começa com 'inputServico', mesmo que criados dinamicamente
+            document.addEventListener('change', function(event) {
+                if (event.target && event.target.id.startsWith('inputServico')) {
+                    const inputValue = event.target.value;
+                    let validSelection = false;
+
+                    // Verifica se o valor corresponde a uma opção do datalist
+                    for (let option of data_list.options) {
+                        if (inputValue === option.value) {
+                            validSelection = true;
+                            break;
+                        }
+                    }
+
+                    // Obtém o elemento de status correspondente
+                    const status = event.target.parentElement.querySelector('#status_servico');
+
+                    if (validSelection) {
+                        status.textContent = "✅ Serviço selecionado!";
+                        status.style.color = "green";
+                    } else {
+                        status.textContent = "⚠️ Selecione um serviço da lista!";
+                        status.style.color = "gray";
+                    }
+                }
+            });
+        });
 
         $(document).ready(function () {
             console.log("DOM carregado");
@@ -420,7 +452,7 @@
             
             function verificarClienteID() {
                 if (!clienteId.value) {
-                    statusIcon.innerHTML = "⚠️ Selecione um cliente!";
+                    statusIcon.innerHTML = "⚠️ Selecione um cliente da lista!";
                     statusIcon.style.color = "gray";
                 } else {
                     statusIcon.innerHTML = "✅ Cliente selecionado!";
@@ -574,6 +606,7 @@
         input1.setAttribute("list", "lista-servicos");
         input1.id = `inputServico${contador}`;
         input1.placeholder = "Serviço";
+        input1.setAttribute("autocomplete", "off");
         input1.setAttribute("onchange", "buscarServico(this)"); // Passando o elemento como argumento
         // input do ID:
         var input3 = document.createElement("input");

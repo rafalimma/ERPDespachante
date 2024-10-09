@@ -215,10 +215,10 @@
                                         <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
                                     </a>
                                 </p>
-                                <input type="text" name="servico{{ contador }}" id="servico{{ contador }}" class="form-control readonly-input" value="{{ servico_os.servico_id.descricao }}" onclick="mostrarServicos('{{ contador }}')">
+                                <input type="text" autocomplete='off' name="servico{{ contador }}" id="servico{{ contador }}" class="form-control readonly-input" value="{{ servico_os.servico_id.nome }}" onclick="mostrarServicos('{{ contador }}')">
                                 <div id="lista-servico{{ contador }}" class="lista-servico" style="display: none;">
                                     {% for servico in servicos %}
-                                        <div class="sugestao-servico" onclick="SugestaoServico('{{ servico.descricao }}', '{{ contador }}', '{{ servico.valor_total }}', '{{ servico_os.valor_servico }}')">{{ servico.descricao }}</div>
+                                        <div class="sugestao-servico" onclick="SugestaoServico('{{ servico.nome }}', '{{ contador }}', '{{ servico.valor_total }}', '{{ servico_os.valor_servico }}')">{{ servico.nome }}</div>
                                         <!-- chamar uma função que soma os valores do servico -->
                                     {% endfor %}
                                 </div>
