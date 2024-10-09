@@ -63,7 +63,24 @@
             box-shadow: none;
             color: #414344;
             padding-left: 0;
-            }
+        }
+        #clientes-list {
+            position: absolute;
+            width: 100%;
+            z-index: 1000;
+            background-color: white;
+            border: 1px solid #ccc;
+            display: none;
+        }
+
+        #clientes-list li {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        #clientes-list li:hover {
+            background-color: #8cd3a2;
+        }
     </style>
 </head>
 <body>
@@ -107,17 +124,14 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="form-label text-success">Nome do Cliente *</label>
-                                <input type="text" id="nome" value="{{ cliente.name }}" name='name' list="clientes" placeholder="nome do cliente" class="form-control readonly-input" onclick="mostrarSugestoes()" style="text-transform: uppercase";>
-                                <div id="lista-sugestoes" class="lista-sugestoes" style="display: none;">
-                                    {% for cliente in clientes %}
-                                        <div class="sugestao-item" onclick="selecionarSugestao('{{ cliente.name }}')">{{ cliente.name }}</div>
-                                    {% endfor %}
-                                </div>
+                                
+                                <input type="text" id="inputName" name="name" placeholder="nome do cliente" class="form-control readonly-input" autocomplete="off">
+                                <ul id="clientes-list" class="dropdown-menu" style="display: none;"></ul>
                             </div>
                         </div>
                         <div class="row">
                             <input type="hidden" name="id_cliente" id="cliente_id">
-            
+                            <span id="status-icon"></span>
                             <div class="col">
                                 <label for="inputFones" class="form-label">CPF/CNPJ</label>
                                 <input name="cpfcnpj" type="number" class="form-control readonly-input" id="inputCpfcnpj">
@@ -162,7 +176,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <label for="inputCpfCnpj" class="form-label">Valor da Compra *</label>
+                                <label for="inputCpfCnpj" class="form-label">Valor da Compra</label>
                                 <input name="valor" type="number" class="form-control readonly-input" id="inputValor">
                             </div>
                             <div class="col">
@@ -300,30 +314,130 @@
     </div>
 
     <script>
-        
-        function selecionarSugestao(name) {
-            document.getElementById('nome').value = name;
-            document.getElementById('lista-sugestoes').style.display = 'none';
-            const nome = document.getElementById("nome").value;
-                $.ajax({
-                    url: "{% url 'buscar_cliente' %}",
-                    type: "GET",
-                    data: {
-                        'nome': nome
-                    },
-                    success: function (data) { // data contém a resposta do AJAX
-                        if (data) {
-                            document.getElementById("cliente_id").value = data.id;
-                            document.getElementById("inputCpfcnpj").value = data.cpf_cnpj;
-                            document.getElementById("inputFones").value = data.telefone;
-                            document.getElementById("inputCep").value = data.cep;
-                            document.getElementById("inputCidade").value = data.cidade;
-                            document.getElementById("inputBairro").value = data.bairro;
-                            document.getElementById("inputNum").value = data.numero;
+
+        $(document).ready(function () {
+            console.log("DOM carregado");
+
+            let activeIndex = -1;
+
+            $("#inputName").on("keyup", function (event) {
+                let query = $(this).val();
+                if (query.length > 1) {
+                    $.ajax({
+                        url: "{% url 'buscar_cliente' %}",
+                        data: {
+                            'nome': query
+                        },
+                        success: function (data) {
+                            let clientesList = $("#clientes-list");
+                            clientesList.empty();
+                            if (data.data.length > 0) {
+                                data.data.forEach(function (cliente) {
+                                    clientesList.append(`<li class="dropdown-item" data-id="${cliente.id}" data-cpfcnpj="${cliente.cpfcnpj}" data-telefone="${cliente.telefone}" data-cep="${cliente.cep}" data-cidade="${cliente.cidade}" data-bairro="${cliente.bairro}" data-numero="${cliente.numero}">${cliente.name}</li>`);
+                                });
+                                clientesList.show();
+                                activeIndex = -1; // Reinicia o índice ativo
+                            } else {
+                                clientesList.hide();
+                            }
+                        }
+                    });
+                } else {
+                    $("#clientes-list").hide();
+                }
+
+                // Navegação com setas
+                if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                    event.preventDefault(); // Previne rolagem
+                }
+            });
+
+            $(document).on("click", "#clientes-list li", function () {
+                selecionarCliente($(this));
+            });
+
+            // Adiciona evento de teclado para navegação no dropdown
+            $("#inputName").on("keydown", function (event) {
+                const items = $("#clientes-list li");
+
+                if (items.length > 0) {
+                    if (event.key === "ArrowDown") {
+                        activeIndex++;
+                        if (activeIndex >= items.length) {
+                            activeIndex = 0; // Volta para o primeiro item
+                        }
+                        highlightActiveItem(items);
+                    } else if (event.key === "ArrowUp") {
+                        activeIndex--;
+                        if (activeIndex < 0) {
+                            activeIndex = items.length - 1; // Vai para o último item
+                        }
+                        highlightActiveItem(items);
+                    } else if (event.key === "Enter") {
+                        event.preventDefault(); // Evita o envio do formulário
+                        if (activeIndex >= 0) {
+                            selecionarCliente($(items[activeIndex]));
                         }
                     }
-                });
-        }
+                }
+            });
+
+            // Função para destacar o item ativo no dropdown
+            function highlightActiveItem(items) {
+                items.removeClass("active"); // Remove a classe active de todos os itens
+                if (activeIndex >= 0 && activeIndex < items.length) {
+                    $(items[activeIndex]).addClass("active"); // Adiciona a classe active ao item ativo
+                }
+            }
+
+            // Função para preencher os campos com as informações do cliente
+            function selecionarCliente(cliente) {
+                let nome = cliente.text();
+                let clienteId = cliente.data("id");
+                let cpfcnpj = cliente.data("cpfcnpj");
+                let telefone = cliente.data("telefone");
+                let cep = cliente.data("cep");
+                let cidade = cliente.data("cidade");
+                let bairro = cliente.data("bairro");
+                let numero = cliente.data("numero");
+
+                $("#inputName").val(nome);
+                $("#cliente_id").val(clienteId);
+                $("#inputCpfcnpj").val(cpfcnpj);
+                $("#inputFones").val(telefone);
+                $("#inputCep").val(cep);
+                $("#inputCidade").val(cidade);
+                $("#inputBairro").val(bairro);
+                $("#inputNum").val(numero);
+
+                $("#clientes-list").hide();
+                verificarClienteID(); // Verifica se o cliente foi selecionado
+            }
+
+            // Função para verificar se o id do cliente está vazio
+            const clienteId = document.getElementById("cliente_id");
+            const statusIcon = document.getElementById("status-icon");
+            
+            function verificarClienteID() {
+                if (!clienteId.value) {
+                    statusIcon.innerHTML = "⚠️ Selecione um cliente!";
+                    statusIcon.style.color = "gray";
+                } else {
+                    statusIcon.innerHTML = "✅ Cliente selecionado!";
+                    statusIcon.style.color = "green";
+                }
+            }
+
+            // Limpar o id_cliente se o usuário começar a digitar manualmente
+            $("#inputName").on("input", function () {
+                clienteId.value = '';  // Limpa o id do cliente, forçando o usuário a selecionar
+                verificarClienteID();  // Verifica se está nulo
+            });
+
+            // Inicializa a verificação quando a página é carregada
+            verificarClienteID();
+        });
+        
         document.addEventListener('click', function(event) {
                 var listaSugestoes = document.getElementById('lista-sugestoes');
                 var input = document.getElementById('nome');
@@ -590,6 +704,7 @@
     }
     
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 </body>

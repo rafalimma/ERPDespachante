@@ -102,7 +102,7 @@ def nova_ordem_de_servico(request):
             tipo_veiculo=tipo_veiculo
             )
         if not all([renavam, placa, cliente, name,
-                     valor, combustivel, modelo, ano_veiculo, id_servico, data_entrega,
+                     combustivel, modelo, ano_veiculo, id_servico, data_entrega,
                      valor_servico, valor_f, status, cpf_vendedor, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
@@ -154,21 +154,43 @@ def salvar_documentos(arquivo, tipo_doc, ordem_de_servico):
         return
 
 def buscar_cliente(request):
-    nome = request.GET.get('nome', None)
-    if nome:
-        cliente = Cliente.objects.filter(name=nome).first()
-        if cliente:
-            data = {
+    nome_cliente = request.GET.get("nome")
+    lista_clientes = []
+
+    if nome_cliente:
+        clientes = Cliente.objects.filter(name__icontains=nome_cliente)[:5]
+        for cliente in clientes:
+            lista_clientes.append({
                 'id': cliente.pk,
-                'cpf_cnpj': cliente.cpf_cnpj,
+                'name': cliente.name,
+                'cpfcnpj': cliente.cpf_cnpj,
                 'telefone': cliente.telefone,
                 'cep': cliente.cep,
                 'cidade': cliente.cidade,
                 'bairro': cliente.bairro,
                 'numero': cliente.numero
-            }
-            return JsonResponse(data)
-    return JsonResponse({})
+            })
+    return JsonResponse({'status': 200, 'data': lista_clientes})
+
+
+
+
+# def buscar_cliente(request):
+#     nome = request.GET.get('nome', None)
+#     if nome:
+#         cliente = Cliente.objects.filter(name=nome).first()
+#         if cliente:
+#             data = {
+#                 'id': cliente.pk,
+#                 'cpf_cnpj': cliente.cpf_cnpj,
+#                 'telefone': cliente.telefone,
+#                 'cep': cliente.cep,
+#                 'cidade': cliente.cidade,
+#                 'bairro': cliente.bairro,
+#                 'numero': cliente.numero
+#             }
+#             return JsonResponse(data)
+#     return JsonResponse({})
 
 def buscar_servico(request):
     servico = request.GET.get('servico', None)
@@ -349,7 +371,6 @@ def atualizar_status(request):
         messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
         return redirect('ordem_servico')
     else:
-        print('ocorreu um erro')
         return paginacao(request)
     
 def imprimir_os(request, id):
