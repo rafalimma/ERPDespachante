@@ -8,7 +8,8 @@ media
 project/local_settings.py
 project/__pycache__
 login/__pycache__
-home/__pycache__
+home/__pycache__/
+home/__pycache__/urls.cpython-311.pyc
 
 # Backup files # 
 *.bak 
