@@ -125,40 +125,40 @@
                             <div class="col">
                                 <label for="inputName" class="form-label text-success">Nome do Cliente *</label>
                                 
-                                <input type="text" id="inputName" name="name" placeholder="nome do cliente" class="form-control readonly-input" autocomplete="off">
+                                <input type="text" id="inputName" value="{{ form_data.name|default_if_none:'' }}" name="name" placeholder="nome do cliente" class="form-control readonly-input" autocomplete="off">
                                 <ul id="clientes-list" class="dropdown-menu" style="display: none;"></ul>
                             </div>
                         </div>
                         <div class="row">
-                            <input type="hidden" name="id_cliente" id="cliente_id">
+                            <input type="hidden" name="id_cliente" id="cliente_id" value="{{ form_data.id_cliente|default_if_none:'' }}">
                             <span id="status-icon"></span>
                             <div class="col">
                                 <label for="inputFones" class="form-label">CPF/CNPJ</label>
-                                <input name="cpfcnpj" type="number" class="form-control readonly-input" id="inputCpfcnpj">
+                                <input name="cpfcnpj" type="number" class="form-control readonly-input" id="inputCpfcnpj" value="{{ form_data.cpfcnpj|default_if_none:'' }}">
                             </div>
                             <div class="col">
                                 <label for="inputFones" class="form-label">Telefone</label>
-                                <input name="telefone" type="number" class="form-control readonly-input" id="inputFones" >
+                                <input value="{{ form_data.telefone|default_if_none:'' }}" name="telefone" type="number" class="form-control readonly-input" id="inputFones" >
                             </div>
                             <div class="col">
                                 <label for="inputCEP" class="form-label">CEP</label>
-                                <input name="cep" type="number" class="form-control readonly-input" id="inputCep" >
+                                <input name="cep" type="number" value="{{ form_data.cep|default_if_none:'' }}" class="form-control readonly-input" id="inputCep" >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputFones" class="form-label">Cidade</label>
-                                <input name="cidade" type="text" class="form-control readonly-input" id="inputCidade" >
+                                <input name="cidade" type="text" value="{{ form_data.cidade|default_if_none:'' }}" class="form-control readonly-input" id="inputCidade" >
                             </div>
                             <div class="col">
                                 <label for="inputFones" class="form-label">Bairro</label>
-                                <input name="bairro" type="text" class="form-control readonly-input" id="inputBairro" >
+                                <input name="bairro" type="text" value="{{ form_data.bairro|default_if_none:'' }}" class="form-control readonly-input" id="inputBairro" >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputFones" class="form-label">Número</label>
-                                <input name="numero" type="number" class="form-control readonly-input" id="inputNum">
+                                <input name="numero" type="number" value="{{ form_data.numero|default_if_none:'' }}" class="form-control readonly-input" id="inputNum">
                             </div>
                         </div>
                     </div>
@@ -167,31 +167,31 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputRenavam" class="form-label">Renavam *</label>
-                                <input name="renavam" type="numer" class="form-control readonly-input" id="inputRenavam" autocomplete="off">
+                                <input name="renavam" value="{{ form_data.renavam|default_if_none:'' }}" type="numer" class="form-control readonly-input" id="inputRenavam" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Placa *</label>
-                                <input name="placa" type="text" class="form-control readonly-input" id="inputPlaca" autocomplete="off">
+                                <input name="placa" type="text" value="{{ form_data.placa|default_if_none:'' }}" class="form-control readonly-input" id="inputPlaca" autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Valor da Compra</label>
-                                <input name="valor" type="number" class="form-control readonly-input" id="inputValor" autocomplete="off">
+                                <input name="valor" type="number" value="{{ form_data.valor|default_if_none:'' }}" class="form-control readonly-input" id="inputValor" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Chassis</label>
-                                <input name="chassi" type="number" class="form-control readonly-input" id="inputChassi" autocomplete="off">
+                                <input name="chassi" type="number" value="{{ form_data.chassi|default_if_none:'' }}" class="form-control readonly-input" id="inputChassi" autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputCor" class="form-label">Cor</label>
-                                <input name="cor" type="text" class="form-control readonly-input" id="inputCor" autocomplete="off">
+                                <input name="cor" type="text" value="{{ form_data.cor|default_if_none:'' }}" class="form-control readonly-input" id="inputCor" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Combustível *</label>
-                                <select name="combustivel" class="form-control readonly-input" id="inputCombustível" >
+                                <select name="combustivel" value="{{ form_data.combustivel|default_if_none:'' }}" class="form-control readonly-input" id="inputCombustível" >
                                     <option value="Gasolina">Gasolina</option>
                                     <option value="Diesel">Diesel</option>
                                     <option value="GNV">GNV</option>
@@ -202,15 +202,15 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">CPF do Vendedor *</label>
-                                <input name="cpf_vendedor" type="text" class="form-control readonly-input" id="inputcpf_comprador" autocomplete="off">
+                                <input name="cpf_vendedor" value="{{ form_data.cpf_vendedor|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputcpf_comprador" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Concessionaria</label>
-                                <input name="concessionaria" type="text" class="form-control readonly-input" id="inputconcessionaria" autocomplete="off">
+                                <input name="concessionaria" value="{{ form_data.concessionaria|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputconcessionaria" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Tipo do veículo *</label>
-                                <select name="tipo_veiculo" class="form-control readonly-input" id="inputtipoveiculo">
+                                <select name="tipo_veiculo" value="{{ form_data.tipo_veiculo|default_if_none:'' }}" class="form-control readonly-input" id="inputtipoveiculo">
                                     <option value="Carro">Carro</option>
                                     <option value="Moto">Moto</option>
                                     <option value="Caminhão">Caminhão</option>
@@ -221,15 +221,15 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Data de Aquisição</label>
-                                <input name="data" type="date" class="form-control readonly-input" id="inputDataA" >
+                                <input name="data" type="date" value="{{ form_data.data|default_if_none:'' }}" class="form-control readonly-input" id="inputDataA" >
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Modelo *</label>
-                                <input name="modelo" type="text" class="form-control readonly-input" id="inputModelo" autocomplete="off">
+                                <input name="modelo" type="text" value="{{ form_data.modelo|default_if_none:'' }}" class="form-control readonly-input" id="inputModelo" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Ano do Veículo *</label>
-                                <input name="ano" type="number" class="form-control readonly-input" id="inputAno" autocomplete="off">
+                                <input name="ano" type="number" value="{{ form_data.ano|default_if_none:'' }}" class="form-control readonly-input" id="inputAno" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -239,8 +239,8 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputServico" class="form-label">Serviço *</label>
-                                <input type="hidden" name="id_servico" id="id_servico">
-                                <input name="servico" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)" autocomplete="off">
+                                <input type="hidden" value="{{ form_data.id_servico|default_if_none:'' }}" name="id_servico" id="id_servico">
+                                <input name="servico" value="{{ form_data.servico|default_if_none:'' }}" type="text" list="lista-servicos" class="form-control readonly-input" id="inputServico" placeholder="Serviço" onchange="buscarServico(this)" autocomplete="off">
                                 <span id="status_servico"></span>
                                 <datalist id="lista-servicos">
                                     {% for servico in servicos %}
@@ -253,14 +253,14 @@
                             </a>
                             <div class="col">
                                 <label for="inputValorservico" class="form-label">Valor do serviço *</label>
-                                <input name="valorservico" id="inputValorservico" type="text" class="form-control readonly-input">
+                                <input name="valorservico" value="{{ form_data.valor_servico|default_if_none:'' }}" id="inputValorservico" type="text" class="form-control readonly-input">
                             </div>
                         </div>
                         <div id="novoservico"></div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputPendencias" class="form-label">Pendências</label>
-                                <input type="text" list="lista-pendencias" name="pendencias" id="inputPendencias" class="form-control readonly-input">
+                                <input type="text" list="lista-pendencias" value="{{ form_data.pendencias|default_if_none:'' }}" name="pendencias" id="inputPendencias" class="form-control readonly-input">
                                     <datalist id="lista-pendencias">
                                         <option value="Nenhuma">nenhuma</option>
                                         <option value="Documento">documento</option>
@@ -268,17 +268,17 @@
                             </div>
                             <div class="col">
                                 <label for="inputDtentrega" class="form-label">Data de entrega *</label>
-                                <input name="dtentrega" type="date" class="form-control readonly-input" id="inputdtentrega" >
+                                <input name="dtentrega" value="{{ form_data.dtentrega|default_if_none:'' }}" type="date" class="form-control readonly-input" id="inputdtentrega" >
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="inputDesconto" class="form-label">Desconto</label>
-                                <input name="desconto" type="text" class="form-control readonly-input" id="inputDesconto" autocomplete="off">
+                                <input name="desconto" type="text" value="{{ form_data.desconto|default_if_none:'' }}" class="form-control readonly-input" id="inputDesconto" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputvalorfinal" class="form-label">Valor Final do Serviço R$ *</label>
-                                <input name="vfinal" type="text" value="0" class="form-control readonly-input" id="inputvfinal" >
+                                <input name="vfinal" type="text" value="{{ form_data.vfinal|default_if_none:'' }}" value="0" class="form-control readonly-input" id="inputvfinal" >
                             </div>
                         </div>
                     </div>

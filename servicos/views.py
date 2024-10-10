@@ -65,8 +65,20 @@ def adicao_servico(request):
                           taxa_detran=taxa_detran, notas=notas)
         if not all([nome, descricao, custo, valor_liquido, valor_total]):
             messages.error(request, 'É necessário preencher todos os campos!')
-            return redirect(reverse('novo_servico'))
+            form_data = request.POST
+            return render(request, 'novo_servico.html', {'form_data': form_data})
         else:
             servico.save()
             messages.success(request, 'Serviço cadastrado com sucesso!')
     return paginacao(request)
+
+def excluir_servico(request, id):
+    if request.method == 'POST':
+        print('excluido servico')
+        servico_excluido = get_object_or_404(Servico, id=id)
+        servico_excluido.delete()
+        messages.success(request, "Serviço excluido com sucesso!")
+        return redirect(reverse('servicos'))
+    else:
+        messages.error(request, "Serviço não deletado")
+        return redirect(reverse('servicos'))

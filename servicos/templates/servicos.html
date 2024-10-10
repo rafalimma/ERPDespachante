@@ -97,7 +97,7 @@
                     <th scope="col">Opções</th>
                 </tr>
             </thead>
-            <tbody  id="tbodyClientes">
+            <tbody  id="tbodyServicos">
                 {% for servico in servicos %}
                     <tr>
                         <th>{{servico.id}}</th>
@@ -105,16 +105,51 @@
                         <td>{{servico.valor_liquido}}</td>
                         <td>{{servico.valor_total}}</td>
                         <td>
-                            <!-- EDITAR SERVIÇO -->
-                            <a href="{% url 'editar_servico' servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -5px;">
-                                <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
-                            </a>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="{% url 'editar_servico' servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -5px;">
+                                    <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico.id %}" title="EXCLUIR">
+                                    <img src="{% static 'images/excluir.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <!-- MODAL PARA A EXCLUSÃO DO SERVICO -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir este servico?<br>
+                        ⚠️Isso ira afetar todas as ordens de serviço desse serviço.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        <form id="deleteForm" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Sim</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        // EXCLUSÃO DO Serviço:
+        $('.delete-button').click(function() {
+            var url = $(this).data('url');
+            $('#deleteForm').attr('action', url);
+        });
+    </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

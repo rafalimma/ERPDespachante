@@ -37,6 +37,7 @@ urlpatterns = [
     path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico'),
     path('novo_servico', serviews.novo_servico, name='novo_servico'),
     path('adicao_servico', serviews.adicao_servico, name='adicao_servico'),
+    path('excluir_servico/<str:id>/', serviews.excluir_servico, name='excluir_servico'),
     path('usuarios', loginviews.usuarios, name='usuarios'),
     path('novo_usuario', loginviews.novo_usuario, name='novo_usuario'),
     path('cadastro_usuario', loginviews.cadastro_usuario, name='cadastro_usuario'),

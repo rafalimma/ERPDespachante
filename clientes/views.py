@@ -88,7 +88,8 @@ def cadastro_clientes(request):
 
         if not all([name, cpf_cnpj, telefone]):
             messages.error(request, 'É necessário preencher todos os campos!')
-            return redirect(reverse('novo_cliente'))
+            form_data = request.POST
+            return render(request, 'novo_cliente.html', {'form_data': form_data})
         else:
             cliente.save()
             messages.success(request, 'Cadastro de cliente feito com sucesso!')

@@ -58,6 +58,7 @@ def nova_ordem_de_servico(request):
         cpf_vendedor = request.POST.get('cpf_vendedor')
         concessionaria = request.POST.get('concessionaria')
         tipo_veiculo = request.POST.get('tipo_veiculo')
+        servico = request.POST.get('servico')
 
         tipo_doc = request.POST.get('tipo_doc')
         arquivo = request.FILES.get('file')
@@ -79,15 +80,20 @@ def nova_ordem_de_servico(request):
             id_servico3 = request.POST.get('id_servico2')
         # faz verificações se o id do cliente e se as datas não foram preenchidas:
         if not(id_cliente):
-            messages.error(request, 'É necessário preencher todos os campos! ID_CLIENTE')
+            messages.error(request, 'É necessário preencher todos os campos! ID cliente')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
-            return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
+            # capturando os dados do formulário (requsição post passada)
+            form_data = request.POST
+            return render(request, 'newos.html', {
+                'clientes': clientes,
+                'servicos': servicos,
+                'form_data': form_data
+            })
         if not data_aq:
             data_aq = None
         if not data_entrega:
             data_entrega = None
-        print('essa é a data de entrega:', data_entrega)
         # pega a chave primária do cliente
         cliente = Cliente.objects.get(pk=id_cliente)
 
@@ -107,10 +113,16 @@ def nova_ordem_de_servico(request):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             clientes = Cliente.objects.all()
             servicos = Servico.objects.all()
-            return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
+            form_data = request.POST
+            print('indo pro htttp reffer')
+            return render(request, 'newos.html', {
+                'clientes': clientes,
+                'servicos': servicos,
+                'form_data': form_data
+            })
         else:
-            # salva o serviço padrão
             ordem_de_servico.save()
+            # salva o serviço padrão
             id_servico = Servico.objects.get(pk=id_servico)
             servico_ordem_servico = Servico_os(
                 os_id=ordem_de_servico,
@@ -171,9 +183,6 @@ def buscar_cliente(request):
                 'numero': cliente.numero
             })
     return JsonResponse({'status': 200, 'data': lista_clientes})
-
-
-
 
 # def buscar_cliente(request):
 #     nome = request.GET.get('nome', None)

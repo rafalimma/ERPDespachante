@@ -60,46 +60,46 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col">
-                    <label for="inputName" class="form-label">Nome</label>
-                    <input autocomplete="off" name="name" type="text" class="form-control readonly-input" id="inputName" placeholder="Nome" style="text-transform: uppercase";>
+                    <label for="inputName" class="form-label">Nome *</label>
+                    <input autocomplete="off" value="{{ form_data.name|default_if_none:'' }}" name="name" type="text" class="form-control readonly-input" id="inputName" placeholder="Nome" style="text-transform: uppercase";>
                 </div>
                 <div class="col">
                     <label for="inputEmail" class="form-label">Email</label>
-                    <input name="email" type="email" class="form-control readonly-input" id="inputEmail" placeholder="E-mail" autocomplete="off">
+                    <input name="email" type="email" value="{{ form_data.email|default_if_none:'' }}" class="form-control readonly-input" id="inputEmail" placeholder="E-mail" autocomplete="off">
                 </div>
                 <div class="col">
-                    <label for="inputCpfCnpj" class="form-label">CPF / CNPJ</label>
-                    <input name="cpfcnpj" type="number" class="form-control readonly-input" id="inputCpfCnpj" placeholder="CPF / CNPJ" autocomplete="off">
+                    <label for="inputCpfCnpj" class="form-label">CPF / CNPJ *</label>
+                    <input name="cpfcnpj" type="number" value="{{ form_data.cpfcnpj|default_if_none:'' }}" class="form-control readonly-input" id="inputCpfCnpj" placeholder="CPF / CNPJ" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="inputFones" class="form-label">Telefone</label>
-                    <input name="telefone" type="number" class="form-control readonly-input" id="inputFones" placeholder="Telefone" autocomplete="off">
+                    <label for="inputFones" class="form-label">Telefone *</label>
+                    <input name="telefone" type="number" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" id="inputFones" placeholder="Telefone" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputCEP" class="form-label">CEP</label>
-                    <input name="cep" type="number" class="form-control readonly-input" id="inputCep" placeholder="CEP" autocomplete="off">
+                    <input name="cep" type="number" value="{{ form_data.cep|default_if_none:'' }}" class="form-control readonly-input" id="inputCep" placeholder="CEP" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputEstado" class="form-label">Estado</label>
-                    <input name="estado" type="text" class="form-control readonly-input" id="inputEstado" placeholder="Estado" autocomplete="off">
+                    <input name="estado" type="text" value="{{ form_data.estado|default_if_none:'' }}" class="form-control readonly-input" id="inputEstado" placeholder="Estado" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputCidade" class="form-label">Cidade</label>
-                    <input name="cidade" type="text" class="form-control readonly-input" id="inputCidade" placeholder="Cidade" autocomplete="off">
+                    <input name="cidade" type="text" value="{{ form_data.cidade|default_if_none:'' }}" class="form-control readonly-input" id="inputCidade" placeholder="Cidade" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputBairro" class="form-label">Bairro</label>
-                    <input name="bairro" type="text" class="form-control readonly-input" id="inputBairro" placeholder="Bairro" autocomplete="off">
+                    <input name="bairro" type="text" value="{{ form_data.bairro|default_if_none:'' }}" class="form-control readonly-input" id="inputBairro" placeholder="Bairro" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputNum" class="form-label">Número</label>
-                    <input name="numero" type="number" class="form-control readonly-input" id="inputNum" placeholder="Numero" autocomplete="off">
+                    <input name="numero" type="number" value="{{ form_data.numero|default_if_none:'' }}" class="form-control readonly-input" id="inputNum" placeholder="Numero" autocomplete="off">
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">

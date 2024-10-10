@@ -65,46 +65,52 @@
             <h2 class="me-auto text-success">Novo Serviço</h2>
         </div>
     </div>
-    {% for message in messages %}
+    <div class="container">
+        {% for message in messages %}
             <div class="alert alert-{{ message.tags }}" role="alert">
                 <p>{{ message }}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
-    <div class="container">
         <form id="formadicao" action="{% url 'adicao_servico' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="row">
                 <div class="col">
                     <label for="inputNome" class="form-label">Nome do serviço *</label>
-                    <input name="nome" type="text" class="form-control readonly-input" id="inputNome" autocomplete="off">
+                    <input name="nome" value="{{ form_data.nome|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputNome" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputDescricao" class="form-label">Descrição *</label>
-                    <input name="descricao" type="text" class="form-control readonly-input" id="inputDescricao" autocomplete="off">
+                    <input name="descricao" value="{{ form_data.descricao|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputDescricao" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputCusto" class="form-label">Custo do Serviço *</label>
-                    <input name="custo" type="text" class="form-control readonly-input" id="inputCusto" autocomplete="off">
+                    <input name="custo" type="text" value="{{ form_data.custo|default_if_none:'' }}" class="form-control readonly-input" id="inputCusto" autocomplete="off">
                 </div>
                 <div class="col">
-                    <label for="inputVl" class="form-label">Valor liquido *</label>
-                    <input name="valor_liquido" type="text" class="form-control readonly-input" id="inputVl" autocomplete="off">
+                    <div style="display: flex; align-items: center;">
+                        <label for="inputVl" class="form-label" style="margin-right: 9px;">Valor líquido *</label>
+                        <p style="font-size: small; margin: 0;">seu lucro com o serviço.</p>
+                    </div>
+                    <input name="valor_liquido" value="{{ form_data.valor_liquido|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputVl" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="inputVt" class="form-label">Valor Total *</label>
-                    <input name="valor_total" type="text" class="form-control readonly-input" id="inputVt" autocomplete="off">
+                    <div style="display: flex; align-items: center;">
+                        <label for="inputVt" style="margin-right: 5px; white-space: nowrap;" class="form-label">Valor Total *</label>
+                        <p style="font-size: small; margin: 0;">Quanto você cobra do cliente (valor_liquido + custo + taxas).</p>
+                    </div>
+                    <input name="valor_total" type="text" value="{{ form_data.valor_total|default_if_none:'' }}" class="form-control readonly-input" id="inputVt" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputTd" class="form-label">Taxas do Detran</label>
-                    <input name="taxa_detran" type="text" class="form-control readonly-input" id="inputTd">
+                    <input name="taxa_detran" type="text" value="{{ form_data.taxas_detran|default_if_none:'' }}" class="form-control readonly-input" id="inputTd">
                 </div>
                 <div class="col">
                     <label for="inputVl" class="form-label">Notas</label>
-                    <textarea class="form-control readonly-input obs" id="notas" name="notas" rows="5" cols="40"></textarea><br>
+                    <textarea class="form-control readonly-input obs" value="{{ form_data.notas|default_if_none:'' }}" id="notas" name="notas" rows="5" cols="40"></textarea><br>
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">
