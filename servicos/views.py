@@ -13,7 +13,7 @@ def servicos(request):
 
 def paginacao(request):
     servicos = Servico.objects.all().values('id', 'nome', 'valor_liquido', 'valor_total')
-    servicos_paginados = Paginator(servicos, 10)
+    servicos_paginados = Paginator(servicos, 15)
     page_num = request.GET.get('page')
     servicos = servicos_paginados.get_page(page_num)
 

@@ -142,7 +142,7 @@
             <h5 class="text-success">Serviços:</h5>
             {% for servico_os in servicos_os %}
                 <div class="col-md-6 form-group">
-                    <input type="text" class="form-control readonly-input" value="{{ servico_os.servico_id.descricao }} - R$ {{ servico_os.servico_id.valor_total }}" readonly>
+                    <input type="text" class="form-control readonly-input" value="{{ servico_os.servico_id.nome }} - R$ {{ servico_os.servico_id.valor_total }}" readonly>
                 </div>
             {% endfor %}
         </div>
