@@ -86,7 +86,7 @@ def cadastro_clientes(request):
                         cep=cep, cidade=cidade, bairro=bairro, numero=numero,
                         email=email, estado=estado)
 
-        if not all([name, cpf_cnpj, telefone]):
+        if not all([name, telefone, cpf_cnpj]):
             messages.error(request, 'É necessário preencher todos os campos!')
             form_data = request.POST
             return render(request, 'novo_cliente.html', {'form_data': form_data})

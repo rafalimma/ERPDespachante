@@ -61,7 +61,7 @@
             <div class="row">
                 <div class="col">
                     <label for="inputName" class="form-label">Nome *</label>
-                    <input autocomplete="off" value="{{ form_data.name|default_if_none:'' }}" name="name" type="text" class="form-control readonly-input" id="inputName" placeholder="Nome" style="text-transform: uppercase";>
+                    <input autocomplete="off" required value="{{ form_data.name|default_if_none:'' }}" name="name" type="text" class="form-control readonly-input" id="inputName" placeholder="Nome" style="text-transform: uppercase";>
                 </div>
                 <div class="col">
                     <label for="inputEmail" class="form-label">Email</label>
@@ -69,13 +69,13 @@
                 </div>
                 <div class="col">
                     <label for="inputCpfCnpj" class="form-label">CPF / CNPJ *</label>
-                    <input name="cpfcnpj" type="number" value="{{ form_data.cpfcnpj|default_if_none:'' }}" class="form-control readonly-input" id="inputCpfCnpj" placeholder="CPF / CNPJ" autocomplete="off">
+                    <input name="cpfcnpj" id="cpfcnpj" required type="number" value="{{ form_data.cpfcnpj|default_if_none:'' }}" class="form-control readonly-input" id="inputCpfCnpj" placeholder="CPF / CNPJ" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputFones" class="form-label">Telefone *</label>
-                    <input name="telefone" type="number" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" id="inputFones" placeholder="Telefone" autocomplete="off">
+                    <input name="telefone" required id="telefone" type="text" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" id="inputFones" placeholder="Telefone" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputCEP" class="form-label">CEP</label>
@@ -108,6 +108,28 @@
             </div>
         </form>
     </div>
+
+    <script>
+        let celular = document.getElementById('telefone');
+        celular.addEventListener("input", function() {
+            let limparValor = celular.value.replace(/\D/g, "").substring(0,11);
+            
+            let numerosArray = limparValor.split("");
+
+            let numeroFormatado = "";
+
+            if (numerosArray.length > 0) {
+                numeroFormatado += `(${numerosArray.slice(0,2).join("")})`
+            }
+            if (numerosArray.length > 2){
+                numeroFormatado += ` ${numerosArray.slice(2,7).join("")}`
+            }
+            if (numerosArray.length > 7) {
+                numeroFormatado += `-${numerosArray.slice(7,11).join("")}`
+            }
+            celular.value = numeroFormatado;
+        })
+    </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
