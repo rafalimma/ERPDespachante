@@ -70,11 +70,11 @@
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="text-success">CPF / CNPJ:</label>
-                    <input type="number" name="cpfcnpj" class="form-control readonly-input" value="{{ cliente.cpf_cnpj }}">
+                    <input type="text" id="cpfcnpj" name="cpfcnpj" class="form-control readonly-input" value="{{ cliente.cpf_cnpj }}">
                 </div>
                 <div class="col-md-4 form-group">
                     <label class="text-success">Telefone:</label>
-                    <input type="number" name="telefone" class="form-control readonly-input" value="{{ cliente.telefone }}">
+                    <input type="text" id="telefone" name="telefone" class="form-control readonly-input" value="{{ cliente.telefone }}">
                 </div>
             </div>
             <div class="row" style="margin-top: -15px;">
@@ -111,6 +111,28 @@
         </form>
     </div>
     <script>
+
+        let celular = document.getElementById('telefone');
+        celular.addEventListener("input", function() {
+            let limparValor = celular.value.replace(/\D/g, "").substring(0,11);
+            
+            let numerosArray = limparValor.split("");
+
+            let numeroFormatado = "";
+
+            if (numerosArray.length > 0) {
+                numeroFormatado += `(${numerosArray.slice(0,2).join("")})`
+            }
+            if (numerosArray.length > 2){
+                numeroFormatado += ` ${numerosArray.slice(2,7).join("")}`
+            }
+            if (numerosArray.length > 7) {
+                numeroFormatado += `-${numerosArray.slice(7,11).join("")}`
+            }
+            celular.value = numeroFormatado;
+        })
+
+
         document.addEventListener('DOMContentLoaded', function () {
             let isFormSubmitted = false;
 
@@ -129,6 +151,19 @@
                 }
             });
         });
+
+        let cpfcnpj = document.getElementById('cpfcnpj');
+
+        cpfcnpj.addEventListener("keypress", function() {
+            let inputcpf = cpfcnpj.value.length;
+
+            if (inputcpf === 3 || inputcpf === 7) {
+                cpfcnpj.value += ".";
+            } else if (inputcpf === 11) {
+                cpfcnpj.value += "-";
+            }
+        })
+
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

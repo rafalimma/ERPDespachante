@@ -69,13 +69,13 @@
                 </div>
                 <div class="col">
                     <label for="inputCpfCnpj" class="form-label">CPF / CNPJ *</label>
-                    <input name="cpfcnpj" id="cpfcnpj" required type="number" value="{{ form_data.cpfcnpj|default_if_none:'' }}" class="form-control readonly-input" id="inputCpfCnpj" placeholder="CPF / CNPJ" autocomplete="off">
+                    <input name="cpfcnpj" maxlength="14" id="cpfcnpj" required type="text"  value="{{ form_data.cpfcnpj|default_if_none:'' }}" class="form-control readonly-input" placeholder="CPF / CNPJ" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputFones" class="form-label">Telefone *</label>
-                    <input name="telefone" required id="telefone" type="text" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" id="inputFones" placeholder="Telefone" autocomplete="off">
+                    <input name="telefone" required id="telefone" type="text" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" placeholder="Telefone" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputCEP" class="form-label">CEP</label>
@@ -111,6 +111,8 @@
 
     <script>
         let celular = document.getElementById('telefone');
+        let cpfcnpj = document.getElementById('cpfcnpj');
+
         celular.addEventListener("input", function() {
             let limparValor = celular.value.replace(/\D/g, "").substring(0,11);
             
@@ -129,6 +131,16 @@
             }
             celular.value = numeroFormatado;
         })
+        cpfcnpj.addEventListener("keypress", function() {
+            let inputcpf = cpfcnpj.value.length;
+
+            if (inputcpf === 3 || inputcpf === 7) {
+                cpfcnpj.value += ".";
+            } else if (inputcpf === 11) {
+                cpfcnpj.value += "-";
+            }
+        })
+
     </script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
