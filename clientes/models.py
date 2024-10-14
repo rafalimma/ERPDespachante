@@ -7,11 +7,11 @@ from django.db import models
 
 class Cliente(models.Model):
     name = models.CharField(max_length=40)
-    cpf_cnpj = models.CharField(max_length=14)
-    telefone = models.CharField(max_length=11)
+    cpf_cnpj = models.CharField(max_length=25)
+    telefone = models.CharField(max_length=25)
     cep = models.CharField(max_length=50, default='')
     bairro = models.CharField(max_length=30, default='')
     estado = models.CharField(max_length=30, default='')
-    cidade = models.CharField(max_length=15, default='')
-    numero = models.CharField(max_length=6, default='')
+    cidade = models.CharField(max_length=25, default='')
+    numero = models.CharField(max_length=10, default='')
     email = models.EmailField(max_length=100, null=True, blank=True)
