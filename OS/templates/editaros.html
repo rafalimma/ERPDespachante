@@ -124,6 +124,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODAL PARA A ADIÇÃO DE UM NOVO SERVIÇO -->
+
+        <div class="modal fade" id="AddServico" tabindex="-1" role="dialog" aria-labelledby="AddServicoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddServicoLabel">Adicionar novo serviço</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'adicionar_servico' ordem_servico.id %}" id="AddForm"> {% csrf_token %}
+                            <div class="form-group">
+                                <label for="nome-servico">Nome do Serviço</label>
+                                <input type="hidden" id="id_novo_servico" name="id_novo_servico">
+                                <input name="nome_do_servico" required type="text" list="lista-servicos" class="form-control readonly-input" id="nome_do_servico" placeholder="Escolha um serviço" onchange="buscarServico(this)" autocomplete="off">
+                                <datalist id="lista-servicos">
+                                    {% for servico in servicos %}
+                                        <option value="{{ servico.nome }}"></option>
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao-servico">Descrição do serviço:</label>
+                                <input name="descricao" readonly type="text" class="form-control readonly-input" id="descricaoServico"> 
+                            </div>
+                            <div class="form-group">
+                                <label for="valor-servico">Valor:</label>
+                                <input type="text" readonly name="valor_servico" class="form-control readonly-input" id="valor_novo_servico">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-success">Adiçionar Serviço</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <form id="editarform" action="{% url 'form_edicao_os' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                 <div class="row">
@@ -203,8 +245,14 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="col-auto d-flex align-items-center">
                     <h5 class="text-success">Serviços:</h5>
+                    <a href="" class="btn btn-success ms-3 mb-2" data-toggle="modal" data-target="#AddServico" title="ADICIONAR SERVICO">
+                        Adicionar Serviço <img src="{% static 'images/new_service.png' %}" alt="" style="margin-left: 5px; width: 20px;"> 
+                    </a>
+                </div>
+
+                <div class="row">
                     {% for servico_os in servicos_os %}
                         <!-- vai retornar uma instancia de Servico pois servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id') -->
                         {% with contador=forloop.counter %}
@@ -223,7 +271,7 @@
                                     {% endfor %}
                                 </div>
                                 <p><strong class="text-success"> Valor serviço: </strong></p>
-                                <input type="text" class="valor-servico form-control readonly-input" id="valorServicoField{{ contador }}" name="valor_servico{{ contador }}" value="{{ servico_os.valor_servico }}">
+                                <input type="text" class="valor-servico form-control readonly-input" readonly id="valorServicoField{{ contador }}" name="valor_servico{{ contador }}" value="{{ servico_os.valor_servico }}">
                                 <input type="hidden" name="id_servico{{ contador }}" id="idServicoField{{ contador }}" value = "{{ servico_os.servico_id }}">
                             </div>
                         {% endwith %}
@@ -258,7 +306,12 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <h5 class="text-success">Documentos:</h5>
+                    <div class="col-auto d-flex align-items-center">
+                        <h5 class="text-success">Documentos:</h5>
+                        <a href="#" class="btn btn-success ms-3 mb-2" data-toggle="modal" data-target="#AddDoc" data-url="#" title="ADICIONAR DOCUMENTO">
+                            Adicionar Documento <img src="{% static 'images/upload-green.png' %}" style="margin-left: 5px; width: 20px;">
+                        </a>
+                    </div>
                     <div class="col-12 document-list">
                         {% for documento in documentos %}
                         <div class="document-item">
@@ -284,11 +337,36 @@
     </div>
     <script>
 
+        function buscarServico(inputElement) {
+            console.log("entrou na função");
+            let id_novo_servico = document.getElementById("id_novo_servico");
+            let servico = inputElement.value;
+            console.log("nome do servico escolhido: ", servico)
+            let descricao_servico = document.getElementById("descricaoServico");
+            let valor_servico = document.getElementById('valor_novo_servico');
+
+            $.ajax({
+                url: "{% url 'buscar_servico' %}",
+                type: "GET",
+                data: {
+                    'servico': servico
+                },
+                success: function (data) {
+                    if (data) {
+                        id_novo_servico.value = data.id_servico;
+                        descricao_servico.value = data.desc;
+                        valor_servico.value = data.valor_total;
+                    }
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             let isFormSubmitted = false;
 
             const form = document.getElementById('editarform');
-            const modal_form = document.getElementById('deleteForm')
+            const modal_delete = document.getElementById('deleteForm')
+            const modal_add = document.getElementById('AddForm');
             console.log(form);
 
             // Monitorar o envio do formulário
@@ -296,13 +374,15 @@
                 isFormSubmitted = true;
             });
 
-            modal_form.addEventListener('submit', function () {
+            modal_delete.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
+            modal_add.addEventListener('submit', function () {
                 isFormSubmitted = true;
             });
 
             window.addEventListener('beforeunload', function (event) {
                 if (!isFormSubmitted) {
-                    console.log('entrou');
                     const message = 'Você tem alterações não salvas. Tem certeza de que deseja sair?';
                     event.returnValue = message; // Requerido para alguns navegadores
                     return message; // Requerido para outros navegadores

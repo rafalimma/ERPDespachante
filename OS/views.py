@@ -205,9 +205,11 @@ def buscar_servico(request):
     servico = request.GET.get('servico', None)
     if servico:
         servico_escolhido = Servico.objects.filter(nome=servico).first()
+        print('servico escolhido:', servico_escolhido)
         if servico_escolhido:
             data = {
                 'id_servico': servico_escolhido.pk,
+                'desc': servico_escolhido.descricao,
                 'valor_total': servico_escolhido.valor_total,
             }
             return JsonResponse(data)
@@ -325,10 +327,28 @@ def form_edicao_os(request):
         return redirect('ordem_servico')
     return redirect('ordem_servico')
 
+def adicionar_servico(request, id):
+    ordem_servico = get_object_or_404(OrdemServico, id=id)
+    if request.method == 'POST':
+        id_servico = request.POST.get('id_novo_servico')
+        valor_servico = request.POST.get('valor_servico')
+        # buscando o id do servico, porque servico_id em Servico_os tem que ser uma instancia de Servico
+        id_servico = get_object_or_404(Servico, id=id_servico)
+        novo_servico = Servico_os(os_id=ordem_servico, servico_id=id_servico, valor_servico=valor_servico)
+        novo_servico.save()
+        messages.success(request, 'Serviço adicionado com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        print('erro ao adicionar.')
+        return redirect(reverse('home'))
+
+
 def excluir_servico(request, id):
+    print("entrou na função de exclusao de servico")
     if request.method == 'POST':
         id_ordem_servico = request.POST.get('id_ordem_servico')
         servico = get_object_or_404(Servico_os, id=id)
+        print('aqui foi')
         servico.delete()
         messages.success(request, 'Serviço excluido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
