@@ -184,23 +184,6 @@ def buscar_cliente(request):
             })
     return JsonResponse({'status': 200, 'data': lista_clientes})
 
-# def buscar_cliente(request):
-#     nome = request.GET.get('nome', None)
-#     if nome:
-#         cliente = Cliente.objects.filter(name=nome).first()
-#         if cliente:
-#             data = {
-#                 'id': cliente.pk,
-#                 'cpf_cnpj': cliente.cpf_cnpj,
-#                 'telefone': cliente.telefone,
-#                 'cep': cliente.cep,
-#                 'cidade': cliente.cidade,
-#                 'bairro': cliente.bairro,
-#                 'numero': cliente.numero
-#             }
-#             return JsonResponse(data)
-#     return JsonResponse({})
-
 def buscar_servico(request):
     servico = request.GET.get('servico', None)
     if servico:
@@ -344,9 +327,7 @@ def adicionar_servico(request, id):
 
 
 def excluir_servico(request, id):
-    print("entrou na função de exclusao de servico")
     if request.method == 'POST':
-        id_ordem_servico = request.POST.get('id_ordem_servico')
         servico = get_object_or_404(Servico_os, id=id)
         print('aqui foi')
         servico.delete()
@@ -430,6 +411,34 @@ def pdf_export(request, id):
     response['Content-Disposition'] = f'inline; filename="ordem_servico_numero{id}.pdf"'
 
     return response
+
+def adicionar_documento(request, id):
+    if request.method == 'POST':
+        ordem_servico = get_object_or_404(OrdemServico, id=id)
+        tipo_doc = request.POST.get('tipo_doc')
+        arquivo = request.FILES.get('new_file')
+
+        salvar_documentos(arquivo, tipo_doc, ordem_servico)
+        messages.success(request, 'Documento salvo com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        print('ocorreu um erro ao salvar')
+        return redirect(reverse('home'))
+    
+def excluir_documento(request, id):
+    print('aqui chegooo')
+    if request.method == 'POST':
+        print('foi carai')
+        documento = get_object_or_404(Documentos, id=id)
+        documento.delete()
+        messages.success(request, 'Documento excluido com sucesso!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        print('erro ao excluir')
+        return redirect(reverse('editar_os'))
+
+
+
 
 
 

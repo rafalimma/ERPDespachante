@@ -100,7 +100,9 @@
             </div>
         {% endfor %}
     </div>
+    <!-- MODAL PARA DELETAR O SERVIÇO -->
     <div class="container">
+
         <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -124,6 +126,68 @@
                 </div>
             </div>
         </div>
+
+        <!-- MODAL PARA A EXCLUSÃO DO DOCUMENTO -->
+
+        <div class="modal fade" id="DocDeleteModal" tabindex="-1" role="dialog" aria-labelledby="docDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="docDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir este documento?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        <form id="DocdeleteForm" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Sim</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL PARA A ADIÇÃO DE UM DOCUMENTO -->
+        <div class="modal fade" id="AddDoc" tabindex="-1" role="dialog" aria-labelledby="AddDocLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddDocLabel">Adicionar novo documento</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form enctype="multipart/form-data" action="{% url 'adicionar_documento' ordem_servico.id %}" method="POST" id="AddDocForm"> {% csrf_token %}
+                            <div class="form-group">
+                                <label for="tipo_doc">Tipo do Documento</label>
+                                <select name="tipo_doc" id="tipo_doc" class="form-control readonly-input">
+                                    <option value="Contrato social">Contrato social</option>
+                                    <option value="Procuração de compra e venda">Procuração de compra e venda</option>
+                                    <option value="CRV">CRV</option>
+                                    <option value="CRV">CRLV</option>
+                                    <option value="CNH">CNH</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">Arquivo: </label>
+                                <input class="form-control readonly-input" type="file" name="new_file" id="new_file"><br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-success">Adiçionar Documento</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- MODAL PARA A ADIÇÃO DE UM NOVO SERVIÇO -->
 
@@ -308,18 +372,23 @@
                 <div class="row">
                     <div class="col-auto d-flex align-items-center">
                         <h5 class="text-success">Documentos:</h5>
-                        <a href="#" class="btn btn-success ms-3 mb-2" data-toggle="modal" data-target="#AddDoc" data-url="#" title="ADICIONAR DOCUMENTO">
+                        <a href="#" class="btn btn-success ms-3 mb-2" data-toggle="modal" data-target="#AddDoc" title="ADICIONAR DOCUMENTO">
                             Adicionar Documento <img src="{% static 'images/upload-green.png' %}" style="margin-left: 5px; width: 20px;">
                         </a>
                     </div>
                     <div class="col-12 document-list">
                         {% for documento in documentos %}
-                        <div class="document-item">
+                        <div class="document-item" style="margin-top: -6px;">
                             <p><strong class="text-success">Tipo Documento:</strong> {{ documento.tipo_doc }}</p>
                             <p><strong class="text-success">Documento:</strong> {{ documento.arquivo }}</p>
-                            <a href="{{ documento.arquivo.url }}" title="DOWNLOAD" class="btn btn-secondary" download>
-                                <img src="{% static 'images/download.png' %}" alt="Download">
-                            </a>
+                            <div class="col-auto d-flex align-items-center">
+                                <a href="{{ documento.arquivo.url }}" class="mt-1" title="DOWNLOAD" download>
+                                    <img src="{% static 'images/download_doc.png' %}" style="width: 28px; height: 25px;" alt="Download">
+                                </a>
+                                <a href="#" class="delete-button" data-toggle="modal" title="EXCLUIR DOCUMENTO" data-target="#DocDeleteModal" data-url="{% url 'excluir_documento' documento.id %}" class="ms-3">
+                                    <img src="{% static 'images/excluir.png' %}" style="width: 25px; height: 25px;">
+                                </a>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -365,19 +434,26 @@
             let isFormSubmitted = false;
 
             const form = document.getElementById('editarform');
-            const modal_delete = document.getElementById('deleteForm')
+            const modal_delete = document.getElementById('deleteForm');
             const modal_add = document.getElementById('AddForm');
+            const modal_doc = document.getElementById('AddDocForm');
+            const modal_delete_doc = document.getElementById('DocdeleteForm');
             console.log(form);
 
             // Monitorar o envio do formulário
             form.addEventListener('submit', function () {
                 isFormSubmitted = true;
             });
-
+            modal_doc.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
             modal_delete.addEventListener('submit', function () {
                 isFormSubmitted = true;
             });
             modal_add.addEventListener('submit', function () {
+                isFormSubmitted = true;
+            });
+            modal_delete_doc.addEventListener('submit', function () {
                 isFormSubmitted = true;
             });
 
@@ -474,6 +550,11 @@
                 });
             }
         }
+
+        $('.delete-button').click(function() {
+            var url = $(this).data('url');
+            $('#DocdeleteForm').attr('action', url);
+        });
     
         const deleteButtons = document.querySelectorAll('.delete-button');
         deleteButtons.forEach(button => {
