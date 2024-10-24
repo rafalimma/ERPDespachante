@@ -393,9 +393,9 @@ def pdf_export(request, id):
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
     site_url = settings.SITE_URL
     datas = {
-        'data_aq': (ordem_servico.data_aq.strftime('%Y-%m-%d') if ordem_servico.data_aq else ''),
-        'data_servico': ordem_servico.data_servico.strftime('%Y-%m-%d'),
-        'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
+        'data_aq': (ordem_servico.data_aq.strftime('%d/%m/%Y') if ordem_servico.data_aq else ''),
+        'data_servico': ordem_servico.data_servico.strftime('%d/%m/%Y'),
+        'data_entrega': (ordem_servico.data_entrega.strftime('%d/%m/%Y') if ordem_servico.data_entrega else ''),
     }
     context = {'ordem_servico': ordem_servico, 
                 'servicos_os': servicos,

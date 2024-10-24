@@ -253,7 +253,7 @@
                             </a>
                             <div class="col">
                                 <label for="inputValorservico" class="form-label">Valor do serviço *</label>
-                                <input name="valorservico" value="{{ form_data.valor_servico|default_if_none:'' }}" id="inputValorservico" type="text" class="form-control readonly-input">
+                                <input name="valorservico" readonly value="{{ form_data.valor_servico|default_if_none:'' }}" id="inputValorservico" type="text" class="form-control readonly-input">
                             </div>
                         </div>
                         <div id="novoservico"></div>
@@ -277,8 +277,8 @@
                                 <input name="desconto" type="text" value="{{ form_data.desconto|default_if_none:'' }}" class="form-control readonly-input" id="inputDesconto" autocomplete="off">
                             </div>
                             <div class="col">
-                                <label for="inputvalorfinal" class="form-label">Valor Final do Serviço R$ *</label>
-                                <input name="vfinal" type="text" value="{{ form_data.vfinal|default_if_none:'' }}" value="0" class="form-control readonly-input" id="inputvfinal" >
+                                <label for="inputvalorfinal" class="form-label">Valor Final da ordem de serviço R$ *</label>
+                                <input name="vfinal" readonly type="text" value="{{ form_data.vfinal|default_if_none:'' }}" value="0" class="form-control readonly-input" id="inputvfinal" >
                             </div>
                         </div>
                     </div>
