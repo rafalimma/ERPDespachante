@@ -11,7 +11,7 @@ from django.template.loader import get_template
 # from weasyprint import HTML
 from django.template.loader import render_to_string 
 from datetime import date
-import weasyprint
+import weasyprint # type: ignore
 from django.conf import settings
 from project import local_settings
 from django.contrib.staticfiles import finders
@@ -393,7 +393,8 @@ def pdf_export(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
     try:
-        site_url = local_settings.SITE_URL # diferenciação do ambiente de produção
+        site_url = local_settings.ABSOLUTE_PATH # type: ignore
+        # diferenciação do ambiente de produção
     except:
         site_url = settings.SITE_URL
     datas = {
