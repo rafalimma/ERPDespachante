@@ -7,12 +7,13 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from time import strftime
 from django.template.loader import get_template
-from xhtml2pdf import pisa
-from weasyprint import HTML
+# from xhtml2pdf import pisa
+# from weasyprint import HTML
 from django.template.loader import render_to_string 
 from datetime import date
 import weasyprint
 from django.conf import settings
+from project import local_settings
 from django.contrib.staticfiles import finders
 import tempfile
 DEFAULT_DATE = ""
@@ -391,7 +392,10 @@ def imprimir_os(request, id):
 def pdf_export(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
-    site_url = settings.SITE_URL
+    try:
+        site_url = local_settings.SITE_URL # diferenciação do ambiente de produção
+    except:
+        site_url = settings.SITE_URL
     datas = {
         'data_aq': (ordem_servico.data_aq.strftime('%d/%m/%Y') if ordem_servico.data_aq else ''),
         'data_servico': ordem_servico.data_servico.strftime('%d/%m/%Y'),
