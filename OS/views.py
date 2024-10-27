@@ -426,7 +426,6 @@ def adicionar_documento(request, id):
         return redirect(reverse('home'))
     
 def excluir_documento(request, id):
-    print('aqui chegooo')
     if request.method == 'POST':
         print('foi carai')
         documento = get_object_or_404(Documentos, id=id)
@@ -434,7 +433,6 @@ def excluir_documento(request, id):
         messages.success(request, 'Documento excluido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     else:
-        print('erro ao excluir')
         return redirect(reverse('editar_os'))
 
 
