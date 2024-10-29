@@ -315,6 +315,17 @@
     </div>
 
     <script>
+        cpf_comprador = document.getElementById('inputcpf_comprador');
+
+        cpf_comprador.addEventListener("keypress", function() {
+            let inputcpf = cpf_comprador.value.length;
+
+            if (inputcpf === 3 || inputcpf === 7) {
+                cpf_comprador.value += ".";
+            } else if (inputcpf === 11) {
+                cpf_comprador.value += "-";
+            }
+        })
 
         document.addEventListener("DOMContentLoaded", function() {
             const data_list = document.getElementById('lista-servicos');

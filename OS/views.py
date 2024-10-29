@@ -392,11 +392,6 @@ def imprimir_os(request, id):
 def pdf_export(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
-    try:
-        site_url = local_settings.ABSOLUTE_PATH # type: ignore
-        # diferenciação do ambiente de produção
-    except:
-        site_url = settings.SITE_URL
     datas = {
         'data_aq': (ordem_servico.data_aq.strftime('%d/%m/%Y') if ordem_servico.data_aq else ''),
         'data_servico': ordem_servico.data_servico.strftime('%d/%m/%Y'),
@@ -404,7 +399,6 @@ def pdf_export(request, id):
     }
     context = {'ordem_servico': ordem_servico, 
                 'servicos_os': servicos,
-                'site_url': site_url,
                 'data': datas}
 
     html_string = render_to_string('os-pdf_export.html', context)
