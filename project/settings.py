@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
 from django.conf import settings
+# from login.views import login_sessao_expirada
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,8 +42,9 @@ SECRET_KEY = 'django-insecure--94sqwv3m4pp13un4)i4e0o3icm7eyxiq+gx^q4*$_#!1*gnbg
 DEBUG = True # motra todos os erros na tela
 
 ALLOWED_HOSTS = []
-LOGIN_REDIRECT_URL = '/home/' #test
-
+LOGIN_REDIRECT_URL = '/home/'
+# LOGIN_URL = login_sessao_expirada
+LOGIN_URL = 'http://127.0.0.1:8000'
 # Application definition
 
 INSTALLED_APPS = [
@@ -67,6 +69,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -158,6 +161,15 @@ MESSAGES_TAGS = {
 # SECURE_BROWSER_XSS_FILTER = True
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # X_FRAME_OPTIONS = 'DENY'
+
+# tempo máximo de inatividade em segundos
+SESSION_COOKIE_AGE = 10
+# expira a sessão ao fechar o navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# Se True a sessão é renvovada a cada iteração
+SESSION_SAVE_EVERY_REQUEST = True
+#as páginas são 'protegidas' com @login_required ou seja
+#para acessar a página é necessário fazer login
 
 try:
     from project.local_settings import *

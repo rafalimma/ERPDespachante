@@ -7,15 +7,16 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.core.paginator import Paginator
 from OS.models import OrdemServico
-# git -> changing to chenges
-# linha adiocionada para mandar o arquivo para a área de changes no source control
-# Create your views here.
+from django.contrib.auth.decorators import login_required
+
+
 def teste(request):
     return render(
         request,
         'teste.html'
     )
 
+@login_required
 def paginacao(request):
     clientes = Cliente.objects.all().values('id', 'name', 'cpf_cnpj', 'telefone')
     clientes_paginados = Paginator(clientes, 15)
@@ -24,6 +25,7 @@ def paginacao(request):
 
     return render(request, 'clientes.html', {'clientes': clientes})
 
+@login_required
 def consultar_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
     ordem_servico = OrdemServico.objects.filter(cliente_id=id)
@@ -33,13 +35,15 @@ def consultar_cliente(request, id):
         {'cliente': cliente,
          'ordem_servicos': ordem_servico}
     )
-
+@login_required
 def novo_cliente(request):
     return render(request, 'novo_cliente.html')
 
+@login_required
 def clientes(request):
     return paginacao(request)
 
+@login_required
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
     return render(

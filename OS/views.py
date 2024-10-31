@@ -12,10 +12,7 @@ from django.template.loader import get_template
 from django.template.loader import render_to_string 
 from datetime import date
 import weasyprint # type: ignore
-from django.conf import settings
-from project import local_settings
-from django.contrib.staticfiles import finders
-import tempfile
+from django.contrib.auth.decorators import login_required
 DEFAULT_DATE = ""
 
 
@@ -29,6 +26,7 @@ def ordem_servico(request):
     # ordens = OrdemServico.objects.all()
     # return render(request, 'os.html', {'ordens_servicos': ordens})
 
+@login_required
 def newos(request):
     clientes = Cliente.objects.all()
     servicos = Servico.objects.all()
@@ -199,6 +197,7 @@ def buscar_servico(request):
             return JsonResponse(data)
     return JsonResponse({})
 
+@login_required
 def paginacao(request):
     ordens_servicos = OrdemServico.objects.all().values('id', 'nome_cliente', 'modelo', 'placa', 'status', 'valor_f')
     ordens_servicos_paginados = Paginator(ordens_servicos, 15)
@@ -217,6 +216,7 @@ def excluir_os(request, id):
         print('não foi')
         return redirect(reverse('ordem_servico'))
 
+@login_required
 def consultar_os(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
@@ -236,6 +236,7 @@ def consultar_os(request, id):
          'data': datas}
     )
 
+@login_required
 def editar_os(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
@@ -383,7 +384,8 @@ def atualizar_status(request):
         return redirect('ordem_servico')
     else:
         return paginacao(request)
-    
+
+@login_required
 def imprimir_os(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')

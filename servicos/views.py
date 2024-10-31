@@ -5,12 +5,15 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.core.paginator import Paginator
 from OS.models import Servico
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def servicos(request):
     return paginacao(request)
 
+@login_required
 def paginacao(request):
     servicos = Servico.objects.all().values('id', 'nome', 'valor_liquido', 'valor_total')
     servicos_paginados = Paginator(servicos, 15)
@@ -19,6 +22,7 @@ def paginacao(request):
 
     return render(request, 'servicos.html', {'servicos': servicos})
 
+@login_required
 def editar_servico(request, id):
     servico = get_object_or_404(Servico, pk=id)
     return render(request, 'editar_servicos.html',

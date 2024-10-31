@@ -45,5 +45,5 @@ urlpatterns = [
     path('novo_usuario', loginviews.novo_usuario, name='novo_usuario'),
     path('cadastro_usuario', loginviews.cadastro_usuario, name='cadastro_usuario'),
     path('editar_usuario/<str:id>', loginviews.editar_usuario, name='editar_usuario'),
-    path('form_edicao_usuario', loginviews.form_edicao_usuario, name='form_edicao_usuario'),
+    path('form_edicao_usuario', loginviews.form_edicao_usuario, name='form_edicao_usuario')
 ]

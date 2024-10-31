@@ -27,6 +27,10 @@ def login(request):
             messages.error(request, "Login inválido")
     return render(request, 'login.html')
 
+def login_sessao_expirada(request):
+    messages.warning(request, 'Sua sessão foi expirada!')
+    return redirect('login')
+
 def paginacao(request):
     usuarios = User.objects.all().values('id', 'username', 'first_name', 'last_name')
     servicos_paginados = Paginator(usuarios, 10)
