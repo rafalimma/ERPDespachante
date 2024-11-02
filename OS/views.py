@@ -7,8 +7,6 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from time import strftime
 from django.template.loader import get_template
-# from xhtml2pdf import pisa
-# from weasyprint import HTML
 from django.template.loader import render_to_string 
 from datetime import date
 import weasyprint # type: ignore
@@ -21,6 +19,7 @@ def teste(request):
     servicos = Servico.objects.all()
     return render(request, 'teste.html', {'clientes': clientes, 'servicos': servicos})
 
+@login_required
 def ordem_servico(request):
     return paginacao(request)
     # ordens = OrdemServico.objects.all()
@@ -32,6 +31,7 @@ def newos(request):
     servicos = Servico.objects.all()
     return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
 
+@login_required
 def nova_ordem_de_servico(request):
     if request.method == 'POST':
         print('nova 0rdem entrou')
@@ -157,6 +157,7 @@ def nova_ordem_de_servico(request):
     return redirect('ordem_servico')
     # return paginacao(request)
 
+
 def salvar_documentos(arquivo, tipo_doc, ordem_de_servico):
     if arquivo:
         documento = Documentos(tipo_doc=tipo_doc, arquivo=arquivo, ordem_servico_id=ordem_de_servico)
@@ -164,6 +165,7 @@ def salvar_documentos(arquivo, tipo_doc, ordem_de_servico):
     else:
         return
 
+@login_required
 def buscar_cliente(request):
     nome_cliente = request.GET.get("nome")
     lista_clientes = []
@@ -183,6 +185,7 @@ def buscar_cliente(request):
             })
     return JsonResponse({'status': 200, 'data': lista_clientes})
 
+@login_required
 def buscar_servico(request):
     servico = request.GET.get('servico', None)
     if servico:
@@ -206,6 +209,7 @@ def paginacao(request):
 
     return render(request, 'os.html', {'ordens_servicos': ordens_servicos})
 
+@login_required
 def excluir_os(request, id):
     if request.method == 'POST':
         ordem_servico = get_object_or_404(OrdemServico, id=id)
@@ -272,6 +276,7 @@ def editar_os(request, id):
          'servicos': servicos}
     )
 
+@login_required
 def form_edicao_os(request):
     if request.method == 'POST':
         id_ordem_servico = request.POST.get('id_ordem_servico')
@@ -312,6 +317,7 @@ def form_edicao_os(request):
         return redirect('ordem_servico')
     return redirect('ordem_servico')
 
+@login_required
 def adicionar_servico(request, id):
     ordem_servico = get_object_or_404(OrdemServico, id=id)
     if request.method == 'POST':
@@ -327,7 +333,7 @@ def adicionar_servico(request, id):
         print('erro ao adicionar.')
         return redirect(reverse('home'))
 
-
+@login_required
 def excluir_servico(request, id):
     if request.method == 'POST':
         servico = get_object_or_404(Servico_os, id=id)
@@ -371,6 +377,7 @@ def filtrar_os(request):
             messages.error(request, 'Nenhum resultado foi encontrado!')
     return redirect('ordem_servico')
 
+@login_required
 def atualizar_status(request):
     if request.method == 'POST':
         id_ordem_servico = request.POST.get('id_ordem_servicos')
@@ -413,6 +420,7 @@ def pdf_export(request, id):
 
     return response
 
+@login_required
 def adicionar_documento(request, id):
     if request.method == 'POST':
         ordem_servico = get_object_or_404(OrdemServico, id=id)
@@ -426,6 +434,7 @@ def adicionar_documento(request, id):
         print('ocorreu um erro ao salvar')
         return redirect(reverse('home'))
     
+@login_required
 def excluir_documento(request, id):
     if request.method == 'POST':
         print('foi carai')

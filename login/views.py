@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 # Create your views here.
@@ -24,7 +25,7 @@ def login(request):
             auth_login(request, user)
             return redirect(reverse('home'))
         else:
-            messages.error(request, "Login inválido")
+            messages.warning(request, "Usuários ou senha inválidos.")
     return render(request, 'login.html')
 
 def login_sessao_expirada(request):
@@ -39,10 +40,12 @@ def paginacao(request):
 
     return render(request, 'usuarios.html', {'usuarios': usuarios})
 
+@login_required
 def usuarios(request):
     usuarios = User.objects.all().values('id', 'username', 'first_name', 'last_name', 'is_active')
     return render(request, 'usuarios.html', {'usuarios': usuarios})
 
+@login_required
 def novo_usuario(request):
     groups = Group.objects.all()
     return render(request, 'novo_usuario.html', {'groups': groups})
@@ -78,6 +81,7 @@ def cadastro_usuario(request):
         messages.success(request, 'Usuário cadastrado com sucesso!')
     return redirect(usuarios)
 
+@login_required
 def editar_usuario(request, id):
     usuario = get_object_or_404(User, pk=id)
     groups = Group.objects.all()

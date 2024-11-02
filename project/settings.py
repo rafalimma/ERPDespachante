@@ -44,7 +44,7 @@ DEBUG = True # motra todos os erros na tela
 ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = '/home/'
 # LOGIN_URL = login_sessao_expirada
-LOGIN_URL = 'http://127.0.0.1:8000'
+LOGIN_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
@@ -60,16 +60,17 @@ INSTALLED_APPS = [
     'OS',
     'servicos'
 ]
-
+#MIDDLEWARES permitem plicar funcionalidades gerais no projeto, cada middleware modifica a requisição antes de chegar na view (em ordem)
+# e depois a resposta da view para por cada middleware de novo em ordem inversa.
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # Habilita o uso de sessões, aplicação armazena dados específicos de um usuário entre requisições
+    'django.middleware.security.SecurityMiddleware', # adiciona cabeçalhos de segurança (SECURE_SSL_REDIRECT, XSS protection)
+    'django.contrib.messages.middleware.MessageMiddleware', # mensagens de uma requisição para outra
+    'django.middleware.common.CommonMiddleware', # tratamento de urls
+    'django.middleware.csrf.CsrfViewMiddleware',# protege contra ataques CSRF
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # permite verificar se um usuário esta autenticado em qualquer lugar do código
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', # bloqueia o carregamento da página em iframes de outros sites
+    'utils.session_expired_middleware.SessionExpiredMiddleware'
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -152,6 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MESSAGES_TAGS = {
     messages.SUCCESS: 'success',
     messages.ERROR: 'danger',
+    messages.WARNING: 'warning',
 }
 
 #essas configurações de segurança foram comentadas no servidor e estarão apenas no local_settings.py
@@ -166,7 +168,7 @@ MESSAGES_TAGS = {
 SESSION_COOKIE_AGE = 10
 # expira a sessão ao fechar o navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# Se True a sessão é renvovada a cada iteração
+# Se True a sessão é renvovada a cada interação
 SESSION_SAVE_EVERY_REQUEST = True
 #as páginas são 'protegidas' com @login_required ou seja
 #para acessar a página é necessário fazer login

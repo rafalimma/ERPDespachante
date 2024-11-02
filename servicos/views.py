@@ -28,6 +28,7 @@ def editar_servico(request, id):
     return render(request, 'editar_servicos.html',
         {'servico': servico})
 
+@login_required
 def form_edicao_servico(request):
     if request.method == 'POST':
         servico_id = request.POST.get('id_servico')
@@ -51,9 +52,11 @@ def form_edicao_servico(request):
         messages.error(request, 'Ocorreu um erro!')
         return redirect('servicos')
     
+@login_required
 def novo_servico(request):
     return render(request, 'novo_servico.html')
 
+@login_required
 def adicao_servico(request):
     if request.method == 'POST':
         descricao = request.POST.get('descricao')
@@ -76,6 +79,7 @@ def adicao_servico(request):
             messages.success(request, 'Serviço cadastrado com sucesso!')
     return paginacao(request)
 
+@login_required
 def excluir_servico(request, id):
     if request.method == 'POST':
         print('excluido servico')
