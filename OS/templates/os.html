@@ -238,7 +238,7 @@
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Pendente')">Pendente</a>
                             </div>
                         </th>
-                        <td>{{ordem_servico.nome_cliente}}</td>
+                        <td>{{ordem_servico.nome_cliente|upper}}</td>
                         <td>{{ordem_servico.modelo}}</td>
                         <td>{{ordem_servico.placa}}</td>
                         <td>{{ordem_servico.status}}</td>

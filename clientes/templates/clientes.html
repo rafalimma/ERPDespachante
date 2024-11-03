@@ -183,7 +183,7 @@
                 {% for cliente in clientes %}
                     <tr>
                         <th>{{cliente.id}}</th>
-                        <td>{{cliente.name}}</td>
+                        <td>{{cliente.name|upper}}</td>
                         <td>{{cliente.cpf_cnpj}}</td>
                         <td>{{cliente.telefone}}</td>
                         <td>
