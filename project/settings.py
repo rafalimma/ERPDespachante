@@ -165,7 +165,7 @@ MESSAGES_TAGS = {
 # X_FRAME_OPTIONS = 'DENY'
 
 # tempo máximo de inatividade em segundos
-SESSION_COOKIE_AGE = 10
+SESSION_COOKIE_AGE = 1800
 # expira a sessão ao fechar o navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Se True a sessão é renvovada a cada interação

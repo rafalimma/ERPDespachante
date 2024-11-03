@@ -8,9 +8,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-# git -> changing to chenges
-# linha adiocionada para mandar o arquivo para a área de changes no source control
-# Create your views here.
+from django.contrib.auth import logout
 
 def login(request):
     if request.method == "GET":
@@ -25,8 +23,12 @@ def login(request):
             auth_login(request, user)
             return redirect(reverse('home'))
         else:
-            messages.warning(request, "Usuários ou senha inválidos.")
+            messages.error(request, "Usuários ou senha inválidos.")
     return render(request, 'login.html')
+
+def logout_option(request):
+    logout(request)
+    return redirect('login')
 
 def login_sessao_expirada(request):
     messages.warning(request, 'Sua sessão foi expirada!')
