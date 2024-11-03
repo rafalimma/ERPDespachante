@@ -11,8 +11,11 @@ from django.template.loader import render_to_string
 from datetime import date
 import weasyprint # type: ignore
 from django.contrib.auth.decorators import login_required
+from utils.validador import validador
 DEFAULT_DATE = ""
 
+CLIENTES = Cliente.objects.all()
+SERVICOS = Servico.objects.all()
 
 def teste(request):
     clientes = Cliente.objects.all()
@@ -27,9 +30,7 @@ def ordem_servico(request):
 
 @login_required
 def newos(request):
-    clientes = Cliente.objects.all()
-    servicos = Servico.objects.all()
-    return render(request, 'newos.html', {'clientes': clientes, 'servicos': servicos})
+    return render(request, 'newos.html', {'clientes': CLIENTES, 'servicos': SERVICOS})
 
 @login_required
 def nova_ordem_de_servico(request):
@@ -79,14 +80,12 @@ def nova_ordem_de_servico(request):
             id_servico3 = request.POST.get('id_servico2')
         # faz verificações se o id do cliente e se as datas não foram preenchidas:
         if not(id_cliente):
-            messages.error(request, 'É necessário preencher todos os campos! ID cliente')
-            clientes = Cliente.objects.all()
-            servicos = Servico.objects.all()
+            messages.error(request, 'É necessário selecionar um cliente.')
             # capturando os dados do formulário (requsição post passada)
             form_data = request.POST
             return render(request, 'newos.html', {
-                'clientes': clientes,
-                'servicos': servicos,
+                'clientes': CLIENTES,
+                'servicos': SERVICOS,
                 'form_data': form_data
             })
         if not data_aq:
@@ -110,13 +109,19 @@ def nova_ordem_de_servico(request):
                      combustivel, modelo, ano_veiculo, id_servico, data_entrega,
                      valor_servico, valor_f, status, cpf_vendedor, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
-            clientes = Cliente.objects.all()
-            servicos = Servico.objects.all()
             form_data = request.POST
             print('indo pro htttp reffer')
             return render(request, 'newos.html', {
-                'clientes': clientes,
-                'servicos': servicos,
+                'clientes': CLIENTES,
+                'servicos': SERVICOS,
+                'form_data': form_data
+            })
+        elif not validador(cpf_vendedor):
+            form_data = request.POST
+            messages.error(request, 'O CPF ou CNPJ do vendedor não são válidos.')
+            return render(request, 'newos.html', {
+                'clientes': CLIENTES,
+                'servicos': SERVICOS,
                 'form_data': form_data
             })
         else:
@@ -265,7 +270,7 @@ def editar_os(request, id):
              'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
              'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
              }
-    servicos = Servico.objects.all() #para os tipos de serviços existentes
+    # servicos = Servico.objects.all() #para os tipos de serviços existentes
     return render(
         request,
         'editaros.html',
@@ -273,7 +278,7 @@ def editar_os(request, id):
          'servicos_os': servicos_os,
          'documentos': documentos_da_os,
          'data': dados,
-         'servicos': servicos}
+         'servicos': SERVICOS}
     )
 
 @login_required

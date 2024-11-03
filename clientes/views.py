@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from OS.models import OrdemServico
 from django.contrib.auth.decorators import login_required
+from utils.validador import validador
 
 
 def teste(request):
@@ -93,6 +94,10 @@ def cadastro_clientes(request):
         if not all([name, telefone, cpf_cnpj]):
             messages.error(request, 'É necessário preencher todos os campos!')
             form_data = request.POST
+            return render(request, 'novo_cliente.html', {'form_data': form_data})
+        elif not validador(cpf_cnpj):
+            form_data = request.POST
+            messages.error(request, 'O CPF ou CNPJ não são válidos.')
             return render(request, 'novo_cliente.html', {'form_data': form_data})
         else:
             cliente.save()
