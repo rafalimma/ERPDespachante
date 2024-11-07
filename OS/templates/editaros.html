@@ -323,7 +323,7 @@
                             <div class="col-md-4 form-group" id="coluna{{ contador }}">
                                 <p>
                                     <strong class="text-success"> Serviço: </strong>
-                                    <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico' servico_os.id %}" data-id="{{ contador }}">
+                                    <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_servico_os' servico_os.id %}" data-id="{{ contador }}">
                                         <img src="{% static 'images/delete.png' %}" title="EXCLUIR" style="width: 30px; height: 30px; cursor: pointer;"> 
                                     </a>
                                 </p>
@@ -482,7 +482,7 @@
                 },
                 success: function (data) {
                     if (data) {
-                        tipo_servico.value = descricao_escolhida
+                        tipo_servico.value = descricao_escolhida;
                         idServicoField.value = data.id_servico;
                         valorServicoField.value = data.valor_total;
                         idServicoField.name = 'id_servico_alterado' + index;

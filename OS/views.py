@@ -339,10 +339,9 @@ def adicionar_servico(request, id):
         return redirect(reverse('home'))
 
 @login_required
-def excluir_servico(request, id):
+def excluir_servico_os(request, id):
     if request.method == 'POST':
         servico = get_object_or_404(Servico_os, id=id)
-        print('aqui foi')
         servico.delete()
         messages.success(request, 'Serviço excluido com sucesso!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

@@ -58,7 +58,8 @@ INSTALLED_APPS = [
     'clientes',
     'home',
     'OS',
-    'servicos'
+    'servicos',
+    'relatorios'
 ]
 #MIDDLEWARES permitem plicar funcionalidades gerais no projeto, cada middleware modifica a requisição antes de chegar na view (em ordem)
 # e depois a resposta da view para por cada middleware de novo em ordem inversa.
