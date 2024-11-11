@@ -50,7 +50,7 @@ def editar_cliente(request, id):
     return render(
         request,
         'editar_cliente.html',
-        {'cliente': cliente} 
+        {'cliente': cliente,} 
     )
 
 def form_edicao_cliente(request):

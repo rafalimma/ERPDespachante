@@ -77,6 +77,16 @@
     <div class="container custom-container">
         <div class="row">
             <div class="col-md-4 form-group">
+                <label class="text-success">Id:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.id }}" readonly>
+            </div>
+            <div class="col-md-4 form-group">
+                <label class="text-success">Data de criação:</label>
+                <input type="text" class="form-control readonly-input" value="{{ cliente.data_criacao|date:'d/m/Y' }}" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 form-group">
                 <label class="text-success">Nome:</label>
                 <input type="text" class="form-control readonly-input" value="{{ cliente.name }}" readonly>
             </div>

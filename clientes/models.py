@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import date
+from django.utils.timezone import now
 # Create your models here.
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
@@ -15,3 +16,4 @@ class Cliente(models.Model):
     cidade = models.CharField(max_length=25, default='')
     numero = models.CharField(max_length=10, default='')
     email = models.EmailField(max_length=100, null=True, blank=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
