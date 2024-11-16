@@ -25,19 +25,26 @@ def os_mensal():
         fillcolor='#6ce093',
         text=os_qtds,
         textfont=dict(size=12, color='black'),
-        textposition='bottom center',
+        textposition='top center',
         showlegend=False,
         ))
+    
+    
     fig.update_layout(
         # title='Ordens de Serviço por Mês',
         width=490,
         height=300,
         yaxis_title='Número de Ordens',
         xaxis=dict(showgrid=False,
+                   range=[-0.1, len(meses) - 0.9],
                    tickmode='array',# Define os valores como uma lista de categorias
-                   tickvals=meses,
+                   tickvals=list(range(len(meses))),
+                   ticktext=meses,
+                   zeroline=False,
             ),
-        yaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=False,
+                   zeroline=False,
+            ),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0, r=0, t=20, b=20),
@@ -69,9 +76,14 @@ def clientes_mesal():
         yaxis_title='Clientes',
         xaxis=dict(showgrid=False,
                    tickmode='array',# Define os valores como uma lista de categorias
-                   tickvals=meses,
+                   tickvals=list(range(len(meses))),
+                   range=[-0.1, len(meses) - 0.9],
+                   ticktext=meses,
+                   zeroline=False,
             ),
-        yaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=False,
+                   zeroline=False,
+                   ),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=0, r=0, t=20, b=20)
