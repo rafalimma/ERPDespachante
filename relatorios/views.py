@@ -24,7 +24,9 @@ def os_mensal():
         fill='tozeroy',
         fillcolor='#6ce093',
         text=os_qtds,
-        textposition='top center'
+        textfont=dict(size=12, color='black'),
+        textposition='bottom center',
+        showlegend=False,
         ))
     fig.update_layout(
         # title='Ordens de Serviço por Mês',
@@ -38,7 +40,7 @@ def os_mensal():
         yaxis=dict(showgrid=False),
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
-        margin=dict(l=0, r=0, t=20, b=20)
+        margin=dict(l=0, r=0, t=20, b=20),
     )
     config = {
         'displayModeBar': False,  # Remove a barra de ferramentas
@@ -54,7 +56,7 @@ def clientes_mesal():
     fig = go.Figure(data=go.Scatter(
         x=meses,
         y=clientes_qtd,
-        mode='lines+markers',
+        mode='lines+markers+text',
         line=dict(color='#00bf63'),
         fill='tozeroy',
         fillcolor='#6ce093',
