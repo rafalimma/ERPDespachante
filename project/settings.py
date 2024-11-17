@@ -157,6 +157,13 @@ MESSAGES_TAGS = {
     messages.WARNING: 'warning',
 }
 
+CASHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
+
 #essas configurações de segurança foram comentadas no servidor e estarão apenas no local_settings.py
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True # commented on the server
