@@ -7,26 +7,26 @@ from django.utils import timezone
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 class OrdemServico(models.Model):
-    renavam = models.CharField(max_length=50)
+    renavam = models.CharField(max_length=80)
     placa = models.CharField(max_length=15)
     cliente_id = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     nome_cliente = models.CharField(max_length=40)
     chassi = models.CharField(max_length=30, default='')
     cor = models.CharField(max_length=20, default='')
     combustivel = models.CharField(max_length=15, default='')
-    modelo = models.CharField(max_length=25, default='')
+    modelo = models.CharField(max_length=50, default='')
     valor_veiculo = models.CharField(max_length=15, default='')
     ano_modelo = models.CharField(max_length=10, default='')
-    pendencias = models.CharField(max_length=30, default='')
+    pendencias = models.CharField(max_length=60, default='')
     data_entrega = models.DateField(null=True, blank=True)
     data_aq = models.DateField(null=True, blank=True)
     data_servico = models.DateField(default=datetime.date.today)
-    desconto = models.CharField(max_length=20, default='')
-    valor_f = models.CharField(max_length=20, default='')
+    desconto = models.CharField(max_length=30, default='')
+    valor_f = models.CharField(max_length=30, default='')
     observacoes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='')
     cpf_vendedor = models.CharField(max_length=20, default='')
-    concessionaria = models.CharField(max_length=30, default='')
+    concessionaria = models.CharField(max_length=60, default='')
     tipo_veiculo = models.CharField(max_length=15, default='')
 
 
