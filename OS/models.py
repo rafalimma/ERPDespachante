@@ -2,6 +2,7 @@ from django.db import models
 from clientes.models import Cliente
 import datetime
 from django.utils import timezone
+from django.utils.timezone import now
 
 # Create your models here.
 # git -> changing to chenges
