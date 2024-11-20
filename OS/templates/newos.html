@@ -176,8 +176,8 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <label for="inputCpfCnpj" class="form-label">Valor da Compra</label>
-                                <input name="valor" type="text" value="{{ form_data.valor|default_if_none:'' }}" class="form-control readonly-input" id="inputValor" autocomplete="off">
+                                <label for="inputValorcompra" class="form-label">Valor da Compra</label>
+                                <input name="valor" type="text" value="{{ form_data.valor|default_if_none:'' }}" class="form-control readonly-input" id="inputValorcompra" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Chassis</label>
@@ -425,6 +425,7 @@
                 }
 
                 // Navegação com setas
+                // não funciona corretamente
                 if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                     event.preventDefault(); // Previne rolagem
                 }
@@ -586,6 +587,7 @@
         }
         document.addEventListener('DOMContentLoaded', function() {
             const desconto = document.getElementById('inputDesconto');
+            const valor_compra = document.getElementById('inputValorcompra');
 
             function formatCurrency(input) {
                 let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
@@ -599,6 +601,9 @@
 
             desconto.addEventListener('input', function() {
                 formatCurrency(desconto);
+            })
+            valor_compra.addEventListener('input', function() {
+                formatCurrency(valor_compra);
             })
             
         });
