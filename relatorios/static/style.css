@@ -1,0 +1,36 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+.thumb:nth-child(odd){clear: both;}
+.grafico-container {
+    margin-top: 0 !important;
+}
+.titulo-grafico {
+    margin-bottom: 0 !important;
+}
+.dashboard-card {
+    background-color: #e7e8e8; /* Cor de fundo suave */
+    border: 1px solid #d5d6d8; /* Borda com leve relevo */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para relevo */
+    margin-bottom: 20px; /* Espaço abaixo para evitar sobreposição */
+}
+.grafico {
+    width: 700px;
+    height: 300px; /* Define uma altura padrão para os gráficos */
+}
+.filter {
+    width: 300px;
+    height: 80px;
+    margin-left: 50px;
+    background-color: #e7e8e8; /* Cor de fundo suave */
+    border: 1px solid #d5d6d8; /* Borda com leve relevo */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+.btn.active {
+    background-color: #28a745;
+    color: #fff;
+}

@@ -11,45 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'script.js' %}" defer></script>
     <title>Relatórios e Dashboards</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        .thumb:nth-child(odd){clear: both;}
-        .grafico-container {
-            margin-top: 0 !important;
-        }
-        .titulo-grafico {
-            margin-bottom: 0 !important;
-        }
-        .dashboard-card {
-            background-color: #e7e8e8; /* Cor de fundo suave */
-            border: 1px solid #d5d6d8; /* Borda com leve relevo */
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para relevo */
-            margin-bottom: 20px; /* Espaço abaixo para evitar sobreposição */
-        }
-        .grafico {
-            width: 700px;
-            height: 300px; /* Define uma altura padrão para os gráficos */
-        }
-        .filter {
-            width: 300px;
-            height: 80px;
-            margin-left: 50px;
-            background-color: #e7e8e8; /* Cor de fundo suave */
-            border: 1px solid #d5d6d8; /* Borda com leve relevo */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        .btn.active {
-            background-color: #28a745;
-            color: #fff;
-        }
-    </style>
 </head>
 <body>
     <div class="container mt-3">
@@ -74,24 +38,26 @@
 
             <!-- Conteúdo da aba Dashboards -->
             <div class="tab-pane fade show active" id="dashboards" role="tabpanel" aria-labelledby="dashboards-tab">
+                
                 <section class="filter d-flex flex-column align-items-start">
                     <p class="mb-2 ms-2">Período de análise</p>
                     <div class="d-flex justify-content-end gap-3">
-                        <button id="btn-dias" class="btn btn-white ms-2" onclick="filterData('days')">30 dias</button>
-                        <button id="btn-mes" class="btn btn-white active" onclick="filterData('months')">Mês</button>
+                        <button id="btn-dias" class="btn btn-white {% if periodo == 'dias' %}active{% endif %}" onclick="filterData(this, 'dias')">15 dias</button>
+                        <button id="btn-mes" class="btn btn-white {% if periodo == 'mensal' %}active{% endif %}" onclick="filterData(this, 'mensal')">Mês</button>
                     </div>
                 </section>
+
                 <div class="row grafico-container mt-0 ms-5 gap-5">
                     <div class="col-md-5 dashboard-card">
                         <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
-                        <div class="grafico" style="width: 100%; overflow: visible;">
-                            {{ os_por_mes|safe }}
+                        <div class="grafico" id="grafico-os" style="width: 100%; overflow: visible;">
+                            {{ os_grafico|safe }}
                         </div>
                     </div>
-                    <div class="col-md-5 dashboard-card">
+                    <div class="col-md-5 dashboard-card" >
                         <h5 class="titulo-grafico">Novos clientes por mês</h5>
-                        <div class="grafico">
-                            {{ clientes_por_mes|safe }}
+                        <div class="grafico" id="grafico-clientes">
+                            {{ clientes_grafico|safe }}
                         </div>
                     </div>
                 </div>
@@ -99,6 +65,18 @@
             </div>
         </div>
     </div>
+    <script>
+        function filterData(button, period) {
+            // Remove a classe "active" de todos os botões
+            const buttons = document.querySelectorAll('.filter .btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Adiciona a classe "active" ao botão clicado
+            button.classList.add('active');
+            let url = `{% url 'relatorios' %}?periodo=${period}`;
+            window.location.href = url;
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGmHRZnH8aL+N5Jh5gErk6LGQ5U28VIVI5o/wjEEMaz3x46eUdiC2QxrH/K" crossorigin="anonymous"></script>

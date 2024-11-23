@@ -31,7 +31,7 @@ urlpatterns = [
     path('consultar_os/<str:id>/', osviews.consultar_os, name='consultar_os'),
     path('editar_os/<str:id>/', osviews.editar_os, name='editar_os'),
     path('form_edicao_os', osviews.form_edicao_os, name='form_edicao_os'),
-    path('excluir_servico_os/<str:id>/', osviews.excluir_servico_os, name='excluir_servico_os'),########
+    path('excluir_servico_os/<str:id>/', osviews.excluir_servico_os, name='excluir_servico_os'),
     path('adicionar_servico/<str:id>/', osviews.adicionar_servico, name='adicionar_servico'),
     path('adicionar_documento/<str:id>/', osviews.adicionar_documento, name='adicionar_documento'),
     path('excluir_documento/<str:id>/', osviews.excluir_documento, name='excluir_documento'),
@@ -39,7 +39,7 @@ urlpatterns = [
     path('atualizar_status', osviews.atualizar_status, name='atualizar_status'),
     path('imprimir_os/<str:id>', osviews.imprimir_os, name='imprimir_os'),
     path('pdf_export/<str:id>', osviews.pdf_export, name='pdf_export'),
-    # serviçoc
+    # serviço
     path('servicos', serviews.servicos, name='servicos'),
     path('editar_servico/<str:id>', serviews.editar_servico, name='editar_servico'),
     path('form_edicao_servico', serviews.form_edicao_servico, name='form_edicao_servico'),

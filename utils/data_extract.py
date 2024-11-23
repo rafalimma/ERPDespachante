@@ -6,10 +6,12 @@ from OS.models import OrdemServico
 from clientes.models import Cliente
 from relatorios.models import Relatorios
 from django.db import transaction
+from datetime import date, timedelta
 # O Django usa essa sintaxe com __ (dois underscores) 
 # para acessar partes da data, como o ano (data_servico__year) e o mês
 
 ANO_ATUAL = datetime.now().year
+DATA_HOJE = date.today()
 
 def ordens_servico_mesais():
     print('passando por servicos')
@@ -35,6 +37,21 @@ def ordens_servico_mesais():
     
     return meses, quantidade_ordens
 
+def ordens_servico_diarias():
+    trinta_atras = DATA_HOJE - timedelta(days=15)
+
+    os_por_dia = (
+        OrdemServico.objects
+        .filter(data_servico__range=[trinta_atras, DATA_HOJE])
+        .values('data_servico')
+        .annotate(order_count=Count('id'))
+        .order_by('data_servico')
+    )
+
+    dias = [os['data_servico'].strftime("%d/%m") for os in os_por_dia]
+    quantidade_ordens = [os['order_count'] for os in os_por_dia]
+    return dias, quantidade_ordens
+
 def clientes_mensais():
     print('passando por clientes')
     clientes_por_mes = (
@@ -56,3 +73,19 @@ def clientes_mensais():
         relatorio_atual.save()
 
     return meses, quantidade_clientes
+
+def clientes_diarios():
+    trinta_dias_atras = DATA_HOJE - timedelta(days=15)
+
+    clientes_por_dia = (
+        Cliente.objects
+        .filter(data_criacao__range=[trinta_dias_atras, DATA_HOJE])
+        .values('data_criacao')
+        .annotate(cliente_count=Count('id'))
+        .order_by('data_criacao')
+    )
+
+    dias = [clientes['data_criacao'].strftime("%d/%m") for clientes in clientes_por_dia]
+    quantidade_clientes = [clientes['cliente_count'] for clientes in clientes_por_dia]
+
+    return dias, quantidade_clientes
