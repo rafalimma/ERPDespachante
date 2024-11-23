@@ -129,14 +129,18 @@
                 {% endif %}
 
                 {% for page_number in clientes.paginator.page_range %}
-                    {% if clientes.number == page_number %}
-                        <button class="btn btn-outline-success btn-sm active">
-                            <span>{{ page_number }} <span class="sr-only">(Atual)</span></span>
-                        </button>
-                    {% else %}
-                        <a href="?page={{ page_number }}" class="btn btn-outline-success btn-sm">
+                    {% if page_number == 1 or page_number == clientes.paginator.num_pages or page_number == clientes.number %}
+                        <a href="?page={{ page_number }}" 
+                        class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
                             {{ page_number }}
                         </a>
+                    {% elif page_number <= clientes.number|add:'2' and page_number >= clientes.number|add:'-2' %}
+                        <a href="?page={{ page_number }}" 
+                        class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
+                            {{ page_number }}
+                        </a>
+                    {% elif page_number == 2 or page_number == clientes.paginator.num_pages|add:'-1' %}
+                        <span class="btn btn-outline-success btn-sm">...</span>
                     {% endif %}
                 {% endfor %}
 

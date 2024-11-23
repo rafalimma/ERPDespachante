@@ -90,7 +90,6 @@ def os_mensal():
     return grafico_html
 
 def clientes_mesal():
-
     data_ultima_criacao = ultima_criacao()
     cache_key = f"clientes_mensal{data_ultima_criacao}"
     grafico_html = cache.get(cache_key)
