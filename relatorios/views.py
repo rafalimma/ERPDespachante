@@ -90,45 +90,50 @@ def os_mensal():
     return grafico_html
 
 def clientes_mesal():
-    data_ultima_criacao = ultima_criacao()
-    cache_key = f"clientes_mensal{data_ultima_criacao}"
-    grafico_html = cache.get(cache_key)
-
-    if not grafico_html:
+    try:
+        data_ultimo_relatorio = Relatorios.objects.filter(tipo="clientes por mês").latest('data_atualizacao')
+        data_ultimo_cliente = Cliente.objects.latest('data_criacao')
+        if data_ultimo_cliente.data_criacao > data_ultimo_relatorio.data_atualizacao:
+            meses, clientes_qtd = clientes_mensais()
+        else:
+            meses = data_ultimo_relatorio.get_meses()
+            clientes_qtd = data_ultimo_relatorio.get_quantidade()
+    except:
+        print('criando primeiro registro do relatório')
         meses, clientes_qtd = clientes_mensais()
-        meses = [NOME_MESES[m - 1]for m in meses]
-        fig = go.Figure(data=go.Scatter(
-            x=meses,
-            y=clientes_qtd,
-            mode='lines+markers+text',
-            line=dict(color='#00bf63'),
-            fill='tozeroy',
-            fillcolor='#6ce093',
-            text=clientes_qtd,
-            textposition='top center'
-            ))
-        fig.update_layout(
-            width=490,
-            height=300,
-            yaxis_title='Clientes',
-            xaxis=dict(showgrid=False,
-                    tickmode='array',# Define os valores como uma lista de categorias
-                    tickvals=list(range(len(meses))),
-                    range=[-0.1, len(meses) - 0.9],
-                    ticktext=meses,
-                    zeroline=False,
+    meses = [NOME_MESES[int(m) - 1]for m in meses]
+    fig = go.Figure(data=go.Scatter(
+        x=meses,
+        y=clientes_qtd,
+        mode='lines+markers+text',
+        line=dict(color='#00bf63'),
+        fill='tozeroy',
+        fillcolor='#6ce093',
+        text=clientes_qtd,
+        textposition='top center'
+        ))
+    fig.update_layout(
+        width=490,
+        height=300,
+        yaxis_title='Clientes',
+        xaxis=dict(showgrid=False,
+                tickmode='array',# Define os valores como uma lista de categorias
+                tickvals=list(range(len(meses))),
+                range=[-0.1, len(meses) - 0.9],
+                ticktext=meses,
+                zeroline=False,
+            ),
+        yaxis=dict(showgrid=False,
+                zeroline=False,
                 ),
-            yaxis=dict(showgrid=False,
-                    zeroline=False,
-                    ),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=0, r=0, t=20, b=20)
-        )
-        config = {
-            'displayModeBar': False,  # Remove a barra de ferramentas
-            'staticPlot': True        # Desativa o modo interativo
-        }
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        margin=dict(l=0, r=0, t=20, b=20)
+    )
+    config = {
+        'displayModeBar': False,  # Remove a barra de ferramentas
+        'staticPlot': True        # Desativa o modo interativo
+    }
 
-        grafico_html = fig.to_html(full_html=False, config=config)
-        return grafico_html
+    grafico_html = fig.to_html(full_html=False, config=config)
+    return grafico_html

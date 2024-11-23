@@ -26,7 +26,7 @@ def ordens_servico_mesais():
 
     with transaction.atomic(): # define que esse bloco de codigo seja atomico para o banco de dados, 
         # se alguma parte falhar todas as alterações no banco feitas por esse bloco de código serão revertidas
-        Relatorios.objects.filter(tipo="ordem se serviço por mês").delete()
+        Relatorios.objects.filter(tipo="ordem de serviço por mês").delete()
 
         relatorio_atual = Relatorios(tipo="ordem de serviço por mês")
         relatorio_atual.set_meses(meses)
@@ -47,5 +47,12 @@ def clientes_mensais():
 
     meses = [clientes['data_criacao__month'] for clientes in clientes_por_mes]
     quantidade_clientes = [clientes['cliente_count'] for clientes in clientes_por_mes]
+    with transaction.atomic():
+        Relatorios.objects.filter(tipo="clientes por mês").delete()
+
+        relatorio_atual = Relatorios(tipo="clientes por mês")
+        relatorio_atual.set_meses(meses)
+        relatorio_atual.set_quantidade(quantidade_clientes)
+        relatorio_atual.save()
 
     return meses, quantidade_clientes
