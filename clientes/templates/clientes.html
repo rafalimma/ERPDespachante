@@ -134,7 +134,7 @@
                         class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
                             {{ page_number }}
                         </a>
-                    {% elif page_number <= clientes.number|add:'2' and page_number >= clientes.number|add:'-2' %}
+                    {% elif page_number <= clientes.number|add:'2' and page_number >= clientes.number|add:'-3' %}
                         <a href="?page={{ page_number }}" 
                         class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
                             {{ page_number }}
