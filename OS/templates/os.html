@@ -147,14 +147,18 @@
                 {% endif %}
 
                 {% for page_number in ordens_servicos.paginator.page_range %}
-                    {% if ordens_servicos.number == page_number %}
-                        <button class="btn btn-outline-success btn-sm active">
-                            <span>{{ page_number }} <span class="sr-only">(Atual)</span></span>
-                        </button>
-                    {% else %}
-                        <a href="?page={{ page_number }}" class="btn btn-outline-success btn-sm">
+                    {% if page_number == 1 or page_number == ordens_servicos.paginator.num_pages %}
+                        <a href="?page={{ page_number }}" 
+                        class="btn btn-outline-success btn-sm {% if page_number == ordens_servicos.number %}active{% endif %}">
                             {{ page_number }}
                         </a>
+                    {% elif page_number >= ordens_servicos.number|add:'-1' and page_number <= ordens_servicos.number|add:'1' %}
+                        <a href="?page={{ page_number }}" 
+                        class="btn btn-outline-success btn-sm {% if page_number == ordens_servicos.number %}active{% endif %}">
+                            {{ page_number }}
+                        </a>
+                    {% elif page_number == ordens_servicos.number|add:'-2' or page_number == ordens_servicos.number|add:'2' %}
+                        <span class="btn btn-outline-success btn-sm">...</span>
                     {% endif %}
                 {% endfor %}
 

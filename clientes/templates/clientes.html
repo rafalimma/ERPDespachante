@@ -129,17 +129,17 @@
                 {% endif %}
 
                 {% for page_number in clientes.paginator.page_range %}
-                    {% if page_number == 1 or page_number == clientes.paginator.num_pages or page_number == clientes.number %}
+                    {% if page_number == 1 or page_number == clientes.paginator.num_pages %}
                         <a href="?page={{ page_number }}" 
                         class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
                             {{ page_number }}
                         </a>
-                    {% elif page_number <= clientes.number|add:'2' and page_number >= clientes.number|add:'-3' %}
+                    {% elif page_number >= clientes.number|add:'-1' and page_number <= clientes.number|add:'1' %}
                         <a href="?page={{ page_number }}" 
                         class="btn btn-outline-success btn-sm {% if page_number == clientes.number %}active{% endif %}">
                             {{ page_number }}
                         </a>
-                    {% elif page_number == 2 or page_number == clientes.paginator.num_pages|add:'-1' %}
+                    {% elif page_number == clientes.number|add:'-2' or page_number == clientes.number|add:'2' %}
                         <span class="btn btn-outline-success btn-sm">...</span>
                     {% endif %}
                 {% endfor %}
