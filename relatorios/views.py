@@ -5,11 +5,9 @@ from utils.data_extract import ordens_servico_diarias, clientes_diarios
 from clientes.models import Cliente
 from OS.models import OrdemServico, Servico
 from django.db.models import Max
-from django.core.cache import cache
 from relatorios.models import Relatorios
 from datetime import datetime
 from django.utils.timezone import make_aware
-from django.http import JsonResponse
 # Create your views here.
 
 NOME_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
@@ -23,12 +21,6 @@ def relatorios(request):
                 {'os_grafico': os_grafico,
                  'clientes_grafico': clientes_grafico,
                  'periodo': periodo})
-
-# função que retorna as datas dos ultimos objetos para o cache
-def ultima_criacao():
-    ultimo_objeto_cliente = Cliente.objects.aggregate(Max('data_criacao'))['data_criacao__max']
-    ultimo_objeto_ordem = OrdemServico.objects.aggregate(Max('data_servico'))['data_servico__max']
-    return ultimo_objeto_cliente, ultimo_objeto_ordem
 
 def os_grafico_calculo(periodo):
     # data_ultima_criacao = ultima_criacao()
@@ -45,7 +37,7 @@ def os_grafico_calculo(periodo):
             if data_ultima_os_datetime > data_ultimo_relatorio.data_atualizacao:
                 meses, os_qtds = ordens_servico_mesais()
             else:
-                meses = data_ultimo_relatorio.get_meses()
+                meses = data_ultimo_relatorio.get_meses() 
                 os_qtds = data_ultimo_relatorio.get_quantidade()
         except Relatorios.DoesNotExist:
             meses, os_qtds = ordens_servico_mesais()
