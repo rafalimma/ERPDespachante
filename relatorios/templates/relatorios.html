@@ -33,7 +33,9 @@
             <!-- Conteúdo da aba Relatórios -->
             <div class="tab-pane fade" id="relatorios" role="tabpanel" aria-labelledby="relatorios-tab">
                 <h2>Relatórios</h2>
-                <p>Aqui você pode ver os relatórios detalhados de suas atividades.</p>
+                <div class="">
+
+                </div>
             </div>
 
             <!-- Conteúdo da aba Dashboards -->
@@ -49,13 +51,21 @@
 
                 <div class="row grafico-container mt-0 ms-5 gap-5">
                     <div class="col-md-5 dashboard-card">
-                        <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
+                        {% if periodo == 'dias' %}
+                            <h5 class="titulo-grafico">Ordens de Serviço nos ultimos 15 dias</h5>
+                        {% else %}
+                            <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
+                        {% endif %}
                         <div class="grafico" id="grafico-os" style="width: 100%; overflow: visible;">
                             {{ os_grafico|safe }}
                         </div>
                     </div>
                     <div class="col-md-5 dashboard-card" >
-                        <h5 class="titulo-grafico">Novos clientes por mês</h5>
+                        {% if periodo == 'dias' %}
+                            <h5 class="titulo-grafico">Novos clientes nos ultimos 15 dias</h5>
+                        {% else %}
+                            <h5 class="titulo-grafico">Novos clientes por mês</h5>
+                        {% endif %}
                         <div class="grafico" id="grafico-clientes">
                             {{ clientes_grafico|safe }}
                         </div>

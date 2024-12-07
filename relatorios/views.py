@@ -23,10 +23,6 @@ def relatorios(request):
                  'periodo': periodo})
 
 def os_grafico_calculo(periodo):
-    # data_ultima_criacao = ultima_criacao()
-    # # tem que melhorar essa key chace pois pode dar problemas
-    # cache_key = f"os_mensal{data_ultima_criacao}"
-    # grafico_html = cache.get(cache_key)
     if periodo == 'mensal':
         try:
             data_ultimo_relatorio = Relatorios.objects.filter(tipo="ordem de serviço por mês").latest('data_atualizacao')
