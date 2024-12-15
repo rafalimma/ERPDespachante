@@ -34,3 +34,12 @@ body {
     background-color: #28a745;
     color: #fff;
 }
+#col-12 {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#col-12:hover {
+    background-color: #f1f5f9 ; /* Cor clara ao passar o mouse */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra mais destacada */
+    border-color: #d1e7dd; /* Altera a cor da borda ao passar o mouse */
+}

@@ -10,6 +10,9 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 # Create your views here.
 
+def ordem_servico(request):
+    return render(request, 'ordem_servico.html', {})
+
 NOME_MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 def relatorios(request):
     periodo = request.GET.get('periodo')

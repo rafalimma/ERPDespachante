@@ -32,9 +32,24 @@
         <div class="tab-content mt-4" id="myTabContent">
             <!-- Conteúdo da aba Relatórios -->
             <div class="tab-pane fade" id="relatorios" role="tabpanel" aria-labelledby="relatorios-tab">
-                <h2>Relatórios</h2>
-                <div class="">
-
+                <h2 class="mb-4">Relatórios</h2>
+                <div class="row g-3">
+                    <div class="col-12" id="relatorio-item">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <div class="p-4 rounded border bg-light shadow-sm d-flex justify-content-start align-items-center gap-4">
+                                <img src="{% static 'images/os_report.png' %}" alt="" style="width: 20px;">
+                                <span class="fs-5 fw-bold">Ordens de serviço do mês</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12" id="relatorio-item">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <div class="p-4 rounded border bg-light shadow-sm d-flex justify-content-start align-items-center gap-4">
+                                <img src="{% static 'images/clientesrelatorio.png' %}" alt="" style="width: 20px;">
+                                <span class="fs-5 fw-bold">Receita por cliente</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
