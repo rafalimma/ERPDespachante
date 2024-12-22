@@ -13,12 +13,12 @@
         }
         .order-details {
             margin: 0;
-            padding: 20px;
+            padding: 5px;
             border: 1px solid #000;
             background-color: #f8f9fa;
         }
         .order-header {
-            width: 100%;
+            width: 90%;
             background-color: #f8f9fa;
             padding: 10px;
             text-align: center;
@@ -34,14 +34,14 @@
             margin: 0 auto;
             margin-left: 20px;
         }
+        .table-values td {
+            border: 2px solid #bfbaba;
+            padding: 5px;
+        }
         table {
             width: 100%;
             margin-top: 15px;
             border-collapse: collapse;
-        }
-        td {
-            padding: 8px;
-            vertical-align: top;
         }
         @media print {
             body {
@@ -55,6 +55,21 @@
                 display: none;
             }
         }
+        th {
+            border: 2px solid #bfbaba;
+            padding: 8px;
+            text-align: left;
+            background-color: #69ad70;
+        }
+        td {
+            padding: 5px;
+            text-align: left;
+            width: 50%;
+            color: #4a4949;
+        }
+        strong {
+            color: rgb(0, 0, 0)
+        }
     </style>
     <title>Document</title>
 </head>
@@ -67,52 +82,64 @@
         
         <table>
             <tr>
-                <td><strong>Nome do Cliente:</strong> {{ ordem_servico.nome_cliente|upper }}</td>
-                <td><strong>Modelo do Veículo:</strong> {{ ordem_servico.modelo }}</td>
+                <td><strong>Nome do Cliente:  </strong>{{ ordem_servico.nome_cliente|upper }}</td>
+                <td><strong>Modelo do Veículo: </strong>{{ ordem_servico.modelo }}</td>
             </tr>
             <tr>
-                <td><strong>Renavam:</strong> {{ ordem_servico.renavam }}</td>
-                <td><strong>Placa:</strong> {{ ordem_servico.placa }}</td>
+                <td><strong>Renavam:  </strong> {{ ordem_servico.renavam }}</td>
+                <td><strong>Placa:   </strong> {{ ordem_servico.placa }}</td>
             </tr>
             <tr>
                 <td><strong>Chassi:</strong> {{ ordem_servico.chassi }}</td>
                 <td><strong>Cor:</strong> {{ ordem_servico.cor }}</td>
             </tr>
             <tr>
-                <td><strong>CPF do Vendedor:</strong> {{ ordem_servico.cpf_vendedor }}</td>
-                <td><strong>Concessionária:</strong> {{ ordem_servico.concessionaria }}</td>
+                <td><strong>CPF do Comprador: </strong> {{ ordem_servico.cpf_vendedor }}</td>
+                <td><strong>Concessionária: </strong> {{ ordem_servico.concessionaria }}</td>
             </tr>
             <tr>
-                <td><strong>Tipo do Veículo:</strong> {{ ordem_servico.tipo_veiculo }}</td>
-                <td><strong>Combustível:</strong> {{ ordem_servico.combustivel }}</td>
+                <td><strong>Tipo do Veículo: </strong> {{ ordem_servico.tipo_veiculo }}</td>
+                <td><strong>Combustível: </strong> {{ ordem_servico.combustivel }}</td>
             </tr>
             <tr>
                 <td><strong>Valor do Veículo:</strong> {{ ordem_servico.valor_veiculo }}</td>
                 <td><strong>Ano do Modelo:</strong> {{ ordem_servico.ano_modelo }}</td>
             </tr>
             <tr>
-                <td><strong>Data de Aquisição:</strong> {{ data.data_aq }}</td>
-                <td><strong>Data do Serviço:</strong> {{ data.data_servico }}</td>
+                <td><strong>Data de Aquisição: </strong> {{ data.data_aq }}</td>
+                <td><strong>Data do Serviço: </strong> {{ data.data_servico }}</td>
             </tr>
             <tr>
-                <td><strong>Data da Entrega:</strong> {{ data.data_entrega }}</td>
+                <td><strong>Data da Entrega: </strong> {{ data.data_entrega }}</td>
             </tr>
         </table>
 
         <hr>
         <div>
-            <h4>Serviços:</h4>
-            <ul>
-                {% for servico_os in servicos_os %}
-                    <li>{{ servico_os.servico_id.descricao }} - R$ {{ servico_os.servico_id.valor_total }}</li>
-                {% endfor %}
-            </ul>
+            <h4>Serviços prestados:</h4>
+            <table class="table-values">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for servico_os in servicos_os %}
+                    <tr>
+                        <td>{{ servico_os.servico_id.descricao }}</td>
+                        <td>R$ {{ servico_os.servico_id.valor_total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        <br>
         <hr>
         
         <table>
             <tr>
-                <td><strong>Desconto:</strong> {{ ordem_servico.desconto }}</td>
+                <td><strong>Desconto:</strong> R$ {{ ordem_servico.desconto }}</td>
             </tr>
             <tr>
                 <td><strong>Valor Final:</strong> R$ {{ ordem_servico.valor_f }}</td>
