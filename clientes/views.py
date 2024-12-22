@@ -19,7 +19,7 @@ def teste(request):
 
 @login_required
 def paginacao(request):
-    clientes = Cliente.objects.all().values('id', 'name', 'cpf_cnpj', 'telefone')
+    clientes = Cliente.objects.all().values('id', 'name', 'cpf_cnpj', 'telefone').order_by('-data_criacao')
     clientes_paginados = Paginator(clientes, 15)
     page_num = request.GET.get('page')
     clientes = clientes_paginados.get_page(page_num)
