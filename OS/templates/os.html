@@ -115,27 +115,43 @@
         {% endfor %}
         <!-- FILTRO ORDEM SERVICO -->
         <div id="divFiltro">
-            <form id="formfiltroOS" action="{% url 'filtrar_os' %}" method="GET" enctype="multipart/form-data">{% csrf_token %}
+            <form id="formfiltroOS" action="{% url 'filtrar_os' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                 <div class="row mb-3">
                     <div class="col">
-                        <label class="form-label">Selecionar filtro</label>
-                        <select class="form-control readonly-input" id="dropdown">
-                            <option value="Nome_cliente">Nome do cliente</option>
-                            <option value="Id_Cliente">Id do cliente</option>
-                            <option value="Id_Os">Id da O.S</option>
-                            <option value="veiculo">Veículo</option>
-                            <option value="Placa">Placa</option>
-                            <option value="status">Situação</option>
+                        <label for="id" class="form-label small">Identificador:</label>
+                        <input class="form-control" type="number" name="identificador">
+                    </div>
+                    <div class="col">
+                        <label for="nome" class="form-label small">Nome do Cliente:</label>
+                        <input class="form-control" type="text" name="nome">
+                    </div>
+                    <div class="col">
+                        <label for="veiculo" class="form-label small">Veículo:</label>
+                        <input class="form-control" type="text" name="veiculo">
+                    </div>
+                    <div class="col">
+                        <label for="placa" class="form-label small">Placa:</label>
+                        <input class="form-control" type="text" name="placa">
+                    </div>
+                    <div class="col">
+                        <label for="status" class="form-label small">Situação:</label>
+                        <select class="form-control" id="status" name="situacao">
+                            <option value=""></option>
+                            <option value="Em Servico">Em Serviço</option>
+                            <option value="Documento Pendente">Documento Pendente</option>
+                            <option value="Entregue">Entregue</option>
+                            <option value="Servico Faturado">Serviço Faturado</option>
+                            <option value="Pendente">Pendente</option>
                         </select>
                     </div>
-                    <img src="{% static 'images/filtro.png' %}" style="width: 55px; height: 34px; margin-top: 30px;">
                     <div class="col">
-                        <label class="form-label">Filtrar por</label>
-                        <input type="text" class="form-control readonly-input" id="InputFiltro">
+                        <label for="data" class="form-label small">Data do Serviço:</label>
+                        <input class="form-control" type="date" name="data">
                     </div>
                 </div>
                 <div class="d-flex justify-content-end align-items-center">
-                    <button type="button" class="btn btn-success" id="btnFiltrar">Filtrar </button>
+                    <button type="reset" class="btn btn-secondary me-3" id="btnResetar">Resetar</button>
+                    <button type="submit" class="btn btn-secondary" id="btnFiltrar">Filtrar </button>
                 </div>
             </form>
         </div>

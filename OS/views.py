@@ -12,6 +12,8 @@ from datetime import date
 import weasyprint # type: ignore
 from django.contrib.auth.decorators import login_required
 from utils.validador import validador
+from django.db.models import Q
+
 DEFAULT_DATE = ""
 
 CLIENTES = Cliente.objects.all()
@@ -358,26 +360,37 @@ def filtrar_documentos(request):
     return render(request, 'consultaos.html', {'documentos': documentos})
 
 def filtrar_os(request):
-    tipo = request.GET.get('tipo')
-    valor_filtro = request.GET.get('valor_filtro')
+    if request.method == 'POST':
+        identificador = request.POST.get('identificador')
+        nome = request.POST.get('nome')
+        placa = request.POST.get('placa')
+        veiculo = request.POST.get('veiculo')
+        situacao = request.POST.get('situacao')
+        data = request.POST.get('data')
 
-    if valor_filtro:
-        if tipo == 'nome_cliente':
-            os_filtrada = OrdemServico.objects.filter(nome_cliente__icontains=valor_filtro)
-        elif tipo == 'id_cliente' and valor_filtro.isdigit():
-            os_filtrada = OrdemServico.objects.filter(cliente_id=valor_filtro)
-        elif tipo == 'id_os' and valor_filtro.isdigit():
-            os_filtrada = OrdemServico.objects.filter(id=valor_filtro)
-        elif tipo == 'veiculo':
-            os_filtrada = OrdemServico.objects.filter(modelo__icontains=valor_filtro)
-        elif tipo == 'status':
-            os_filtrada = OrdemServico.objects.filter(status__icontains=valor_filtro)
-        else:
-            os_filtrada = OrdemServico.objects.filter(placa=valor_filtro)
+        filtro = Q()
+        if identificador:
+            filtro &= Q(id=identificador)
+        if nome:
+            filtro &= Q(nome_cliente__icontains=nome)
+        if veiculo:
+            filtro &= Q(modelo__icontains=veiculo)
+        if placa:
+            filtro &= Q(placa__icontains=placa)
+        if situacao:
+            filtro &= Q(status=situacao)
+        if data:
+            filtro &= Q(data_servico=data)
 
-        if os_filtrada:
-            return render(request, 'os.html', {'ordens_servicos': os_filtrada})
+        if not any([identificador, nome, placa, veiculo, situacao, data]):
+            messages.warning(request, 'Preencha pelo menos um campo para realizar a busca.')
+            return redirect('ordem_servico')
+
+        ordem_servico = OrdemServico.objects.filter(filtro)
+        if ordem_servico.exists():
+            return render(request, 'os.html', {'ordens_servicos': ordem_servico})
         else:
+            print('foi no elseee')
             messages.error(request, 'Nenhum resultado foi encontrado!')
     return redirect('ordem_servico')
 
