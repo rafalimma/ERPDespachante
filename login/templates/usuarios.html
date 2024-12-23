@@ -105,17 +105,16 @@
                         <td>{{usuario.first_name}}</td>
                         <td>{{usuario.last_name}}</td>
                         <td>
-                            <!-- EDITAR USUARIO -->
-                            <a href="{% url 'editar_usuario' usuario.id %}"  title="EDITAR" style="height: 20px; margin-left: -5px;">
-                                <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
-                            </a>
-                        </td>
-                        <td>
-                            {% if usuario.is_active %}
-                                <img src="{% static 'images/active.png' %}" title="USUÁRIO ATIVO" style="width: 22px; height: 16px; margin-left: -120px;">
-                            {% else %}
-                                <img src="{% static 'images/inactive (2).png' %}" title="USUÁRIO INATIVO" style="width: 25px; height: 17px; margin-left: -120px;">
-                            {% endif %}
+                            <div style="display: flex; gap: 12px;">
+                                <a href="{% url 'editar_usuario' usuario.id %}"  title="EDITAR" >
+                                    <img src="{% static 'images/editar.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                {% if usuario.is_active %}
+                                    <img src="{% static 'images/active.png' %}" title="USUÁRIO ATIVO" style="width: 22px; height: 16px;">
+                                {% else %}
+                                    <img src="{% static 'images/inactive (2).png' %}" title="USUÁRIO INATIVO" style="width: 25px; height: 17px;">
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

@@ -264,28 +264,24 @@
                         <td>{{ordem_servico.status}}</td>
                         <td style="color: #2ac44e; font-weight: bold;">{{ordem_servico.valor_f}}</td>
                         <td>
-                            <!-- EXCLUIR  ORDEM DE SERVIÇO -->
-                            <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px; margin-left: 10px;">
-                                <img src="{% static 'images/excluir.png' %}" style="width: 24px; height: 22px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- CONSULTAR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'consultar_os' ordem_servico.id %}"  title="CONSULTAR" style="height: 20px; margin-left: -71px;">
-                                <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- EDITAR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'editar_os' ordem_servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -70px;">
-                                <img src="{% static 'images/editaros.png' %}" style="width: 22px; height: 23px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- IMPRIMIR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px; margin-left: -60px;">
-                                <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
-                            </a>
+                            <div style="display: flex; gap: 8px;">
+                                <!-- EXCLUIR  ORDEM DE SERVIÇO -->
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px;">
+                                    <img src="{% static 'images/excluir.png' %}" style="width: 22px; height: 22px;">
+                                </a>
+                                <!-- CONSULTAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'consultar_os' ordem_servico.id %}"  title="CONSULTAR" style="height: 20px;">
+                                    <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- EDITAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'editar_os' ordem_servico.id %}"  title="EDITAR" style="height: 20px;">
+                                    <img src="{% static 'images/editaros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- IMPRIMIR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px;">
+                                    <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
