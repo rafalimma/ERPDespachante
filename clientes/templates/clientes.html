@@ -46,7 +46,7 @@
             display: none; /* Oculta o formulário de filtro inicialmente */
             position: relative;
             background-color: white;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
             padding: 5px;
             z-index: 1000;
         }
@@ -95,22 +95,37 @@
 
         <!-- FORMULÁRIO DO FILTRO QUE FICA OCULTO INICIALMENTE: -->
         <div id="divFiltro">
-            <form id="cadastroForm" action="{% url 'filtro_clientes' %}" method="GET" enctype="multipart/form-data"> 
-                {% csrf_token %}
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Filtrar por:</h5>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="tipocpf" value="cpf">
-                        <label class="form-check-label" for="filtroCnpj">CPF</label>
+            <form id="cadastroForm" action="{% url 'filtro_clientes' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
+                <div class="row mb-2">
+                    <div class="col">
+                        <label for="identificador" class="form-label small">Identificador: </label>
+                        <input class="form-control" type="number" name="identificador">
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="tiponome" value="nome">
-                        <label class="form-check-label" for="filtroNome">Nome</label>
+                    <div class="col">
+                        <label for="nome" class="form-label small">Nome do cliente: </label>
+                        <input class="form-control" type="text" name="nome">
                     </div>
-                    <input type="text" class="form-control readonly-input" name="valor_filtro" value="{{ request.GET.valor_filtro }}" placeholder="Digite aqui...">
+                    <div class="col">
+                        <label for="telefone" class="form-label small">Telefone: </label>
+                        <input class="form-control" type="text" name="telefone">
+                    </div>
+                    <div class="col">
+                        <label for="cpf_cnpj" class="form-label small">CPF ou CNPJ: </label>
+                        <input class="form-control" type="text" name="cpf_cnpj">
+                    </div>
+                    <div class="col">
+                        <label for="cidade" class="form-label small">Cidade: </label>
+                        <input class="form-control" type="text" name="cidade">
+                    </div>
+                    <div class="col">
+                        <label for="data" class="form-label small">Data de criação: </label>
+                        <input class="form-control" type="date" name="data">
+                    </div>
                 </div>
-                <button type="button" class="btn btn-success" id="btnFiltrar">Filtrar</button>
-                <!-- Tanto o valor do input quando o valor do check-box são passados pela url (JAVA-SCRIPT) -->
+                <div class="d-flex justify-content-end align-items-center">
+                    <button type="reset" class="btn btn-secondary me-3" id="btnResetar">Resetar</button>
+                    <button type="submit" class="btn btn-secondary" id="btnFiltrar">Filtrar </button>
+                </div>
             </form>
         </div>
 
@@ -123,7 +138,7 @@
         {% endfor %}
         <!-- NAVEGAÇÃO DE PAGINAS DE CADASTROS DOS CLIENTES -->
         {% if clientes.has_other_pages %}
-            <div class="btn-group" role="group" aria-label="Item pagination" style="margin-left: 520px; margin-top: 30px; margin-bottom: -14px;">
+            <div class="btn-group" role="group" aria-label="Item pagination" style="margin-left: 555px; margin-top: 30px; margin-bottom: -14px;">
                 {% if clientes.has_previous %}
                     <a href="?page={{ clientes.previous_page_number }}" class="btn btn-outline-success btn-sm">&laquo;</a>
                 {% endif %}
@@ -227,32 +242,32 @@
             $('#deleteForm').attr('action', url);
         });
         // FILTRO
-        document.getElementById('btnFiltrar').addEventListener('click', function(event) {
-            let tipo = '';
-            if (document.getElementById('tipocpf').checked) {
-                tipo = 'cpf';
-            } else if (document.getElementById('tiponome').checked) {
-                tipo = 'nome';
-            }
+    //     document.getElementById('btnFiltrar').addEventListener('click', function(event) {
+    //         let tipo = '';
+    //         if (document.getElementById('tipocpf').checked) {
+    //             tipo = 'cpf';
+    //         } else if (document.getElementById('tiponome').checked) {
+    //             tipo = 'nome';
+    //         }
 
-            let valorFiltro = document.querySelector('input[name="valor_filtro"]').value;
-            let url = `{% url 'filtro_clientes' %}?tipo=${tipo}&valor_filtro=${valorFiltro}`;
-            window.location.href = url;
-    });
+    //         let valorFiltro = document.querySelector('input[name="valor_filtro"]').value;
+    //         let url = `{% url 'filtro_clientes' %}?tipo=${tipo}&valor_filtro=${valorFiltro}`;
+    //         window.location.href = url;
+    // });
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    // const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
     // Adiciona um event listener a cada check-box
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            // Desmarca todos os check-boxes exceto o que foi selecionado
-            checkboxes.forEach(cb => {
-                if (cb !== checkbox) {
-                    cb.checked = false;
-                }
-            });
-        });
-    });
+    // checkboxes.forEach(checkbox => {
+    //     checkbox.addEventListener('change', function() {
+    //         // Desmarca todos os check-boxes exceto o que foi selecionado
+    //         checkboxes.forEach(cb => {
+    //             if (cb !== checkbox) {
+    //                 cb.checked = false;
+    //             }
+    //         });
+    //     });
+    // });
 
 
     </script>

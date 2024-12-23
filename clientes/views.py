@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from OS.models import OrdemServico
 from django.contrib.auth.decorators import login_required
 from utils.validador import validador
+from django.db.models import Q
 
 
 def teste(request):
@@ -117,23 +118,56 @@ def excluir_cliente(request, id):
         return redirect(reverse('cadastro_clientes'))
 
 def filtro_clientes(request):
-    # é feito um fetch na url e tipo e valor_filtro são passadas (java-script)
-    tipo = request.GET.get('tipo')
-    valor_filtro = request.GET.get('valor_filtro')
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        cpf_cnpj = request.POST.get('cpf_cnpj')
+        telefone = request.POST.get('telefone')
+        identificador = request.POST.get('identificador')
+        cidade = request.POST.get('cidade')
+        data = request.POST.get('data')
 
-    if tipo == 'nome':
-        cliente_filtrado = Cliente.objects.filter(name__icontains=valor_filtro)
-        if cliente_filtrado:
-            print('filtro por nome')
-            return render(request, 'clientes.html', {'clientes': cliente_filtrado})
+        filtro = Q()
+        if identificador:
+            filtro &= Q(id=identificador)
+        if nome:
+            filtro &= Q(name__icontains=nome)
+        if telefone:
+            filtro &= Q(telefone__icontains=telefone)
+        if cpf_cnpj:
+            filtro &= Q(cpf_cnpj__icontains=cpf_cnpj)
+        if cidade:
+            filtro &= Q(cidade=cidade)
+        if data:
+            filtro &= Q(data_criacao__date=data)
+
+        if not any([identificador, nome, telefone, cpf_cnpj, cidade, data]):
+            messages.warning(request, 'Preencha pelo menos um campo para realizar a busca.')
+            return redirect('clientes')
+        
+        clientes = Cliente.objects.filter(filtro)
+        if clientes.exists():
+            return render(request, 'clientes.html', {'clientes': clientes})
         else:
             messages.error(request, 'Nenhum resultado foi encontrado!')
-    elif tipo == 'cpf':
-        cliente_filtrado = Cliente.objects.filter(cpf_cnpj=valor_filtro)
-        if cliente_filtrado:
-            return render(request, 'clientes.html', {'clientes': cliente_filtrado})
-        else:
-            messages.error(request, 'Nenhum resultado foi encontrado!')
+
+    return redirect('clientes')
+    # é feito um fetch na url e tipo e valor_filtro são passadas (java-script)
+    # tipo = request.GET.get('tipo')
+    # valor_filtro = request.GET.get('valor_filtro')
+
+    # if tipo == 'nome':
+    #     cliente_filtrado = Cliente.objects.filter(name__icontains=valor_filtro)
+    #     if cliente_filtrado:
+    #         print('filtro por nome')
+    #         return render(request, 'clientes.html', {'clientes': cliente_filtrado})
+    #     else:
+    #         messages.error(request, 'Nenhum resultado foi encontrado!')
+    # elif tipo == 'cpf':
+    #     cliente_filtrado = Cliente.objects.filter(cpf_cnpj=valor_filtro)
+    #     if cliente_filtrado:
+    #         return render(request, 'clientes.html', {'clientes': cliente_filtrado})
+    #     else:
+    #         messages.error(request, 'Nenhum resultado foi encontrado!')
 
     return paginacao(request)
 
