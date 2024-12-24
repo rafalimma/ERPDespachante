@@ -193,7 +193,7 @@ def clientes_grafico_calculo(periodo):
             # title='Ordens de Serviço por Mês',
             width=490,
             height=300,
-            yaxis_title='Número de Ordens',
+            yaxis_title='Clientes',
             xaxis=dict(showgrid=False,
                     range=[-0.1, len(dias) - 0.9],
                     tickmode='array',# Define os valores como uma lista de categorias

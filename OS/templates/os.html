@@ -216,13 +216,26 @@
                     </div>
                     <form action="{% url 'atualizar_status' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                         <div class="modal-body">
-                            Tem certeza que deseja alterar a situação da ordem de serviço?
+                            <label class="form-label">Alterar situaçõa da ordem de serviço.</label>
+                            <input class="form-control" type="number" name="id_ordem_servicos" id="os_id" readonly>
+                            <label class="form-label">Situação atual: </label>
+                            <input class="form-control" type="text" name="atual_status" id="atual_status" readonly>
+                            <label class="form-label">Nova situação: </label>
+                            <select class="form-control" name="novo_status" id="novo_status">
+                                <option value="Em Servico">Em Serviço</option>
+                                <option value="Documento Pendente">Documento Pendente</option>
+                                <option value="Entregue">Entregue</option>
+                                <option value="Servico Faturado">Serviço Faturado</option>
+                                <option value="Pendente">Pendente</option>
+                            </select>
+                            <label class="form-label">Observações: </label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="5" cols="40"></textarea>
+                            Documento:
+                            <input class="form-control" type="file" name="file" id="file">
                         </div>
-                        <input type="hidden" name="id_ordem_servicos" id="os_id">
-                        <input type="hidden" name="novo_status" id="novo_status">
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                            <button type="submit" class="btn btn-success">Sim</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Enviar</button>
                         </div>
                     </form>
                 </div>
@@ -246,17 +259,17 @@
                     <tr>
                         <th>
                             {{ordem_servico.id}}
-                            <a href="#" class="openOptions">
+                            <a href="#" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
-                            <div class="option-box" id="box">
+                            <!-- <div class="option-box" id="box">
                                 <p class="text-success" style="font-size: 12px; border-bottom: 1px solid black; height: 15px; display: block; margin-bottom: -2px;">Alterar Situação:</p>
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Em Servico')">Em Serviço</a>
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Documento Pendente')">Documento Pendente</a>
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Entregue')">Entregue</a>
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Servico Faturado')">Serviço Faturado</a>
                                 <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Pendente')">Pendente</a>
-                            </div>
+                            </div> -->
                         </th>
                         <td>{{ordem_servico.nome_cliente|upper}}</td>
                         <td>{{ordem_servico.modelo}}</td>
@@ -311,36 +324,36 @@
             });
         });
 
-        document.getElementById('btnFiltrar').addEventListener('click', function(event) {
-            var filterType = document.getElementById('dropdown').value;
-            let tipo = '';
+        // document.getElementById('btnFiltrar').addEventListener('click', function(event) {
+        //     var filterType = document.getElementById('dropdown').value;
+        //     let tipo = '';
 
-            if (filterType == 'Nome_cliente') {
-                tipo = 'nome_cliente';
-            } else if (filterType == 'Id_Cliente') {
-                tipo = 'id_cliente';
-            } else if (filterType == 'Id_Os') {
-                tipo = 'id_os';
-            } else if (filterType == 'veiculo') {
-                tipo = 'veiculo';
-            } else if (filterType == 'status') {
-                tipo = 'status';
-            } else {
-                tipo = 'placa';
-            }
+        //     if (filterType == 'Nome_cliente') {
+        //         tipo = 'nome_cliente';
+        //     } else if (filterType == 'Id_Cliente') {
+        //         tipo = 'id_cliente';
+        //     } else if (filterType == 'Id_Os') {
+        //         tipo = 'id_os';
+        //     } else if (filterType == 'veiculo') {
+        //         tipo = 'veiculo';
+        //     } else if (filterType == 'status') {
+        //         tipo = 'status';
+        //     } else {
+        //         tipo = 'placa';
+        //     }
 
-            var filterValue = document.getElementById('InputFiltro').value;
-            console.log(filterValue);
+        //     var filterValue = document.getElementById('InputFiltro').value;
+        //     console.log(filterValue);
 
-            let url = `{% url 'filtrar_os' %}?tipo=${tipo}&valor_filtro=${filterValue}`;
-            window.location.href = url;
-        });
+        //     let url = `{% url 'filtrar_os' %}?tipo=${tipo}&valor_filtro=${filterValue}`;
+        //     window.location.href = url;
+        // });
 
-        function AlterarStatus(id_os, novo_status) {
+        function AlterarStatus(id_os, status_atual) {
             var input_id = document.getElementById('os_id');
-            var input_status = document.getElementById('novo_status');
             input_id.value = id_os;
-            input_status.value = novo_status;
+            var input_status = document.getElementById('atual_status');
+            input_status.value = status_atual;
         }
         $(document).ready(function() {
             $('.openOptions').click(function(event) {
@@ -364,7 +377,7 @@
                 }
             });
 
-            $('.option-link').click(function(event) {
+            $('.change-status').click(function(event) {
                 event.preventDefault();
                 $('.option-box').hide();
                 $('#confirmationModal').modal('show');

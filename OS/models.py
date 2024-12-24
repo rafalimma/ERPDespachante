@@ -58,3 +58,10 @@ class Documentos(models.Model):
     def is_pdf(self):
         return self.arquivo.url.lower().endswith(('.pdf'))
     
+class Eventos(models.Model):
+    os_id = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
+    status_anterior = models.CharField(max_length=30, default='')
+    status_atual = models.CharField(max_length=30, default='')
+    observacoes = models.TextField(blank=True, null=True)
+    data = models.DateField(default=datetime.date.today)
+    horario = models.TimeField(auto_now_add=True)

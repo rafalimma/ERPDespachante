@@ -399,7 +399,6 @@ def atualizar_status(request):
     if request.method == 'POST':
         id_ordem_servico = request.POST.get('id_ordem_servicos')
         novo_status = request.POST.get('novo_status')
-        print('aq ta tudo na paz')
         ordem_servico = get_object_or_404(OrdemServico, pk=id_ordem_servico)
 
         ordem_servico.status = novo_status
