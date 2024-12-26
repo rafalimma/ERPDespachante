@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
-from .models import OrdemServico, Servico, Servico_os, Documentos
+from .models import OrdemServico, Servico, Servico_os, Documentos, Eventos
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.urls import reverse
@@ -399,10 +399,13 @@ def atualizar_status(request):
     if request.method == 'POST':
         id_ordem_servico = request.POST.get('id_ordem_servicos')
         novo_status = request.POST.get('novo_status')
+        status_anterior = request.POST.get('atual_status')
+        observacoes = request.POST.get('observacoes')
         ordem_servico = get_object_or_404(OrdemServico, pk=id_ordem_servico)
 
         ordem_servico.status = novo_status
         ordem_servico.save()
+        evento = Eventos()
         messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
         return redirect('ordem_servico')
     else:

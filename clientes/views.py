@@ -151,25 +151,6 @@ def filtro_clientes(request):
             messages.error(request, 'Nenhum resultado foi encontrado!')
 
     return redirect('clientes')
-    # é feito um fetch na url e tipo e valor_filtro são passadas (java-script)
-    # tipo = request.GET.get('tipo')
-    # valor_filtro = request.GET.get('valor_filtro')
-
-    # if tipo == 'nome':
-    #     cliente_filtrado = Cliente.objects.filter(name__icontains=valor_filtro)
-    #     if cliente_filtrado:
-    #         print('filtro por nome')
-    #         return render(request, 'clientes.html', {'clientes': cliente_filtrado})
-    #     else:
-    #         messages.error(request, 'Nenhum resultado foi encontrado!')
-    # elif tipo == 'cpf':
-    #     cliente_filtrado = Cliente.objects.filter(cpf_cnpj=valor_filtro)
-    #     if cliente_filtrado:
-    #         return render(request, 'clientes.html', {'clientes': cliente_filtrado})
-    #     else:
-    #         messages.error(request, 'Nenhum resultado foi encontrado!')
-
-    return paginacao(request)
 
 
 

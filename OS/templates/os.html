@@ -262,14 +262,6 @@
                             <a href="#" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
-                            <!-- <div class="option-box" id="box">
-                                <p class="text-success" style="font-size: 12px; border-bottom: 1px solid black; height: 15px; display: block; margin-bottom: -2px;">Alterar Situação:</p>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Em Servico')">Em Serviço</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Documento Pendente')">Documento Pendente</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Entregue')">Entregue</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Servico Faturado')">Serviço Faturado</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Pendente')">Pendente</a>
-                            </div> -->
                         </th>
                         <td>{{ordem_servico.nome_cliente|upper}}</td>
                         <td>{{ordem_servico.modelo}}</td>
@@ -324,31 +316,6 @@
             });
         });
 
-        // document.getElementById('btnFiltrar').addEventListener('click', function(event) {
-        //     var filterType = document.getElementById('dropdown').value;
-        //     let tipo = '';
-
-        //     if (filterType == 'Nome_cliente') {
-        //         tipo = 'nome_cliente';
-        //     } else if (filterType == 'Id_Cliente') {
-        //         tipo = 'id_cliente';
-        //     } else if (filterType == 'Id_Os') {
-        //         tipo = 'id_os';
-        //     } else if (filterType == 'veiculo') {
-        //         tipo = 'veiculo';
-        //     } else if (filterType == 'status') {
-        //         tipo = 'status';
-        //     } else {
-        //         tipo = 'placa';
-        //     }
-
-        //     var filterValue = document.getElementById('InputFiltro').value;
-        //     console.log(filterValue);
-
-        //     let url = `{% url 'filtrar_os' %}?tipo=${tipo}&valor_filtro=${filterValue}`;
-        //     window.location.href = url;
-        // });
-
         function AlterarStatus(id_os, status_atual) {
             var input_id = document.getElementById('os_id');
             input_id.value = id_os;
@@ -356,26 +323,6 @@
             input_status.value = status_atual;
         }
         $(document).ready(function() {
-            $('.openOptions').click(function(event) {
-                event.preventDefault();
-                var optionBox = $(this).siblings('.option-box');
-                var offset = $(this).offset();
-
-                // Esconde todos os option-box antes de mostrar o novo
-                $('.option-box').not(optionBox).hide();
-
-                optionBox.css({
-                    top: offset.top - optionBox.outerHeight() - 10,
-                    left: offset.left
-                }).toggle();
-            });
-
-            // Define o manipulador de clique no documento apenas uma vez
-            $(document).click(function(event) {
-                if (!$(event.target).closest('.openOptions, .option-box').length) {
-                    $('.option-box').hide();
-                }
-            });
 
             $('.change-status').click(function(event) {
                 event.preventDefault();

@@ -65,3 +65,4 @@ class Eventos(models.Model):
     observacoes = models.TextField(blank=True, null=True)
     data = models.DateField(default=datetime.date.today)
     horario = models.TimeField(auto_now_add=True)
+    arquivo = models.FileField(upload_to='documents/')
