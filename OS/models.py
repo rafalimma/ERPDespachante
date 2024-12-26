@@ -59,10 +59,13 @@ class Documentos(models.Model):
         return self.arquivo.url.lower().endswith(('.pdf'))
     
 class Eventos(models.Model):
-    os_id = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
+    os = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
     status_anterior = models.CharField(max_length=30, default='')
     status_atual = models.CharField(max_length=30, default='')
     observacoes = models.TextField(blank=True, null=True)
     data = models.DateField(default=datetime.date.today)
     horario = models.TimeField(auto_now_add=True)
-    arquivo = models.FileField(upload_to='documents/')
+    arquivo = models.FileField(upload_to='documents/', null=True, blank=True)
+
+    def __str__(self):
+        return self.data.strftime('%d/%B/%Y')

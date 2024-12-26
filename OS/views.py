@@ -251,6 +251,7 @@ def consultar_os(request, id):
 def editar_os(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos_os = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    eventos = Eventos.objects.filter(os=id)
     print(f"Serviços da os: {servicos_os}")
     documentos_da_os = Documentos.objects.filter(ordem_servico_id=ordem_servico)
     dados = {'modelo': ordem_servico.modelo,
@@ -272,7 +273,6 @@ def editar_os(request, id):
              'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
              'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
              }
-    # servicos = Servico.objects.all() #para os tipos de serviços existentes
     return render(
         request,
         'editaros.html',
@@ -280,7 +280,8 @@ def editar_os(request, id):
          'servicos_os': servicos_os,
          'documentos': documentos_da_os,
          'data': dados,
-         'servicos': SERVICOS}
+         'servicos': SERVICOS,
+         'eventos': eventos}
     )
 
 @login_required
@@ -401,11 +402,15 @@ def atualizar_status(request):
         novo_status = request.POST.get('novo_status')
         status_anterior = request.POST.get('atual_status')
         observacoes = request.POST.get('observacoes')
-        ordem_servico = get_object_or_404(OrdemServico, pk=id_ordem_servico)
+        documento = request.FILES.get('file')
+        ordem_servico = OrdemServico.objects.get(id=id_ordem_servico)
 
         ordem_servico.status = novo_status
         ordem_servico.save()
-        evento = Eventos()
+        evento = Eventos(os=ordem_servico, status_anterior=status_anterior,
+                         status_atual=novo_status, observacoes=observacoes,
+                         arquivo=documento)
+        evento.save()
         messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
         return redirect('ordem_servico')
     else:
