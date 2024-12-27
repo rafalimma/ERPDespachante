@@ -242,11 +242,32 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p><strong>ID:</strong> <span id="evento-id"></span></p>
-                        <p><strong>Cod. OS:</strong> <span id="evento-os"></span></p>
-                        <p><strong>Situação Anterior:</strong> <span id="evento-status-anterior"></span></p>
-                        <p><strong>Situação Nova:</strong> <span id="evento-status-atual"></span></p>
-                        <p><strong>Data:</strong> <span id="evento-data"></span></p>
+                        <div class="row">
+                            <div class="col">
+                                <label for="id" class="form-label small">Identificador:</label>
+                                <input type="text" id="evento-id" readonly class="form-control">
+                                <label for="data" class="form-label small">Data do evento:</label>
+                                <input type="text" id="evento-data" readonly class="form-control">
+                                <label for="horario" class="form-label small">Horário:</label>
+                                <input type="text" id="evento-horario" readonly class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="situacao" class="form-label small">Situação anterior:</label>
+                                <input type="text" id="evento-status-anterior" readonly class="form-control">
+                                <label for="situacao" class="form-label small">Nova situação:</label>
+                                <input type="text" id="evento-status-atual" readonly class="form-control">
+                                <label for="situacao" class="form-label small">Observações:</label>
+                                <textarea type="text" id="evento-observacoes" readonly class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p><strong class="text-success">Documento:</strong><span id="evento-arquivo"></span></p>
+                            <a id="evento-arquivo-link" href="{{ evento.arquivo.url }}" class="mt-1" title="DOWNLOAD" download>
+                                <img src="{% static 'images/download_doc.png' %}" style="width: 28px; height: 25px;" alt="Download">
+                            </a>
+                        </div>   
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -454,17 +475,21 @@
                                 <td>{{ evento.status_atual }}</td>
                                 <td>{{ evento.data|date:"d/m/Y" }}</td>
                                 <td>
-                                    <a href="#" 
-                                        data-toggle="modal" 
-                                        data-target="#Consultarevento" 
-                                        title="CONSULTAR EVENTO" 
-                                        data-id="{{ evento.pk }}" 
-                                        data-os="{{ evento.os.id|stringformat:'04d' }}" 
-                                        data-status-anterior="{{ evento.status_anterior }}" 
-                                        data-status-atual="{{ evento.status_atual }}" 
-                                        data-data="{{ evento.data|date:'d/m/Y' }}" 
+                                    <a href="#"
+                                        onclick="CarregarModal(this)"
+                                        data-toggle="modal"
+                                        data-target="#Consultarevento"
+                                        title="CONSULTAR EVENTO"
+                                        data-id="{{ evento.pk }}"
+                                        data-os="{{ evento.os.id|stringformat:'04d' }}"
+                                        data-status-anterior="{{ evento.status_anterior }}"
+                                        data-status-atual="{{ evento.status_atual }}"
+                                        data-data="{{ evento.data|date:'d/m/Y' }}"
+                                        data-hora="{{ evento.horario }}"
+                                        data-observacoes="{{ evento.observacoes }}"
+                                        data-arquivo="{{ evento.arquivo }}"
                                         style="height: 20px; margin-left: 15px;">
-                                            <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
+                                        <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
                                     </a>
                                 </td>
                             </tr>
@@ -475,7 +500,37 @@
         </div>
     </div>
     <script>
+        function CarregarModal(element) {
+            // Recupera os dados do elemento clicado
+            var link = $(element); // Aqui 'element' é passado diretamente no onclick
+            console.log("Carregando modal com os dados do evento");
 
+            var id = link.data('id');
+            var os = link.data('os');
+            var statusAnterior = link.data('status-anterior');
+            var statusAtual = link.data('status-atual');
+            var data = link.data('data');
+            var horario = link.data('hora');
+            var observacoes = link.data('observacoes');
+            var arquivo = link.data('arquivo');
+
+            // Seleciona o modal pelo id definido no atributo 'data-target'
+            var modal = $('#Consultarevento');
+            
+            // Atualiza os campos do modal com os dados recuperados
+            modal.find('#evento-id').val(id);
+            modal.find('#evento-os').val(os);
+            modal.find('#evento-data').val(data);
+            modal.find('#evento-horario').val(horario);
+            modal.find('#evento-status-anterior').val(statusAnterior);
+            modal.find('#evento-status-atual').val(statusAtual);
+            modal.find('#evento-observacoes').val(observacoes);
+
+            // Configura o link de download
+            var arquivoLink = modal.find('#evento-arquivo-link');
+            arquivoLink.attr('href', arquivo);
+            modal.find('#evento-arquivo').text(arquivo);
+        }
         function buscarServico(inputElement) {
             console.log("entrou na função");
             let id_novo_servico = document.getElementById("id_novo_servico");
