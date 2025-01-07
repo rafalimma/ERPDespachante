@@ -11,6 +11,7 @@ from relatorios import views as reportviews
 urlpatterns = [
     # home
     path('', homeviews.home, name='home'),
+    path('voltar', homeviews.voltar, name='voltar'),
     # clientes
     path('clientes', clienteviews.clientes, name='clientes'),
     path('cadastro_clientes', clienteviews.cadastro_clientes, name='cadastro_clientes'),

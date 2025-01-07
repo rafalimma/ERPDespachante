@@ -21,7 +21,7 @@ def login(request):
 
         if user:
             auth_login(request, user)
-            return redirect(reverse('home'))
+            return redirect(reverse('home') + '?periodo=mensal')
         else:
             messages.error(request, "Usuários ou senha inválidos.")
     return render(request, 'login.html')

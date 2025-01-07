@@ -57,8 +57,8 @@ def os_grafico_calculo(periodo):
                 
         fig.update_layout(
             # title='Ordens de Serviço por Mês',
-            width=490,
-            height=300,
+            width=410,
+            height=290,
             yaxis_title='Número de Ordens',
             xaxis=dict(showgrid=False,
                     range=[-0.1, len(meses) - 0.9],
@@ -98,9 +98,9 @@ def os_grafico_calculo(periodo):
         ))
 
         fig.update_layout(
-            # title='Ordens de Serviço por Mês',
-            width=490,
-            height=300,
+            # title='Ordens de Serviço por dias',
+            width=410,
+            height=290,
             yaxis_title='Número de Ordens',
             xaxis=dict(showgrid=False,
                     range=[-0.1, len(dias) - 0.9],
@@ -149,8 +149,8 @@ def clientes_grafico_calculo(periodo):
             textposition='top center'
             ))
         fig.update_layout(
-            width=490,
-            height=300,
+            width=410,
+            height=290,
             yaxis_title='Clientes',
             xaxis=dict(showgrid=False,
                     tickmode='array',# Define os valores como uma lista de categorias
@@ -191,8 +191,8 @@ def clientes_grafico_calculo(periodo):
 
         fig.update_layout(
             # title='Ordens de Serviço por Mês',
-            width=490,
-            height=300,
+            width=410,
+            height=290,
             yaxis_title='Clientes',
             xaxis=dict(showgrid=False,
                     range=[-0.1, len(dias) - 0.9],

@@ -22,51 +22,188 @@
           color: green; 
           text-decoration: underline; 
         }
+        .container-dash {
+            margin: 0;
+            padding: 0;
+        }
+        .frame {
+            display: none; /* Esconde todas as páginas por padrão */
+            width: 100%;
+            height: calc(100vh - 50px); /* Altura total menos a navbar */
+            overflow: auto;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .frame.active {
+            display: block; /* Apenas o frame ativo será visível */
+        }
+        .thumb:nth-child(odd){clear: both;}
+        .grafico-container {
+            margin-top: 0 !important;
+        }
+        .titulo-grafico {
+            margin-bottom: 0 !important;
+        }
+        .dashboard-card {
+            background-color: #e7e8e8; /* Cor de fundo suave */
+            border: 1px solid #d5d6d8; /* Borda com leve relevo */
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para relevo */
+            margin-bottom: 20px; /* Espaço abaixo para evitar sobreposição */
+            width: 430px;
+        }
+        .grafico {
+            width: 700px;
+            height: 300px; /* Define uma altura padrão para os gráficos */
+        }
+        .filter {
+            width: 300px;
+            height: 80px;
+            margin-left: 50px;
+            background-color: #e7e8e8; /* Cor de fundo suave */
+            border: 1px solid #d5d6d8; /* Borda com leve relevo */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .btn.active {
+            background-color: #28a745;
+            color: #fff;
+        }
       </style>
     <title>Home</title>
 </head>
 <body class="bg-light" style="font-family: 'Poppins', sans-serif;">
-    <div class="container" style="margin-top: 90px;">
-        <div class="row justify-content-center">
-            <!-- Primeira linha com as 4 divs -->
-            <div class="col-md-3 d-flex flex-column align-items-center">
-                <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
-                    <img src="{% static 'images/clientes_icon.png' %}" class="img-fluid" style="width: 122px; height: 123px;">
-                    <p class="hover-link text-center">Clientes</p>
-                </a>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-                <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
-                    <img src="{% static 'images/os_icon.png' %}" class="img-fluid" style="width: 122px; height: 120px;">
-                    <p class="hover-link text-center" style="margin-left: -20px;">Ordem de Serviço</p>
-                </a>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-                <a href="{% url 'servicos' %}" style="text-decoration: none;">
-                    <img src="{% static 'images/servico.png' %}" class="img-fluid" style="width: 140px; height: 126px;">
-                    <p class="hover-link text-center">Serviços</p>
-                </a>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-                <a href="{% url 'usuarios' %}" style="text-decoration: none;">
-                    <img src="{% static 'images/users.png' %}" class="img-fluid" style="width: 140px; height: 128px;">
-                    <p class="hover-link text-center">Usuários</p>
-                </a>
-            </div>
+    <div class="frame" id="frame-workstation">
+        <div style="margin-left: 130px; height: 46px;">
+            <h4 style="margin-top: 20px;">Trabalho - Kride despachante</h4>
         </div>
-        
-        <!-- Segunda linha com a div de relatórios -->
-        <div class="row justify-content-center" style="margin-right: 980px; margin-top: 100px;" >
-            <div class="col-md-3 d-flex flex-column align-items-center">
-                <a href="{% url 'relatorios' %}?periodo=mensal" style="text-decoration: none;">
-                    <img src="{% static 'images/relatorios1.png' %}" style="width: 125px; height: 130px;">
-                    <p class="hover-link text-center">Relatórios</p>
-                </a>
+
+        <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
+        <div class="container" style="margin-top: 50px;">
+            <!-- Primeira linha com as 4 divs -->
+            <div class="row">
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
+                        <img src="{% static 'images/clientes_icon.png' %}" class="img-fluid" style="width: 122px; height: 123px;">
+                        <p class="hover-link text-center">Clientes</p>
+                    </a>
+                </div>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
+                        <img src="{% static 'images/os_icon.png' %}" class="img-fluid" style="width: 122px; height: 120px;">
+                        <p class="hover-link text-center" style="margin-left: -20px;">Ordem de Serviço</p>
+                    </a>
+                </div>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="{% url 'servicos' %}" style="text-decoration: none;">
+                        <img src="{% static 'images/servico.png' %}" class="img-fluid" style="width: 140px; height: 126px;">
+                        <p class="hover-link text-center">Serviços</p>
+                    </a>
+                </div>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="{% url 'usuarios' %}" style="text-decoration: none;">
+                        <img src="{% static 'images/users.png' %}" class="img-fluid" style="width: 140px; height: 128px;">
+                        <p class="hover-link text-center">Usuários</p>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Segunda linha com as divs alinhadas à esquerda -->
+            <div class="row" style="margin-top: 125px;">
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="{% url 'relatorios' %}?periodo=mensal" style="text-decoration: none;">
+                        <img src="{% static 'images/relatorios1.png' %}" style="width: 125px; height: 130px;">
+                        <p class="hover-link text-center">Relatórios</p>
+                    </a>
+                </div>
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                    <a href="#" style="text-decoration: none; margin-top: 10px">
+                        <img src="{% static 'images/faturamento.png' %}" class="img-fluid" style="width: 144px; height: 124px;">
+                        <p class="hover-link text-center">Faturamento</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+    
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <div class="frame active" id="frame-dashboard">
+        <div style="margin-left: 130px; height: 46px;">
+            <h4 style="margin-top: 20px;">Dashboard - Kride despachante</h4>
+        </div>
+
+        <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
+        <div class="container">
+            <section class="filter d-flex flex-column align-items-start">
+                <p class="mb-2 ms-2">Período de análise</p>
+                <div class="d-flex justify-content-end gap-3">
+                    <button id="btn-dias" class="btn btn-white {% if periodo == 'dias' %}active{% endif %}" onclick="filterData(this, 'dias')">15 dias</button>
+                    <button id="btn-mes" class="btn btn-white {% if periodo == 'mensal' %}active{% endif %}" onclick="filterData(this, 'mensal')">Mês</button>
+                </div>
+            </section>
+
+            <div class="row grafico-container mt-0 ms-5 gap-5">
+                <div class="col-md-5 dashboard-card">
+                    {% if periodo == 'dias' %}
+                        <h5 class="titulo-grafico">Ordens de Serviço nos ultimos 15 dias</h5>
+                    {% else %}
+                        <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
+                    {% endif %}
+                    <div class="grafico" id="grafico-os" style="width: 100%; overflow: visible;">
+                        {{ os_grafico|safe }}
+                    </div>
+                </div>
+                <div class="col-md-5 dashboard-card" >
+                    {% if periodo == 'dias' %}
+                        <h5 class="titulo-grafico">Novos clientes nos ultimos 15 dias</h5>
+                    {% else %}
+                        <h5 class="titulo-grafico">Novos clientes por mês</h5>
+                    {% endif %}
+                    <div class="grafico" id="grafico-clientes">
+                        {{ clientes_grafico|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function MudarFrame(element) {
+            const texto = document.getElementById('texto');
+            const imagem = document.getElementById('imagem');
+            const frames = document.querySelectorAll('.frame');
+            frames.forEach(frame => frame.classList.remove('active'));
+            if (element.id == 'dashboard') {
+                const selectedframe = document.getElementById('frame-dashboard');
+                selectedframe.classList.add('active');
+                element.id = "workstation";
+                texto.innerText = "TRABALHO";
+                imagem.src = "{% static 'images/trabalho.png' %}"
+                imagem.style = "width: 26px;";
+                return;
+            }
+            const selectedframe = document.getElementById('frame-workstation');
+            selectedframe.classList.add('active');
+            element.id = "dashboard";
+            texto.innerText = "DASHBOARD";
+            imagem.src = "{% static 'images/dashboard.png' %}";
+            imagem.style = "width: 34px;";
+        }
+
+        function filterData(button, period) {
+            // Remove a classe "active" de todos os botões
+            const buttons = document.querySelectorAll('.filter .btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Adiciona a classe "active" ao botão clicado
+            button.classList.add('active');
+            let url = `{% url 'home' %}?periodo=${period}`;
+            window.location.href = url;
+        }
+    </script>
 </body>
 </html>
 {% endblock %}

@@ -38,6 +38,28 @@
             background-color: #666;
             margin: 12px 5px 12px 0; /* Espaçamento entre a imagem e o perfil */
         }
+        .nav-button {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            padding: 4px 3px;
+            border-radius: 5px; /* Borda arredondada */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+        .nav-button:hover{
+            color: #b7b9bb; /* Cor do texto no hover */
+            text-decoration: none; /* Garante que o texto não será sublinhado */
+        }
+        .username {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        .username:hover {
+            color: #b7b9bb;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -47,14 +69,34 @@
                 <img src="{% static 'images/logo1.png' %}" style="width: 55px;">
             </a>
         </div>
-        <a href="{% url 'home' %}" style="text-decoration: none;">
-            <img src="{% static 'images/home.png' %}" title="VOLTAR PARA A HOME" style="width: 40px; margin-right: 18px;">
-        </a>
+        <div class="d-flex align-items-center ms-auto">
+            <!-- Botão Voltar -->
+            <a class="d-flex align-items-center me-3" href="{% url 'voltar' %}" style="text-decoration: none;">
+                <img src="{% static 'images/voltar.png' %}" alt="VOLTAR" style="width: 25px; margin-right: 8px;">
+                <strong class="nav-button">VOLTAR</strong>
+            </a>
+
+            <!-- Divisória -->
+            <div class="navbar-divider" style="border-left: 1px solid #fff; height: 40px; margin: 0 15px;"></div>
+
+            <!-- Botão Início -->
+            <a class="d-flex align-items-center me-2" href="{% url 'home' %}?periodo=mensal" style="text-decoration: none;">
+                <img src="{% static 'images/home.png' %}" alt="INÍCIO" style="width: 25px; margin-right: 8px;">
+                <strong class="nav-button">INÍCIO</strong>
+            </a>
+
+            <div class="navbar-divider" style="border-left: 1px solid #fff; height: 40px; margin: 0 15px;"></div>
+
+            <a class="d-flex align-items-center me-2" href="#" id="workstation" onclick="MudarFrame(this)" style="text-decoration: none;">
+                <img id="imagem" src="{% static 'images/trabalho.png' %}" style="width: 25px; margin-right: 8px;">
+                <strong class="nav-button" id="texto">TRABALHO</strong>
+            </a>
+        </div>
 
         <!-- Divisória -->
-        <div class="navbar-divider"></div>
+        <div class="navbar-divider" style="border-left: 1px solid #fff; height: 40px; margin: 0 12px;"></div>
 
-        <div class="container user-div" id="profile" style="width: 200px; cursor: pointer;">
+        <div class="container user-div gap-2" id="profile" style="width: 200px; cursor: pointer;">
             {% if user.is_superuser %}
                 <img src="{% static 'images/master.png' %}" title="MASTER USER" style="width: 30px; margin-right: 0px;">
             {% else %}
@@ -62,7 +104,7 @@
             {% endif %}
 
             {% if user.is_authenticated %}
-                <h5 class="text-white mt-2" style="font-size: large;">{{ user.username }}</h5>
+                <h5 class="username mt-2" style="font-size: large;">{{ user.username }}</h5>
             {% endif %}
         </div>
     </nav>
