@@ -142,50 +142,38 @@
                 </tr>
             </thead>
             <tbody  id="tbodyOrdens">
-                {% for ordem_servico in ordem_servicos %}
+                {% for ordem_servico in ordens_servicos %}
                     <tr>
                         <th>
                             {{ordem_servico.id}}
-                            <a href="#" class="openOptions">
+                            <a href="#" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
-                            <div class="option-box" id="box">
-                                <p class="text-success" style="font-size: 12px; border-bottom: 1px solid black; height: 15px; display: block; margin-bottom: -2px;">Alterar Situação:</p>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Em Servico')">Em Serviço</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Documento Pendente')">Documento Pendente</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Entregue')">Entregue</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Servico Faturado')">Serviço Faturado</a>
-                                <a href="#" class="option-link" onclick="AlterarStatus('{{ ordem_servico.id }}', 'Pendente')">Pendente</a>
-                            </div>
                         </th>
-                        <td>{{ordem_servico.nome_cliente}}</td>
+                        <td>{{ordem_servico.nome_cliente|upper}}</td>
                         <td>{{ordem_servico.modelo}}</td>
                         <td>{{ordem_servico.placa}}</td>
                         <td>{{ordem_servico.status}}</td>
                         <td style="color: #2ac44e; font-weight: bold;">{{ordem_servico.valor_f}}</td>
                         <td>
-                            <!-- EXCLUIR  ORDEM DE SERVIÇO -->
-                            <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px; margin-left: -12px;">
-                                <img src="{% static 'images/excluir.png' %}" style="width: 24px; height: 22px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- CONSULTAR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'consultar_os' ordem_servico.id %}"  title="CONSULTAR" style="height: 20px; margin-left: -71px;">
-                                <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- EDITAR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'editar_os' ordem_servico.id %}"  title="EDITAR" style="height: 20px; margin-left: -70px;">
-                                <img src="{% static 'images/editaros.png' %}" style="width: 22px; height: 23px;">
-                            </a>
-                        </td>
-                        <td>
-                            <!-- IMPRIMIR ORDEM DE SERVIÇO -->
-                            <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px; margin-left: -60px;">
-                                <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
-                            </a>
+                            <div style="display: flex; gap: 8px;">
+                                <!-- EXCLUIR  ORDEM DE SERVIÇO -->
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px;">
+                                    <img src="{% static 'images/excluir.png' %}" style="width: 22px; height: 22px;">
+                                </a>
+                                <!-- CONSULTAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'consultar_os' ordem_servico.id %}"  title="CONSULTAR" style="height: 20px;">
+                                    <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- EDITAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'editar_os' ordem_servico.id %}"  title="EDITAR" style="height: 20px;">
+                                    <img src="{% static 'images/editaros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- IMPRIMIR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px;">
+                                    <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -205,13 +193,26 @@
                     </div>
                     <form action="{% url 'atualizar_status' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                         <div class="modal-body">
-                            Tem certeza que deseja alterar a situação da ordem de serviço?
+                            <label class="form-label">Alterar situaçõa da ordem de serviço.</label>
+                            <input class="form-control" type="number" name="id_ordem_servicos" id="os_id" readonly>
+                            <label class="form-label">Situação atual: </label>
+                            <input class="form-control" type="text" name="atual_status" id="atual_status" readonly>
+                            <label class="form-label">Nova situação: </label>
+                            <select class="form-control" name="novo_status" id="novo_status">
+                                <option value="Em Servico">Em Serviço</option>
+                                <option value="Documento Pendente">Documento Pendente</option>
+                                <option value="Entregue">Entregue</option>
+                                <option value="Servico Faturado">Serviço Faturado</option>
+                                <option value="Pendente">Pendente</option>
+                            </select>
+                            <label class="form-label">Observações: </label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="5" cols="40"></textarea>
+                            Documento:
+                            <input class="form-control" type="file" name="file" id="file">
                         </div>
-                        <input type="hidden" name="id_ordem_servicos" id="os_id">
-                        <input type="hidden" name="novo_status" id="novo_status">
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                            <button type="submit" class="btn btn-success">Sim</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Enviar</button>
                         </div>
                     </form>
                 </div>
@@ -242,45 +243,24 @@
         </div>
     </div>
     <script>
-        function AlterarStatus(id_os, novo_status) {
-            console.log('entrando na função');
-            var input_id = document.getElementById('os_id');
-            var input_status = document.getElementById('novo_status');
-            input_id.value = id_os;
-            input_status.value = novo_status;
-        }
-        $(document).ready(function() {
-            $('.openOptions').click(function(event) {
-                event.preventDefault();
-                var optionBox = $(this).siblings('.option-box');
-                var offset = $(this).offset();
-
-                // Esconde todos os option-box antes de mostrar o novo
-                $('.option-box').not(optionBox).hide();
-
-                optionBox.css({
-                    top: offset.top - optionBox.outerHeight() - 10,
-                    left: offset.left
-                }).toggle();
-            });
-
-            // Define o manipulador de clique no documento apenas uma vez
-            $(document).click(function(event) {
-                if (!$(event.target).closest('.openOptions, .option-box').length) {
-                    $('.option-box').hide();
-                }
-            });
-
-            $('.option-link').click(function(event) {
-                event.preventDefault();
-                $('.option-box').hide();
-                $('#confirmationModal').modal('show');
-            });
-        });
 
         $('.delete-button').click(function() {
             var url = $(this).data('url');
             $('#deleteForm').attr('action', url);
+        });
+        function AlterarStatus(id_os, status_atual) {
+            var input_id = document.getElementById('os_id');
+            input_id.value = id_os;
+            var input_status = document.getElementById('atual_status');
+            input_status.value = status_atual;
+        }
+        $(document).ready(function() {
+
+            $('.change-status').click(function(event) {
+                event.preventDefault();
+                $('.option-box').hide();
+                $('#confirmationModal').modal('show');
+            });
         });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

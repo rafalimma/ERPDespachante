@@ -10,8 +10,8 @@ from relatorios import views as relatorioviews
 def home(request):
     print('passou pela home')
     periodo = request.GET.get('periodo')
-    os_grafico = relatorioviews.os_grafico_calculo('mensal')
-    clientes_grafico = relatorioviews.clientes_grafico_calculo('mensal')
+    os_grafico = relatorioviews.os_grafico_calculo(periodo)
+    clientes_grafico = relatorioviews.clientes_grafico_calculo(periodo)
     return render(
         request,
         'home.html',

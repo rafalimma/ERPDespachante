@@ -35,7 +35,7 @@ def consultar_cliente(request, id):
         request,
         'consulta.html',
         {'cliente': cliente,
-         'ordem_servicos': ordem_servico}
+         'ordens_servicos': ordem_servico}
     )
 @login_required
 def novo_cliente(request):
@@ -48,10 +48,12 @@ def clientes(request):
 @login_required
 def editar_cliente(request, id):
     cliente = get_object_or_404(Cliente, pk=id)
+    ordem_servico = OrdemServico.objects.filter(cliente_id=id)
     return render(
         request,
         'editar_cliente.html',
-        {'cliente': cliente,} 
+        {'cliente': cliente,
+         'ordens_servicos': ordem_servico} 
     )
 
 def form_edicao_cliente(request):

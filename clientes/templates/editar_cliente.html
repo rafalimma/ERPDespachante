@@ -113,6 +113,118 @@
                 <a href="{% url 'clientes' %}" class="btn btn-secondary me-4 mt-4">Voltar</a>
             </div>
         </form>
+        <!-- MODAL PARA EXCLUIR OS -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza de que deseja excluir esta Ordem de serviço?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                        <form id="deleteForm" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Sim</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL PARA ALTERAR O STATUS DA OS -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirmação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'atualizar_status' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="modal-body">
+                            <label class="form-label">Alterar situaçõa da ordem de serviço.</label>
+                            <input class="form-control" type="number" name="id_ordem_servicos" id="os_id" readonly>
+                            <label class="form-label">Situação atual: </label>
+                            <input class="form-control" type="text" name="atual_status" id="atual_status" readonly>
+                            <label class="form-label">Nova situação: </label>
+                            <select class="form-control" name="novo_status" id="novo_status">
+                                <option value="Em Servico">Em Serviço</option>
+                                <option value="Documento Pendente">Documento Pendente</option>
+                                <option value="Entregue">Entregue</option>
+                                <option value="Servico Faturado">Serviço Faturado</option>
+                                <option value="Pendente">Pendente</option>
+                            </select>
+                            <label class="form-label">Observações: </label>
+                            <textarea class="form-control" id="observacoes" name="observacoes" rows="5" cols="40"></textarea>
+                            Documento:
+                            <input class="form-control" type="file" name="file" id="file">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- MOSTRAR AS OS DO CLIENTE -->
+        <div class="d-flex justify-content-start align-items-center mt-4">
+            <h2 class="me-auto text-success">Ordens de Serviço</h2>
+        </div>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Veículo</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Situação</th>
+                    <th scope="col">Valor Final</th>
+                    <th scope="col">Opções</th>
+                </tr>
+            </thead>
+            <tbody  id="tbodyOrdens">
+                {% for ordem_servico in ordens_servicos %}
+                    <tr>
+                        <th>
+                            {{ordem_servico.id}}
+                            <a href="#" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
+                                <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
+                            </a>
+                        </th>
+                        <td>{{ordem_servico.nome_cliente|upper}}</td>
+                        <td>{{ordem_servico.modelo}}</td>
+                        <td>{{ordem_servico.placa}}</td>
+                        <td>{{ordem_servico.status}}</td>
+                        <td style="color: #2ac44e; font-weight: bold;">{{ordem_servico.valor_f}}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <!-- EXCLUIR  ORDEM DE SERVIÇO -->
+                                <a href="#" class="delete-button" data-toggle="modal" data-target="#confirmDeleteModal" data-url="{% url 'excluir_os' ordem_servico.id %}" title="EXCLUIR" style="height: 20px;">
+                                    <img src="{% static 'images/excluir.png' %}" style="width: 22px; height: 22px;">
+                                </a>
+                                <!-- CONSULTAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'consultar_os' ordem_servico.id %}"  title="CONSULTAR" style="height: 20px;">
+                                    <img src="{% static 'images/consultar.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- EDITAR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'editar_os' ordem_servico.id %}"  title="EDITAR" style="height: 20px;">
+                                    <img src="{% static 'images/editaros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                                <!-- IMPRIMIR ORDEM DE SERVIÇO -->
+                                <a href="{% url 'imprimir_os' ordem_servico.id %}"  title="IMPRIMIR" style="height: 20px;">
+                                    <img src="{% static 'images/imprimiros.png' %}" style="width: 22px; height: 23px;">
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <script>
 
@@ -166,8 +278,26 @@
             } else if (inputcpf === 11) {
                 cpfcnpj.value += "-";
             }
-        })
+        });
 
+        function AlterarStatus(id_os, status_atual) {
+            var input_id = document.getElementById('os_id');
+            input_id.value = id_os;
+            var input_status = document.getElementById('atual_status');
+            input_status.value = status_atual;
+        }
+        $(document).ready(function() {
+
+            $('.change-status').click(function(event) {
+                event.preventDefault();
+                $('.option-box').hide();
+                $('#confirmationModal').modal('show');
+            });
+        });
+        $('.delete-button').click(function() {
+            var url = $(this).data('url');
+            $('#deleteForm').attr('action', url);
+        });
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
