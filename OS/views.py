@@ -447,9 +447,12 @@ def pdf_export(request, id):
 
     weasyprint_html = weasyprint.HTML(string=html_string)
     pdf = weasyprint_html.write_pdf()
+    
 
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="ordem_servico_numero{id}.pdf"'
+    print('##### ESSE É O HTML QUE ESTA SENDO GERADO PARA IMPRESSÃO #####')
+    print(response)
 
     return response
 
