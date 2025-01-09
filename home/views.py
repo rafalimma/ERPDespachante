@@ -8,10 +8,10 @@ from relatorios import views as relatorioviews
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 @login_required
 def home(request):
-    print('passou pela home')
     periodo = request.GET.get('periodo')
     os_grafico = relatorioviews.os_grafico_calculo(periodo)
     clientes_grafico = relatorioviews.clientes_grafico_calculo(periodo)
+
     return render(
         request,
         'home.html',

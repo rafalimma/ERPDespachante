@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
+from login.models import Filial
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from .models import OrdemServico, Servico, Servico_os, Documentos, Eventos
 from django.contrib import messages
@@ -425,6 +426,8 @@ def imprimir_os(request, id):
 def pdf_export(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+    filial = Filial.objects.filter(id=2).first()
+    filial_logo = filial.logo_base64 if filial else "Nenhuma filial encontrada"
     datas = {
         'data_aq': (ordem_servico.data_aq.strftime('%d/%m/%Y') if ordem_servico.data_aq else ''),
         'data_servico': ordem_servico.data_servico.strftime('%d/%m/%Y'),
@@ -435,6 +438,12 @@ def pdf_export(request, id):
                 'data': datas}
 
     html_string = render_to_string('os-pdf_export.html', context)
+    # isso serve para substituir no html a logo em base64 ja que em prod é a unica maneira que da certo
+    # para a visualização exsite uma imagem de contingência que aparece porque image/logo vai dar erro
+    html_string = html_string.replace(
+        "logo",
+        filial_logo
+    )
 
     weasyprint_html = weasyprint.HTML(string=html_string)
     pdf = weasyprint_html.write_pdf()
