@@ -463,13 +463,6 @@ def pdf_export(request, id):
 
     return response
 
-# def pdf_export(request, id):
-#     ordem_servico = get_object_or_404(OrdemServico, pk=id)
-#     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
-#     filial = Filial.objects.filter(id=2).first()
-#     template_path = 'os-pdf_export.html'
-#     context = {''}
-
 @login_required
 def adicionar_documento(request, id):
     if request.method == 'POST':

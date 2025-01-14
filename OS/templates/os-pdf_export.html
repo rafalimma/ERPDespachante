@@ -8,11 +8,16 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <style>
+        @page {
+            size: A4; /* Define o tamanho da página, ajustável conforme necessário */
+            margin: 0; /* Remove todas as margens */
+        }
         body {
             font-family: 'Poppins', sans-serif;
+            margin: 0;
         }
         .order-details {
-            margin: 0;
+            margin: 12px;
             padding: 5px;
             border: 1px solid #000;
             background-color: #f8f9fa;
@@ -24,15 +29,21 @@
             text-align: center;
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: space-between;
         }
         .order-header img {
-            margin-right: 30px;
-            margin-left: 30px;
+            margin-right: 20px;
+            margin-left: 20px;
         }
         .order-header h2 {
             margin: 0 auto;
-            margin-left: 20px;
+            margin-left: 5px;
+        }
+        .company-info {
+            text-align: right; /* Alinha as informações à direita */
+            font-size: 12px;
+            line-height: 0.8;
+            margin-right: -20px;
         }
         .table-values td {
             border: 2px solid #bfbaba;
@@ -59,7 +70,7 @@
             border: 2px solid #bfbaba;
             padding: 8px;
             text-align: left;
-            background-color: #69ad70;
+            background-color: #828582;
         }
         td {
             padding: 5px;
@@ -82,7 +93,15 @@
             {% if filial.nome == "Kride despachante"%}
                 <img src="{% static 'images/logo1.png' %}" style="width: 85px; height: 85px;"/>
             {% endif %}
+
             <h2>Ordem de Serviço</h2>
+
+            <div class="company-info">
+                <p> {{ filial.nome }} </p>
+                <p> CNPJ: {{ filial.cnpj }} </p>
+                <p> Telefone: {{ filial.telefone }} </p>
+                <p> {{ filial.endereco }}, {{ filial.bairro }}, {{ filial.cidade }} </p>
+            </div>
         </div>
         
         <table>
@@ -111,11 +130,11 @@
                 <td><strong>Ano do Modelo:</strong> {{ ordem_servico.ano_modelo }}</td>
             </tr>
             <tr>
-                <td><strong>Data de Aquisição: </strong> {{ data.data_aq }}</td>
-                <td><strong>Data do Serviço: </strong> {{ data.data_servico }}</td>
+                <td><strong>Data de Aquisição: </strong> {{ ordem_servico.data_aq|date:"d/m/Y" }} </td>
+                <td><strong>Data do Serviço: </strong> {{ ordem_servico.data_servico|date:"d/m/Y" }} </td>
             </tr>
             <tr>
-                <td><strong>Data da Entrega: </strong> {{ data.data_entrega }}</td>
+                <td><strong>Data da Entrega: </strong> {{ ordem_servico.data_entrega|date:"d/m/Y" }}</td>
             </tr>
         </table>
 
@@ -143,9 +162,6 @@
         <hr>
         
         <table>
-            <tr>
-                <td><strong>Desconto:</strong> R$ {{ ordem_servico.desconto }}</td>
-            </tr>
             <tr>
                 <td><strong>Valor Final:</strong> R$ {{ ordem_servico.valor_f }}</td>
             </tr>
