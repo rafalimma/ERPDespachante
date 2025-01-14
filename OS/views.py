@@ -14,6 +14,9 @@ import weasyprint # type: ignore
 from django.contrib.auth.decorators import login_required
 from utils.validador import validador
 from django.db.models import Q
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+from django.conf import settings
 
 DEFAULT_DATE = ""
 
@@ -426,8 +429,12 @@ def imprimir_os(request, id):
 def pdf_export(request, id):
     ordem_servico = get_object_or_404(OrdemServico, pk=id)
     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
-    filial = Filial.objects.filter(id=2).first()
-    filial_logo = filial.logo_base64 if filial else "Nenhuma filial encontrada"
+    filial = Filial.objects.first()
+    # print(filial)
+    # filial_logo = filial.logo if filial else "Nenhuma filial encontrada"
+    # print(filial_logo)
+    # filial_logo_url = request.build_absolute_uri(f"{settings.MEDIA_URL}{filial_logo}")
+    # print(filial_logo_url)
     datas = {
         'data_aq': (ordem_servico.data_aq.strftime('%d/%m/%Y') if ordem_servico.data_aq else ''),
         'data_servico': ordem_servico.data_servico.strftime('%d/%m/%Y'),
@@ -435,26 +442,33 @@ def pdf_export(request, id):
     }
     context = {'ordem_servico': ordem_servico, 
                 'servicos_os': servicos,
-                'data': datas}
+                'data': datas,
+                'filial': filial}
 
     html_string = render_to_string('os-pdf_export.html', context)
     # isso serve para substituir no html a logo em base64 ja que em prod é a unica maneira que da certo
     # para a visualização exsite uma imagem de contingência que aparece porque image/logo vai dar erro
-    html_string = html_string.replace(
-        "logo",
-        filial_logo
-    )
-
-    weasyprint_html = weasyprint.HTML(string=html_string)
+    # html_string = html_string.replace(
+    #     "logo",
+    #     filial_logo
+    # )
+    # base_url = request.build_absolute_uri(settings.MEDIA_URL)
+    weasyprint_html = weasyprint.HTML(string=html_string, base_url=request.build_absolute_uri())
     pdf = weasyprint_html.write_pdf()
     
 
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="ordem_servico_numero{id}.pdf"'
-    print('##### ESSE É O HTML QUE ESTA SENDO GERADO PARA IMPRESSÃO #####')
-    print(response)
+    response['Content-Transfer-Encoding'] = 'binary'
 
     return response
+
+# def pdf_export(request, id):
+#     ordem_servico = get_object_or_404(OrdemServico, pk=id)
+#     servicos = Servico_os.objects.filter(os_id=ordem_servico).select_related('servico_id')
+#     filial = Filial.objects.filter(id=2).first()
+#     template_path = 'os-pdf_export.html'
+#     context = {''}
 
 @login_required
 def adicionar_documento(request, id):

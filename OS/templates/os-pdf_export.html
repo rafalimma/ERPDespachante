@@ -76,8 +76,12 @@
 <body>
     <div class="order-details">
         <div class="order-header">
-
-            <img src="data:image/png;base64,logo" style="width: 85px; height: 85px;"/>
+            {% if filial.nome == "Deespp Dev" %}
+                <img src="{% static 'images/deespplogo.png' %}" style="width: 85px; height: 85px;"/>
+            {% endif %}
+            {% if filial.nome == "Kride despachante"%}
+                <img src="{% static 'images/logo1.png' %}" style="width: 85px; height: 85px;"/>
+            {% endif %}
             <h2>Ordem de Serviço</h2>
         </div>
         
