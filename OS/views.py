@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
 from login.models import Filial
+from faturamento.models import Fatura
+from faturamento.views import criar_fatura
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from .models import OrdemServico, Servico, Servico_os, Documentos, Eventos
 from django.contrib import messages
@@ -402,6 +404,7 @@ def filtrar_os(request):
 @login_required
 def atualizar_status(request):
     if request.method == 'POST':
+        print('atualizando o status')
         id_ordem_servico = request.POST.get('id_ordem_servicos')
         novo_status = request.POST.get('novo_status')
         status_anterior = request.POST.get('atual_status')
@@ -415,6 +418,9 @@ def atualizar_status(request):
                          status_atual=novo_status, observacoes=observacoes,
                          arquivo=documento)
         evento.save()
+        if novo_status == "Entregue":
+            print('vai criar a fatura')
+            criar_fatura(id_ordem_servico)
         messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
         return redirect('ordem_servico')
     else:

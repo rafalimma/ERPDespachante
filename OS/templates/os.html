@@ -241,6 +241,73 @@
                 </div>
             </div>
         </div>
+        <!-- MODAL PARA A FATURA -->
+        <div class="modal fade" id="faturaModal" tabindex="-1" aria-labelledby="faturaModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl"> <!-- modal-xl para modal maior -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="faturaModalLabel">Detalhes da Fatura</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="">{% csrf_token %}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="status" class="form-label">Status:</label>
+                                    <input type="text" class="form-control" id="status">
+                                </div>
+                                <div class="col">
+                                    <label for="">Data de vencimento</label>
+                                    <input type="date" class="form-control" id="data_vencimento">
+                                </div>
+                                <div class="col">
+                                    <label for="n_parcelas">Número de parcelas</label>
+                                    <input type="text" class="form-control" id="n_parcelas">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Forma de pagamento</label>
+                                    <input type="text" class="form-control" id="forma_pagamento">
+                                </div>
+                                <div class="col">
+                                    <label for="">Solicitante</label>
+                                    <input type="text" class="form-control" id="solicitante">
+                                </div>
+                                <div class="col">
+                                    <label for="">Tomador do serviço</label>
+                                    <input type="text" class="form-control" id="tomador">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Arrecadação final</label>
+                                    <input type="text" class="form-control" id="arrecadacao">
+                                </div>
+                                <div class="col">
+                                    <label for="">Custo Final</label>
+                                    <input type="text" class="form-control" id="custo_final">
+                                </div>
+                                <div class="col">
+                                    <label for="">Valor Final</label>
+                                    <input type="text" class="form-control" id="valor_final">
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <label for="">Lucro total</label>
+                                    <input type="text" class="form-control" id="lucro_total">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer gap-3">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <!-- TABELA QUE ITERA SOBRE AS ORDENS DE SERVIÇO -->
         <table class="table table-striped mt-3">
             <thead>
@@ -259,9 +326,14 @@
                     <tr>
                         <th>
                             {{ordem_servico.id}}
-                            <a href="#" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
+                            <a href="#" style="text-decoration: none;" class="change-status" onclick="AlterarStatus('{{ ordem_servico.id }}', '{{ ordem_servico.status }}')">
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
+                            {% if ordem_servico.status == "Entregue"%}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#faturaModal">
+                                <img src="{% static 'images/fatura.png' %}" style="width: 28px; height: 26px;" alt="fatura" title="FATURA">
+                            </a>
+                            {% endif %}
                         </th>
                         <td>{{ordem_servico.nome_cliente|upper}}</td>
                         <td>{{ordem_servico.modelo}}</td>

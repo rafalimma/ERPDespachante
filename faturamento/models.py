@@ -6,15 +6,15 @@ import datetime
 class Fatura(models.Model):
     os = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, default="")
-    forma_pagamento = models.CharField(max_length=50, default="")
+    forma_pagamento = models.CharField(max_length=50, default="", null=True)
     data_vencimento = models.DateField(null=True, blank=True)
     solicitante = models.CharField(max_length=100, default="")
-    tomador = models.CharField(max_length=100, default="")
-    n_parcelas = models.IntegerField(default=1)
+    tomador = models.CharField(max_length=100, default="", null=True)
+    n_parcelas = models.IntegerField(default=1, null=True)
     valor_final = models.CharField(max_length=50)
-    custo_final = models.CharField(max_length=50)
-    arrecadacao_final = models.CharField(max_length=50)
-    lucro_total = models.CharField(max_length=50, default="")
+    custo_final = models.CharField(max_length=50, null=True)
+    arrecadacao_final = models.CharField(max_length=50, null=True)
+    lucro_total = models.CharField(max_length=50, default="", null=True)
 
 class Parcela(models.Model):
     fatura = models.ForeignKey(Fatura, on_delete=models.CASCADE)
