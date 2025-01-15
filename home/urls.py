@@ -5,6 +5,7 @@ from OS import views as osviews
 from servicos import views as serviews
 from login import views as loginviews
 from relatorios import views as reportviews
+from faturamento import views as faturamentoviews
 # git -> changing to chenges
 # linha adiocionada para mandar o arquivo para a área de changes no source control
 
@@ -55,4 +56,6 @@ urlpatterns = [
     path('form_edicao_usuario', loginviews.form_edicao_usuario, name='form_edicao_usuario'),
     # relatórios
     path('relatorios', reportviews.relatorios, name='relatorios'),
+    # faturamento
+    path('faturamento', faturamentoviews.faturamento, name='faturamento'),
 ]
