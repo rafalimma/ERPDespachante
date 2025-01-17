@@ -30,14 +30,17 @@ def os_grafico_calculo(periodo):
         try:
             data_ultimo_relatorio = Relatorios.objects.filter(tipo="ordem de serviço por mês").latest('data_atualizacao')
             if OrdemServico.objects.all().exists:
-                data_ultima_os = OrdemServico.objects.latest('data_servico')
-                data_ultima_os_datetime = make_aware(datetime.combine(data_ultima_os.data_servico, datetime.min.time()))
-                print('data da ultima os: ', data_ultima_os_datetime)
-                if data_ultima_os_datetime > data_ultimo_relatorio.data_atualizacao:
-                    meses, os_qtds = ordens_servico_mesais()
-                else:
-                    meses = data_ultimo_relatorio.get_meses() 
-                    os_qtds = data_ultimo_relatorio.get_quantidade()
+                try:
+                    data_ultima_os = OrdemServico.objects.latest('data_servico')
+                    data_ultima_os_datetime = make_aware(datetime.combine(data_ultima_os.data_servico, datetime.min.time()))
+                    print('data da ultima os: ', data_ultima_os_datetime)
+                    if data_ultima_os_datetime > data_ultimo_relatorio.data_atualizacao:
+                        meses, os_qtds = ordens_servico_mesais()
+                    else:
+                        meses = data_ultimo_relatorio.get_meses() 
+                        os_qtds = data_ultimo_relatorio.get_quantidade()
+                except OrdemServico.DoesNotExist:
+                    return None 
             else:
                 return None
             # convertendo para DateTime
@@ -132,12 +135,15 @@ def clientes_grafico_calculo(periodo):
         try:
             data_ultimo_relatorio = Relatorios.objects.filter(tipo="clientes por mês").latest('data_atualizacao')
             if Cliente.objects.all().exists:
-                data_ultimo_cliente = Cliente.objects.latest('data_criacao')
-                if data_ultimo_cliente.data_criacao > data_ultimo_relatorio.data_atualizacao:
-                    meses, clientes_qtd = clientes_mensais()
-                else:
-                    meses = data_ultimo_relatorio.get_meses()
-                    clientes_qtd = data_ultimo_relatorio.get_quantidade()
+                try:
+                    data_ultimo_cliente = Cliente.objects.latest('data_criacao')
+                    if data_ultimo_cliente.data_criacao > data_ultimo_relatorio.data_atualizacao:
+                        meses, clientes_qtd = clientes_mensais()
+                    else:
+                        meses = data_ultimo_relatorio.get_meses()
+                        clientes_qtd = data_ultimo_relatorio.get_quantidade()
+                except Cliente.DoesNotExist:
+                    return None 
             else:
                 return None
         except:
