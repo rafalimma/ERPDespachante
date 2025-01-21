@@ -38,6 +38,7 @@ class Servico(models.Model):
     valor_liquido = models.CharField(max_length=10, default='0')
     valor_total = models.CharField(max_length=10, default='0')
     taxa_detran = models.CharField(max_length=10, default='0')
+    honorarios = models.CharField(max_length=10, default='0')
     notas = models.TextField(blank=True, null=True)
 
 class Servico_os(models.Model):

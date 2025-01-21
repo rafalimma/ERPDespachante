@@ -40,6 +40,7 @@ def form_edicao_servico(request):
         servico.valor_total = request.POST.get('valor_total')
         servico.notas = request.POST.get('notas')
         servico.nome = request.POST.get('nome')
+        servico.honorarios = request.POST.get('honorarios')
 
         if servico.nome == '' or servico.valor_liquido == '':
             messages.error(request, 'Os dados não podem ser nulos!')
@@ -66,10 +67,11 @@ def adicao_servico(request):
         taxa_detran = request.POST.get('taxa_detran')
         notas = request.POST.get('notas')
         nome = request.POST.get('nome')
+        honorarios = request.POST.get('honorarios')
 
         servico = Servico(nome=nome, descricao=descricao, custo=custo,
                           valor_liquido=valor_liquido, valor_total=valor_total,
-                          taxa_detran=taxa_detran, notas=notas)
+                          taxa_detran=taxa_detran, honorarios=honorarios, notas=notas)
         if not all([nome, descricao, custo, valor_liquido, valor_total]):
             messages.error(request, 'É necessário preencher todos os campos!')
             form_data = request.POST

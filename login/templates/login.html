@@ -17,7 +17,9 @@
     <div class="container pt-5">
       <div class="row align-items-center">
         <div class="col-md-8 mx-auto col-lg-5">
-          <img src="{% static "images/updated-homeimg.png" %}" class="img-fluid mb-3">
+          <div class="container-fluid d-flex justify-content-center align-items-center">
+            <img src="/media/{{ filial.logo }}" class="mb-3 w-50">
+          </div>
           <form action="{% url 'login' %}" method="post" class="p-4 p-md-5 border rouded-3 bg-light">{% csrf_token %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }}" role="alert">
