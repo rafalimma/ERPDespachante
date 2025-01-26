@@ -70,9 +70,10 @@ def cadastro_usuario(request):
             messages.error(request, "Email do usuário já existente!")
             return redirect(novo_usuario)
         
-        if not all([first_name, second_name, nome_usuario, email, group_id]):
+        if not all([first_name, second_name, nome_usuario, group_id, password]):
+            form_data = request.POST
             messages.error(request, 'Preencha todos os campos!')
-            return redirect(novo_usuario)
+            return render(request, 'novo_usuario.html', {'form_data': form_data})
         
         usuario = User.objects.create_user(first_name=first_name, last_name=second_name,
                        email=email, username=nome_usuario, is_active=status, password=password)

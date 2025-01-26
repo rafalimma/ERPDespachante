@@ -58,25 +58,25 @@
         <form id="CadastroForm" method="post" enctype="multipart/form-data" action="{% url 'cadastro_usuario' %}">{% csrf_token %}
             <div class="row">
                 <div class="col">
-                    <label for="inputUser" class="form-label">Usuário:</label>
-                    <input name="nome_usuario" type="text" class="form-control readonly-input" id="inputName">
+                    <label for="inputUser" class="form-label">Usuário *</label>
+                    <input value="{{ form_data.nome_usuario|default_if_none:'' }}" name="nome_usuario" type="text" class="form-control readonly-input" id="inputName">
                 </div>
                 <div class="col">
-                    <label for="inputFirstname" class="form-label">Primeiro Nome</label>
-                    <input name="first_name" type="text" class="form-control readonly-input" id="inputFirst">
+                    <label for="inputFirstname" class="form-label">Primeiro Nome *</label>
+                    <input value="{{ form_data.first_name|default_if_none:'' }}" name="first_name" type="text" class="form-control readonly-input" id="inputFirst">
                 </div>
                 <div class="col">
-                    <label for="inputSecondname" class="form-label">Segundo Nome</label>
-                    <input name="second_name" type="text" class="form-control readonly-input" id="inputSec">
+                    <label for="inputSecondname" class="form-label">Segundo Nome *</label>
+                    <input value="{{ form_data.second_name|default_if_none:'' }}" name="second_name" type="text" class="form-control readonly-input" id="inputSec">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputEmail" class="form-label">E-mail</label>
-                    <input name="email" type="email" class="form-control readonly-input" id="inputEmail">
+                    <input value="{{ form_data.email|default_if_none:'' }}" name="email" type="email" class="form-control readonly-input" id="inputEmail">
                 </div>
                 <div class="col">
-                    <label for="inputEmail" class="form-label">Senha</label>
+                    <label for="inputEmail" class="form-label">Senha *</label>
                     <input name="senha" type="text" class="form-control readonly-input" id="inputSenha">
                 </div>
             </div>
@@ -85,7 +85,7 @@
                 <label class="form-check-label" for="is_active">Usuário Ativo</label>
             </div>
             <div class="mb-3">
-                <label class="form-label">Grupos</label>
+                <label class="form-label">Grupos *</label>
                 <select multiple class="form-control readonly-input" id="groups" name="group">
                     {% for group in groups %}
                         <option value="{{ group.id }}">{{ group.name }}</option>

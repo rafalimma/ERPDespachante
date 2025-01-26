@@ -103,7 +103,7 @@
                 </div>
                 <div class="col">
                     <label for="inputTd" class="form-label">Honorários</label>
-                    <input name="honorarios" type="text" value="{{ form_data.honorarios|default_if_none:'' }}" class="form-control readonly-input" id="inputTd">
+                    <input name="honorarios" id="honorarios" type="text" value="{{ form_data.honorarios|default_if_none:'' }}" class="form-control readonly-input">
                 </div>
                 <div class="col">
                     <div style="display: flex; align-items: center;">
@@ -132,6 +132,7 @@
         const valorTotal = document.getElementById('inputVt');
         const taxaDetran = document.getElementById('inputTd');
         const custo = document.getElementById('inputCusto');
+        const honorarios = document.getElementById('honorarios');
 
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
@@ -157,6 +158,9 @@
         });
         custo.addEventListener('input', function() {
             formatCurrency(custo);
+        });
+        honorarios.addEventListener('input', function() {
+            formatCurrency(honorarios);
         });
     });
     </script>
