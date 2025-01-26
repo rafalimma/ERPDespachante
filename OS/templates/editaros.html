@@ -329,17 +329,12 @@
                             <input type="text" name="cpf_vendedor" class="form-control readonly-input" value="{{ data.cpf_vendedor }}">
                         </div>
                         <div class="col-md-4">
-                            <label class="text-success">Concessionária:</label>
-                            <input type="text" name="concessionaria" class="form-control readonly-input" value="{{ data.concessionaria }}">
+                            <label class="text-success">Nome do Vendedor:</label>
+                            <input type="text" name="nome_vendedor" class="form-control readonly-input" value="{{ data.nome_vendedor }}">
                         </div>
                         <div class="col-md-4">
-                            <label class="text-success">Tipo do Veículo:</label>
-                            <select name="tipo_veiculo" class="form-control readonly-input" id="inputtipoveiculo" value="{{ data.tipo_veiculo }}">
-                                <option value="Carro">Carro</option>
-                                <option value="Moto">Moto</option>
-                                <option value="Caminhão">Caminhão</option>
-                                <option value="Onibus">Onibus</option>
-                            </select>
+                            <label class="text-success">Concessionária:</label>
+                            <input type="text" name="concessionaria" class="form-control readonly-input" value="{{ data.concessionaria }}">
                         </div>
                     </div>
                     <div class="row">
@@ -353,7 +348,18 @@
                         </div>
                         <div class="col-md-4">
                             <label class="text-success">Data de aquisição do veículo:</label>
-                            <input type="text" name="data_aq" class="form-control readonly-input" value="{{ data.data_aq }}">
+                            <input type="date" name="data_aq" class="form-control readonly-input" value="{{ data.data_aq }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="text-success">Tipo do Veículo:</label>
+                            <select name="tipo_veiculo" class="form-control readonly-input" id="inputtipoveiculo" value="{{ data.tipo_veiculo }}">
+                                <option value="Carro">Carro</option>
+                                <option value="Moto">Moto</option>
+                                <option value="Caminhão">Caminhão</option>
+                                <option value="Onibus">Onibus</option>
+                            </select>
                         </div>
                     </div>
                     <hr>

@@ -27,6 +27,7 @@ class OrdemServico(models.Model):
     observacoes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='')
     cpf_vendedor = models.CharField(max_length=20, default='')
+    nome_vendedor = models.CharField(max_length=25, default='')
     concessionaria = models.CharField(max_length=60, default='')
     tipo_veiculo = models.CharField(max_length=15, default='')
 

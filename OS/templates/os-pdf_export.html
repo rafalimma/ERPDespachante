@@ -121,22 +121,23 @@
                 <td><strong>Cor:</strong> {{ ordem_servico.cor }}</td>
             </tr>
             <tr>
-                <td><strong>CPF do Comprador: </strong> {{ ordem_servico.cpf_vendedor }}</td>
-                <td><strong>Concessionária: </strong> {{ ordem_servico.concessionaria }}</td>
+                <td><strong>CPF do Vendedor: </strong> {{ ordem_servico.cpf_vendedor }}</td>
+                <td><strong>Nome do vendedor: </strong> {{ ordem_servico.nome_vendedor }}</td>
             </tr>
             <tr>
                 <td><strong>Tipo do Veículo: </strong> {{ ordem_servico.tipo_veiculo }}</td>
                 <td><strong>Combustível: </strong> {{ ordem_servico.combustivel }}</td>
             </tr>
             <tr>
+                <td><strong>Concessionária: </strong> {{ ordem_servico.concessionaria }}</td>
                 <td><strong>Valor do Veículo:</strong> {{ ordem_servico.valor_veiculo }}</td>
+            </tr>
+            <tr>
                 <td><strong>Ano do Modelo:</strong> {{ ordem_servico.ano_modelo }}</td>
-            </tr>
-            <tr>
                 <td><strong>Data de Aquisição: </strong> {{ ordem_servico.data_aq|date:"d/m/Y" }} </td>
-                <td><strong>Data do Serviço: </strong> {{ ordem_servico.data_servico|date:"d/m/Y" }} </td>
             </tr>
             <tr>
+                <td><strong>Data do Serviço: </strong> {{ ordem_servico.data_servico|date:"d/m/Y" }} </td>
                 <td><strong>Data da Entrega: </strong> {{ ordem_servico.data_entrega|date:"d/m/Y" }}</td>
             </tr>
         </table>

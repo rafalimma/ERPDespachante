@@ -217,17 +217,12 @@
                                 <input name="cpf_vendedor" required maxlength='18' placeholder="CPF" value="{{ form_data.cpf_vendedor|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputcpf_comprador" autocomplete="off">
                             </div>
                             <div class="col">
-                                <label for="inputCpfCnpj" class="form-label">Concessionaria</label>
-                                <input name="concessionaria" value="{{ form_data.concessionaria|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputconcessionaria" autocomplete="off">
+                                <label for="inputCpfCnpj" class="form-label">Nome do vendedor</label>
+                                <input name="nome_vendedor" value="{{ form_data.nome_vendedor|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputnome_vendedor" autocomplete="off">
                             </div>
                             <div class="col">
-                                <label for="inputCpfCnpj" class="form-label">Tipo do veículo *</label>
-                                <select name="tipo_veiculo" value="{{ form_data.tipo_veiculo|default_if_none:'' }}" class="form-control readonly-input" id="inputtipoveiculo">
-                                    <option value="Carro">Carro</option>
-                                    <option value="Moto">Moto</option>
-                                    <option value="Caminhão">Caminhão</option>
-                                    <option value="Onibus">Onibus</option>
-                                </select>
+                                <label for="inputCpfCnpj" class="form-label">Concessionaria</label>
+                                <input name="concessionaria" value="{{ form_data.concessionaria|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputconcessionaria" autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
@@ -242,6 +237,15 @@
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Ano do Veículo *</label>
                                 <input name="ano" type="number" value="{{ form_data.ano|default_if_none:'' }}" class="form-control readonly-input" id="inputAno" autocomplete="off">
+                            </div>
+                            <div class="col">
+                                <label for="inputCpfCnpj" class="form-label">Tipo do veículo *</label>
+                                <select name="tipo_veiculo" value="{{ form_data.tipo_veiculo|default_if_none:'' }}" class="form-control readonly-input" id="inputtipoveiculo">
+                                    <option value="Carro">Carro</option>
+                                    <option value="Moto">Moto</option>
+                                    <option value="Caminhão">Caminhão</option>
+                                    <option value="Onibus">Onibus</option>
+                                </select>
                             </div>
                         </div>
                     </div>

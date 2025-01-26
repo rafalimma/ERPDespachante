@@ -66,6 +66,7 @@ def nova_ordem_de_servico(request):
         cpf_vendedor = request.POST.get('cpf_vendedor')
         concessionaria = request.POST.get('concessionaria')
         tipo_veiculo = request.POST.get('tipo_veiculo')
+        nome_vendedor = request.POST.get('nome_vendedor')
         servico = request.POST.get('servico')
 
         tipo_doc = request.POST.get('tipo_doc')
@@ -111,7 +112,7 @@ def nova_ordem_de_servico(request):
             pendencias=pendencias, data_entrega=data_entrega,
             desconto=desconto, valor_f=valor_f, observacoes=observacoes,
             status=status, concessionaria=concessionaria, cpf_vendedor=cpf_vendedor,
-            tipo_veiculo=tipo_veiculo
+            tipo_veiculo=tipo_veiculo, nome_vendedor=nome_vendedor
             )
         if not all([renavam, placa, cliente, name,
                      combustivel, modelo, ano_veiculo, id_servico, data_entrega,
@@ -276,6 +277,7 @@ def editar_os(request, id):
              'desconto': ordem_servico.desconto,
              'pendencias': ordem_servico.pendencias,
              'observacoes': ordem_servico.observacoes,
+             'nome_vendedor': ordem_servico.nome_vendedor,
              'data_servico':ordem_servico.data_servico.strftime('%Y-%m-%d'),
              'data_entrega': (ordem_servico.data_entrega.strftime('%Y-%m-%d') if ordem_servico.data_entrega else ''),
              }
@@ -311,6 +313,7 @@ def form_edicao_os(request):
         ordem_servico.concessionaria = request.POST.get('concessionaria')
         ordem_servico.tipo_veiculo = request.POST.get('tipo_veiculo')
         ordem_servico.observacoes = request.POST.get('observacoes')
+        ordem_servico.nome_vendedor = request.POST.get('nome_vendedor')
         if request.POST.get('data_entrega'):
             ordem_servico.data_entrega = request.POST.get('data_entrega')
         if request.POST.get('data_aq'):
