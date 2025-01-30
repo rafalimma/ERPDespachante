@@ -116,7 +116,7 @@ def nova_ordem_de_servico(request):
             )
         if not all([renavam, placa, cliente, name,
                      combustivel, modelo, ano_veiculo, id_servico, data_entrega,
-                     valor_servico, valor_f, status, cpf_vendedor, tipo_veiculo]):
+                     valor_servico, valor_f, status, tipo_veiculo]):
             messages.error(request, 'É necessário preencher todos os campos! CAMPOS')
             form_data = request.POST
             print('indo pro htttp reffer')
@@ -125,15 +125,7 @@ def nova_ordem_de_servico(request):
                 'servicos': SERVICOS,
                 'form_data': form_data
             })
-        elif not validador(cpf_vendedor):
-            form_data = request.POST
-            messages.error(request, 'O CPF ou CNPJ do vendedor não são válidos.')
-            return render(request, 'newos.html', {
-                'clientes': CLIENTES,
-                'servicos': SERVICOS,
-                'form_data': form_data
-            })
-        else:
+        if validador(cpf_vendedor) or cpf_vendedor == '':
             ordem_de_servico.save()
             # salva o serviço padrão
             id_servico = Servico.objects.get(pk=id_servico)
@@ -168,6 +160,15 @@ def nova_ordem_de_servico(request):
             if request.FILES.get('file2'):
                 salvar_documentos(arquivo2, tipo_doc2, ordem_de_servico)
             messages.success(request, 'Ordem de Serviço feita com sucesso!')
+        else:
+            form_data = request.POST
+            messages.error(request, 'O CPF ou CNPJ do vendedor não são válidos.')
+            return render(request, 'newos.html', {
+                'clientes': CLIENTES,
+                'servicos': SERVICOS,
+                'form_data': form_data
+            })
+            
     return redirect('ordem_servico')
     # return paginacao(request)
 

@@ -4,9 +4,7 @@ import datetime
 from django.utils import timezone
 from django.utils.timezone import now
 
-# Create your models here.
-# git -> changing to chenges
-# linha adiocionada para mandar o arquivo para a área de changes no source control
+
 class OrdemServico(models.Model):
     renavam = models.CharField(max_length=80)
     placa = models.CharField(max_length=15)
@@ -27,14 +25,14 @@ class OrdemServico(models.Model):
     observacoes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='')
     cpf_vendedor = models.CharField(max_length=20, default='')
-    nome_vendedor = models.CharField(max_length=25, default='')
+    nome_vendedor = models.CharField(max_length=50, default='')
     concessionaria = models.CharField(max_length=60, default='')
     tipo_veiculo = models.CharField(max_length=15, default='')
 
 
 class Servico(models.Model):
-    descricao = models.CharField(max_length=50)
-    nome = models.CharField(max_length=50, default='')
+    descricao = models.CharField(max_length=90)
+    nome = models.CharField(max_length=85, default='')
     custo = models.CharField(max_length=10, default='0')
     valor_liquido = models.CharField(max_length=10, default='0')
     valor_total = models.CharField(max_length=10, default='0')

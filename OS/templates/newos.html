@@ -205,7 +205,7 @@
                             <div class="col position-relative">
                                 <!-- Dropdown com posicionamento absoluto -->
                                 <div class="position-absolute d-flex align-items-center" style="top: -3px; margin-left: 160px;">
-                                    <label for="cpfoucnpj" class="form-label" style="font-size: 0.9em; margin-bottom: 2px;">Escolha CPF ou CNPJ *</label>
+                                    <label for="cpfoucnpj" class="form-label" style="font-size: 0.9em; margin-bottom: 2px;">Escolha CPF ou CNPJ </label>
                                     <select name="escolha" id="cpfoucnpj" class="form-select form-select-sm" style="width: 100px;" required>
                                         <option value="cpf">CPF</option>
                                         <option value="cnpj">CNPJ</option>
@@ -213,8 +213,8 @@
                                 </div>
                         
                                 <!-- Campo de entrada de CPF/CNPJ -->
-                                <label for="inputCpfCnpj" class="form-label">CPF do Vendedor *</label>
-                                <input name="cpf_vendedor" required maxlength='18' placeholder="CPF" value="{{ form_data.cpf_vendedor|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputcpf_comprador" autocomplete="off">
+                                <label for="inputCpfCnpj" class="form-label">CPF do Vendedor</label>
+                                <input name="cpf_vendedor" maxlength='18' placeholder="CPF" value="{{ form_data.cpf_vendedor|default_if_none:'' }}" type="text" class="form-control readonly-input" id="inputcpf_comprador" autocomplete="off">
                             </div>
                             <div class="col">
                                 <label for="inputCpfCnpj" class="form-label">Nome do vendedor</label>
