@@ -29,7 +29,6 @@ class OrdemServico(models.Model):
     concessionaria = models.CharField(max_length=60, default='')
     tipo_veiculo = models.CharField(max_length=15, default='')
 
-
 class Servico(models.Model):
     descricao = models.CharField(max_length=90)
     nome = models.CharField(max_length=85, default='')

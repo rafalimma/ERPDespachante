@@ -16,4 +16,5 @@ class Cliente(models.Model):
     cidade = models.CharField(max_length=25, default='')
     numero = models.CharField(max_length=10, default='')
     email = models.EmailField(max_length=100, null=True, blank=True)
+    rua = models.CharField(max_length=100, default='')
     data_criacao = models.DateTimeField(auto_now_add=True)

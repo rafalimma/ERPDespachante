@@ -18,8 +18,6 @@ def relatorios(request):
     periodo = request.GET.get('periodo')
     os_grafico = os_grafico_calculo(periodo)
     clientes_grafico = clientes_grafico_calculo(periodo)
-    # a variavel periodo indica qual o periodo do grafico gerado e também
-    # é retornado para o template para definir o botão ativo
     return render(request, 'relatorios.html',
                 {'os_grafico': os_grafico,
                  'clientes_grafico': clientes_grafico,
