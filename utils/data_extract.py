@@ -35,6 +35,7 @@ def ordens_servico_mesais():
         relatorio_atual.set_quantidade(quantidade_ordens)
         relatorio_atual.save()
     
+    print(f'OS -> meses:{meses} quantidade de ordens -> {quantidade_ordens}')
     return meses, quantidade_ordens
 
 def ordens_servico_diarias():
