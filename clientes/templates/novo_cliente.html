@@ -114,6 +114,12 @@
             </div>
             <div class="row">
                 <div class="col">
+                    <label for="inputcomp" class="form-label">Complemento</label>
+                    <input name="complemento" type="text" value="{{ form_data.complemento|default_if_none:'' }}" class="form-control readonly-input" id="inputcomp" placeholder="Complemento" autocomplete="off">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <label for="inputNum" class="form-label">Número</label>
                     <input name="numero" type="number" value="{{ form_data.numero|default_if_none:'' }}" class="form-control readonly-input" id="inputNum" placeholder="Numero" autocomplete="off">
                 </div>

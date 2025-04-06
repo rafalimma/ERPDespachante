@@ -18,3 +18,4 @@ class Cliente(models.Model):
     email = models.EmailField(max_length=100, null=True, blank=True)
     rua = models.CharField(max_length=100, default='')
     data_criacao = models.DateTimeField(auto_now_add=True)
+    complemento = models.CharField(max_length=100, default='')

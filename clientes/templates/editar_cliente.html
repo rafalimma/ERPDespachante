@@ -59,57 +59,61 @@
         <form id="formedicao" action="{% url 'form_edicao_cliente' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
             <div class="row">
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Identificador do cliente:</label>
+                    <label>Identificador do cliente:</label>
                     <input type="text" name="id_cliente" class="form-control readonly-input" value="{{ cliente.id }}" readonly>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Data de criação:</label>
+                    <label>Data de criação:</label>
                     <input type="text" name="data_criacao" class="form-control readonly-input" value="{{ cliente.data_criacao|date:"d/m/Y" }}" readonly>
                 </div>
             </div>
             <div class="row" style="margin-top: -15px;">
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Nome:</label>
+                    <label>Nome:</label>
                     <input type="text" name="name" class="form-control readonly-input" value="{{ cliente.name }}" style="text-transform: uppercase";>
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">CPF / CNPJ:</label>
+                    <label>CPF / CNPJ:</label>
                     <input type="text" id="cpfcnpj" name="cpfcnpj" class="form-control readonly-input" value="{{ cliente.cpf_cnpj }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Telefone:</label>
+                    <label>Telefone:</label>
                     <input type="text" id="telefone" name="telefone" class="form-control readonly-input" value="{{ cliente.telefone }}">
                 </div>
             </div>
             <div class="row" style="margin-top: -15px;">
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Email:</label>
+                    <label>Email:</label>
                     <input type="email" name="email" class="form-control readonly-input" value="{{ cliente.email }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Cep:</label>
+                    <label>Cep:</label>
                     <input type="number" name="cep" class="form-control readonly-input" value="{{ cliente.cep }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Numero:</label>
+                    <label>Numero:</label>
                     <input type="text" name="numero" class="form-control readonly-input" value="{{ cliente.numero }}">
                 </div>
             <div class="row" style="margin-top: -15px;">
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Bairro:</label>
+                    <label>Bairro:</label>
                     <input type="text" name="bairro" class="form-control readonly-input" value="{{ cliente.bairro }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Estado:</label>
+                    <label>Estado:</label>
                     <input type="text" name="estado" class="form-control readonly-input" value="{{ cliente.estado }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Cidade:</label>
+                    <label>Cidade:</label>
                     <input type="text" name="cidade" class="form-control readonly-input" value="{{ cliente.cidade }}">
                 </div>
                 <div class="col-md-4 form-group">
-                    <label class="text-success">Rua:</label>
+                    <label>Rua:</label>
                     <input type="text" name="rua" class="form-control readonly-input" value="{{ cliente.rua }}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Complemento:</label>
+                    <input type="text" name="complemento" class="form-control readonly-input" value="{{ cliente.complemento }}">
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">

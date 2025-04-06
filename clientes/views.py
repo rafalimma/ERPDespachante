@@ -70,6 +70,7 @@ def form_edicao_cliente(request):
         cliente.email = request.POST.get('email')
         cliente.estado = request.POST.get('estado')
         cliente.rua = request.POST.get('rua')
+        cliente.complemento = request.POST.get('complemento')
         if cliente.name == '' or cliente.cpf_cnpj == '':
             messages.error(request, 'Os dados não podem ser nulos!')
             return redirect(f"editar_cliente/{id_cliente}")
@@ -91,10 +92,11 @@ def cadastro_clientes(request):
         email = request.POST.get('email')
         estado = request.POST.get('estado')
         rua = request.POST.get('rua')
+        complemento = request.POST.get('complemento')
 
         cliente = Cliente(name=name, cpf_cnpj=cpf_cnpj, telefone=telefone, 
                         cep=cep, cidade=cidade, bairro=bairro, numero=numero,
-                        email=email, estado=estado, rua=rua)
+                        email=email, estado=estado, rua=rua, complemento=complemento)
 
         if not all([name, telefone, cpf_cnpj]):
             messages.error(request, 'É necessário preencher todos os campos!')
