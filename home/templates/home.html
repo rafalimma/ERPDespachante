@@ -55,6 +55,106 @@
             margin-bottom: 20px; /* Espaço abaixo para evitar sobreposição */
             width: 430px;
         }
+        .card {
+            position: relative;
+            background-color: #e2e5e8;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            width: 330px;
+            height: 130px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            cursor: pointer;
+            border: 1px solid #d5d6d8;
+        }
+        .card2 {
+            position: relative;
+            background-color: #e2e5e8;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            width: 330px;
+            height: 130px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            cursor: pointer;
+            border: 1px solid #d5d6d8;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card2:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Imagem como marca d'água */
+        .card::before {
+            content: "";
+            background-image: url('/static/images/p.png'); /* Atualize o caminho se necessário */
+            background-repeat: no-repeat;
+            background-size: 100px;
+            opacity: 0.6;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            z-index: 0;
+        }
+        .card2::before {
+            content: "";
+            background-image: url('/static/images/fat.png'); /* Atualize o caminho se necessário */
+            background-repeat: no-repeat;
+            background-size: 100px;
+            opacity: 0.6;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            z-index: 0;
+        }
+        .card-content {
+            position: relative;
+            z-index: 1;
+            text-align: left;
+        }
+        .card2-content {
+            position: relative;
+            z-index: 1;
+            text-align: left;
+        }
+        .card h6 {
+            font-size: 1rem;
+            color: #706b6b;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            color: #31b94f;
+            font-weight: bold;
+        }
+        .card2 h6 {
+            font-size: 1rem;
+            color: #706b6b;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card2 h2 {
+            font-size: 2rem;
+            color: #31b94f;
+            font-weight: bold;
+        }
         .grafico {
             width: 700px;
             height: 300px; /* Define uma altura padrão para os gráficos */
@@ -147,9 +247,10 @@
             </section>
 
             <div class="row grafico-container mt-0 ms-5 gap-5">
+                <!-- Gráfico 1 -->
                 <div class="col-md-5 dashboard-card">
                     {% if periodo == 'dias' %}
-                        <h5 class="titulo-grafico">Ordens de Serviço nos ultimos 15 dias</h5>
+                        <h5 class="titulo-grafico">Ordens de Serviço nos últimos 15 dias</h5>
                     {% else %}
                         <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
                     {% endif %}
@@ -157,14 +258,32 @@
                         {{ os_grafico|safe }}
                     </div>
                 </div>
-                <div class="col-md-5 dashboard-card" >
+            
+                <!-- Gráfico 2 -->
+                <div class="col-md-5 dashboard-card">
                     {% if periodo == 'dias' %}
-                        <h5 class="titulo-grafico">Novos clientes nos ultimos 15 dias</h5>
+                        <h5 class="titulo-grafico">Novos clientes nos últimos 15 dias</h5>
                     {% else %}
                         <h5 class="titulo-grafico">Novos clientes por mês</h5>
                     {% endif %}
                     <div class="grafico" id="grafico-clientes">
                         {{ clientes_grafico|safe }}
+                    </div>
+                </div>
+            
+                <!-- Coluna com cards empilhados -->
+                <div class="col-md-2 d-flex flex-column gap-3">
+                    <div class="card">
+                        <div class="card-content">
+                            <h6>OS Pendentes</h6>
+                            <h2>{{ os_pendentes }}</h2>
+                        </div>
+                    </div>
+                    <div class="card2" style="background-image: '/static/images/faturado.png';">
+                        <div class="card2-content">
+                            <h6>OS Faturadas</h6>
+                            <h2>{{ os_faturadas }}</h2>
+                        </div>
                     </div>
                 </div>
             </div>
