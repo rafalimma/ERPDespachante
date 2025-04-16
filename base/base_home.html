@@ -60,6 +60,12 @@
             color: #b7b9bb;
             text-decoration: none;
         }
+        .menu-toggle {
+            cursor: pointer;
+            font-size: 22px;
+            margin-left: 10px;
+        }
+        
     </style>
 </head>
 <body>
@@ -76,25 +82,12 @@
         </div>
         <div class="d-flex align-items-center ms-auto">
 
-            <!-- Divisória -->
-            <!-- <div class="navbar-divider" style="border-left: 1px solid #fff; height: 40px; margin: 0 15px;"></div> -->
-
-            <a class="d-flex align-items-center me-3" href="{% url 'voltar' %}" style="text-decoration: none;">
-                <img src="{% static 'images/voltar.png' %}" alt="VOLTAR" style="width: 25px; margin-right: 8px;">
-                <strong class="nav-button">VOLTAR</strong>
-            </a>
-
             <div class="navbar-divider" style="border-left: 1px solid #fff; height: 40px; margin: 0 15px;"></div>
-            <!-- Botão Início -->
-            <a class="d-flex align-items-center me-2" href="{% url 'home' %}?periodo=mensal" style="text-decoration: none;">
-                <img src="{% static 'images/home.png' %}" alt="INÍCIO" style="width: 25px; margin-right: 8px;">
-                <strong class="nav-button">INÍCIO</strong>
-            </a>
 
-            <!-- <a class="d-flex align-items-center me-2" href="#" id="workstation" onclick="MudarFrame(this)" style="text-decoration: none;">
+            <a class="d-flex align-items-center me-2" href="#" id="workstation" onclick="MudarFrame(this)" style="text-decoration: none;">
                 <img id="imagem" src="{% static 'images/trabalho.png' %}" style="width: 25px; margin-right: 8px;">
                 <strong class="nav-button" id="texto">TRABALHO</strong>
-            </a> -->
+            </a>
         </div>
 
         <!-- Divisória -->
@@ -143,6 +136,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
         $(document).ready(function () {
             $('#profile').click(function(event) {
                 event.stopPropagation(); // Impede que o clique feche a div imediatamente

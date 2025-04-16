@@ -40,6 +40,7 @@ def voltar(request):
         url_stack = request.session['url_stack']
 
         if len(url_stack) > 1:
+            print(url_stack)
             # Remove a URL atual e retorna para a anterior
             url_stack.pop()  # Remove a URL atual
             request.session['url_stack'] = url_stack

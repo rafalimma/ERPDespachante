@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_home.html" %}
 
 {% load static %}
 {% comment %} edit {% endcomment %}
@@ -173,116 +173,174 @@
             background-color: #28a745;
             color: #fff;
         }
+        .sidebar {
+            background-color: #282727;
+            display: none;
+            position: fixed;
+            top: 65px; /* altura da navbar */
+            left: 0;
+            height: calc(100% - 65px); /* altura da tela menos a navbar */
+            width: 120px;
+            border-right: 1px solid #ccc;
+            padding-top: 20px;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #333;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #e9ecef;
+        }
+        .sidebar a {
+            color: #33b159;
+        }
+        .sidebar img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+        .sidebar.active {
+            display: block;
+        }
       </style>
     <title>Home</title>
 </head>
 <body class="bg-light" style="font-family: 'Poppins', sans-serif;">
-    <div class="frame" id="frame-workstation">
-        <div style="margin-left: 130px; height: 46px;">
-            <h4 style="margin-top: 20px;">Trabalho - {{ filial.nome }}</h4>
-        </div>
-
-        <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
-        <div class="container" style="margin-top: 50px;">
-            <!-- Primeira linha com as 4 divs -->
-            <div class="row">
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
-                        <img src="{% static 'images/clientes_icon.png' %}" class="img-fluid" style="width: 122px; height: 123px;">
-                        <p class="hover-link text-center">Clientes</p>
-                    </a>
-                </div>
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
-                        <img src="{% static 'images/os_icon.png' %}" class="img-fluid" style="width: 122px; height: 120px;">
-                        <p class="hover-link text-center" style="margin-left: -20px;">Ordem de Serviço</p>
-                    </a>
-                </div>
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'servicos' %}" style="text-decoration: none;">
-                        <img src="{% static 'images/servico.png' %}" class="img-fluid" style="width: 140px; height: 126px;">
-                        <p class="hover-link text-center">Serviços</p>
-                    </a>
-                </div>
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'usuarios' %}" style="text-decoration: none;">
-                        <img src="{% static 'images/users.png' %}" class="img-fluid" style="width: 140px; height: 128px;">
-                        <p class="hover-link text-center">Usuários</p>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Segunda linha com as divs alinhadas à esquerda -->
-            <div class="row" style="margin-top: 125px;">
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'relatorios' %}?periodo=mensal" style="text-decoration: none;">
-                        <img src="{% static 'images/relatorios1.png' %}" style="width: 125px; height: 130px;">
-                        <p class="hover-link text-center">Relatórios</p>
-                    </a>
-                </div>
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                    <a href="{% url 'faturamento' %}" style="text-decoration: none; margin-top: 10px">
-                        <img src="{% static 'images/faturamento.png' %}" class="img-fluid" style="width: 144px; height: 124px;">
-                        <p class="hover-link text-center">Faturamento</p>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div id="mySidebar" class="sidebar">
+        <a href="{% url 'cadastro_clientes' %}">
+            Clientes
+        </a>
+        <a href="{% url 'ordem_servico' %}">
+            Ordem de Serviço
+        </a>
+        <a href="{% url 'servicos' %}">
+            Serviços
+        </a>
+        <a href="{% url 'usuarios' %}">
+            Usuários
+        </a>
+        <a href="{% url 'relatorios' %}?periodo=mensal">
+            Relatórios
+        </a>
+        <a href="{% url 'faturamento' %}">
+            Faturamento
+        </a>
     </div>
+    <div class="content">
+        <div class="frame" id="frame-workstation">
+            <div style="margin-left: 130px; height: 46px;">
+                <h4 style="margin-top: 20px;">Trabalho - {{ filial.nome }}</h4>
+            </div>
     
-
-    <div class="frame active" id="frame-dashboard">
-        <div style="margin-left: 130px; height: 46px;">
-            <h4 style="margin-top: 20px;">Dashboard - {{ filial.nome }}</h4>
+            <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
+            <div class="container" style="margin-top: 50px;">
+                <!-- Primeira linha com as 4 divs -->
+                <div class="row">
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'cadastro_clientes' %}" style="text-decoration: none;">
+                            <img src="{% static 'images/clientes_icon.png' %}" class="img-fluid" style="width: 122px; height: 123px;">
+                            <p class="hover-link text-center">Clientes</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'ordem_servico' %}" style="text-decoration: none;">
+                            <img src="{% static 'images/os_icon.png' %}" class="img-fluid" style="width: 122px; height: 120px;">
+                            <p class="hover-link text-center" style="margin-left: -20px;">Ordem de Serviço</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'servicos' %}" style="text-decoration: none;">
+                            <img src="{% static 'images/servico.png' %}" class="img-fluid" style="width: 140px; height: 126px;">
+                            <p class="hover-link text-center">Serviços</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'usuarios' %}" style="text-decoration: none;">
+                            <img src="{% static 'images/users.png' %}" class="img-fluid" style="width: 140px; height: 128px;">
+                            <p class="hover-link text-center">Usuários</p>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Segunda linha com as divs alinhadas à esquerda -->
+                <div class="row" style="margin-top: 125px;">
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'relatorios' %}?periodo=mensal" style="text-decoration: none;">
+                            <img src="{% static 'images/relatorios1.png' %}" style="width: 125px; height: 130px;">
+                            <p class="hover-link text-center">Relatórios</p>
+                        </a>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <a href="{% url 'faturamento' %}" style="text-decoration: none; margin-top: 10px">
+                            <img src="{% static 'images/faturamento.png' %}" class="img-fluid" style="width: 144px; height: 124px;">
+                            <p class="hover-link text-center">Faturamento</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
-        <div class="container">
-            <section class="filter d-flex flex-column align-items-start">
-                <p class="mb-2 ms-2">Período de análise</p>
-                <div class="d-flex justify-content-end gap-3">
-                    <button id="btn-dias" class="btn btn-white {% if periodo == 'dias' %}active{% endif %}" onclick="filterData(this, 'dias')">15 dias</button>
-                    <button id="btn-mes" class="btn btn-white {% if periodo == 'mensal' %}active{% endif %}" onclick="filterData(this, 'mensal')">Mês</button>
-                </div>
-            </section>
-
-            <div class="row grafico-container mt-0 ms-5 gap-5">
-                <!-- Gráfico 1 -->
-                <div class="col-md-5 dashboard-card">
-                    {% if periodo == 'dias' %}
-                        <h5 class="titulo-grafico">Ordens de Serviço nos últimos 15 dias</h5>
-                    {% else %}
-                        <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
-                    {% endif %}
-                    <div class="grafico" id="grafico-os" style="width: 100%; overflow: visible;">
-                        {{ os_grafico|safe }}
+    
+        <div class="frame active" id="frame-dashboard">
+            <div style="margin-left: 130px; height: 46px;">
+                <h4 style="margin-top: 20px;">Dashboard - {{ filial.nome }}</h4>
+            </div>
+    
+            <div class="mb-3" style="width: 100vw; border-bottom: 1px solid #ccc;"></div>
+            <div class="container">
+                <section class="filter d-flex flex-column align-items-start">
+                    <p class="mb-2 ms-2">Período de análise</p>
+                    <div class="d-flex justify-content-end gap-3">
+                        <button id="btn-dias" class="btn btn-white {% if periodo == 'dias' %}active{% endif %}" onclick="filterData(this, 'dias')">15 dias</button>
+                        <button id="btn-mes" class="btn btn-white {% if periodo == 'mensal' %}active{% endif %}" onclick="filterData(this, 'mensal')">Mês</button>
                     </div>
-                </div>
-            
-                <!-- Gráfico 2 -->
-                <div class="col-md-5 dashboard-card">
-                    {% if periodo == 'dias' %}
-                        <h5 class="titulo-grafico">Novos clientes nos últimos 15 dias</h5>
-                    {% else %}
-                        <h5 class="titulo-grafico">Novos clientes por mês</h5>
-                    {% endif %}
-                    <div class="grafico" id="grafico-clientes">
-                        {{ clientes_grafico|safe }}
-                    </div>
-                </div>
-            
-                <!-- Coluna com cards empilhados -->
-                <div class="col-md-2 d-flex flex-column gap-3">
-                    <div class="card">
-                        <div class="card-content">
-                            <h6>OS Pendentes</h6>
-                            <h2>{{ os_pendentes }}</h2>
+                </section>
+    
+                <div class="row grafico-container mt-0 ms-5 gap-5">
+                    <!-- Gráfico 1 -->
+                    <div class="col-md-5 dashboard-card">
+                        {% if periodo == 'dias' %}
+                            <h5 class="titulo-grafico">Ordens de Serviço nos últimos 15 dias</h5>
+                        {% else %}
+                            <h5 class="titulo-grafico">Ordens de Serviço por mês</h5>
+                        {% endif %}
+                        <div class="grafico" id="grafico-os" style="width: 100%; overflow: visible;">
+                            {{ os_grafico|safe }}
                         </div>
                     </div>
-                    <div class="card2" style="background-image: '/static/images/faturado.png';">
-                        <div class="card2-content">
-                            <h6>OS Faturadas</h6>
-                            <h2>{{ os_faturadas }}</h2>
+                
+                    <!-- Gráfico 2 -->
+                    <div class="col-md-5 dashboard-card">
+                        {% if periodo == 'dias' %}
+                            <h5 class="titulo-grafico">Novos clientes nos últimos 15 dias</h5>
+                        {% else %}
+                            <h5 class="titulo-grafico">Novos clientes por mês</h5>
+                        {% endif %}
+                        <div class="grafico" id="grafico-clientes">
+                            {{ clientes_grafico|safe }}
+                        </div>
+                    </div>
+                
+                    <!-- Coluna com cards empilhados -->
+                    <div class="col-md-2 d-flex flex-column gap-3">
+                        <div class="card">
+                            <div class="card-content">
+                                <h6>OS Pendentes</h6>
+                                <h2>{{ os_pendentes }}</h2>
+                            </div>
+                        </div>
+                        <div class="card2" style="background-image: '/static/images/faturado.png';">
+                            <div class="card2-content">
+                                <h6>OS Faturadas</h6>
+                                <h2>{{ os_faturadas }}</h2>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -290,6 +348,12 @@
         </div>
     </div>
     <script>
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("mySidebar");
+
+            sidebar.classList.toggle("active");
+        }
         function MudarFrame(element) {
             const texto = document.getElementById('texto');
             const imagem = document.getElementById('imagem');
