@@ -13,9 +13,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <script src="{% static 'script.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+    <script src="{% static 'home/js/javascript.js' %}"></script>
     <title>Relatórios e Dashboards</title>
 </head>
 <body>
+    <div id="mySidebar" class="sidebar bg-dark">
+        <a href="{% url 'cadastro_clientes' %}">
+            Clientes
+        </a>
+        <a href="{% url 'ordem_servico' %}">
+            Ordem de Serviço
+        </a>
+        <a href="{% url 'servicos' %}">
+            Serviços
+        </a>
+        <a href="{% url 'usuarios' %}">
+            Usuários
+        </a>
+        <a href="{% url 'relatorios' %}?periodo=mensal">
+            Relatórios
+        </a>
+        <a href="{% url 'faturamento' %}">
+            Faturamento
+        </a>
+    </div>
     <div class="container mt-3">
         <h1 class="text-success">Relatórios e Dashboards</h1>
         

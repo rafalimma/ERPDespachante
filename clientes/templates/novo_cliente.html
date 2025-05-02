@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'index/css/home.css' %}">
+    <script src="{% static 'index/js/javascript.js' %}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <title>Novo Cliente</title>
     <style>
@@ -37,14 +39,38 @@
         }
         .readonly-input {
             background-color: #e3e7e9;
-            border: none;
             box-shadow: none;
             color: #414344;
             padding-left: 0;
-            }
+        }
+        .readonly-input:focus {
+            border: 2px solid rgb(189, 183, 183);
+            box-shadow: none;
+            outline: none;
+        }
     </style>
 </head>
 <body>
+    <div id="mySidebar" class="sidebar bg-dark">
+        <a href="{% url 'cadastro_clientes' %}">
+            Clientes
+        </a>
+        <a href="{% url 'ordem_servico' %}">
+            Ordem de Serviço
+        </a>
+        <a href="{% url 'servicos' %}">
+            Serviços
+        </a>
+        <a href="{% url 'usuarios' %}">
+            Usuários
+        </a>
+        <a href="{% url 'relatorios' %}?periodo=mensal">
+            Relatórios
+        </a>
+        <a href="{% url 'faturamento' %}">
+            Faturamento
+        </a>
+    </div>
     <div class="container mt-3 custom-container">
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Novo Cliente</h2>
@@ -61,11 +87,11 @@
             <div class="row">
                 <div class="col">
                     <label for="inputName" class="form-label">Nome *</label>
-                    <input autocomplete="off" required value="{{ form_data.name|default_if_none:'' }}" name="name" type="text" class="form-control readonly-input" id="inputName" placeholder="Nome" style="text-transform: uppercase";>
+                    <input autocomplete="off" required value="{{ form_data.name|default_if_none:'' }}" name="name" type="text" class="form-control readonly-input" id="inputName"  style="text-transform: uppercase";>
                 </div>
                 <div class="col">
                     <label for="inputEmail" class="form-label">Email</label>
-                    <input name="email" type="email" value="{{ form_data.email|default_if_none:'' }}" class="form-control readonly-input" id="inputEmail" placeholder="E-mail" autocomplete="off">
+                    <input name="email" type="email" value="{{ form_data.email|default_if_none:'' }}" class="form-control readonly-input" id="inputEmail"  autocomplete="off">
                 </div>
                 <div class="col position-relative">
                     <!-- Dropdown com posicionamento absoluto -->
@@ -87,41 +113,41 @@
             <div class="row">
                 <div class="col">
                     <label for="inputFones" class="form-label">Telefone *</label>
-                    <input name="telefone" required id="telefone" type="text" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" placeholder="Telefone" autocomplete="off">
+                    <input name="telefone" required id="telefone" type="text" value="{{ form_data.telefone|default_if_none:'' }}" class="form-control readonly-input" autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputCEP" class="form-label">CEP</label>
-                    <input name="cep" id="cep" size="10" maxlength="9" onblur="pesquisacep(this.value);" type="text" value="{{ form_data.cep|default_if_none:'' }}" class="form-control readonly-input" placeholder="CEP" autocomplete="off">
+                    <input name="cep" id="cep" size="10" maxlength="9" onblur="pesquisacep(this.value);" type="text" value="{{ form_data.cep|default_if_none:'' }}" class="form-control readonly-input"  autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputEstado" class="form-label">Estado</label>
-                    <input name="estado" type="text"  value="{{ form_data.estado|default_if_none:'' }}" class="form-control readonly-input" id="estado" placeholder="Estado" autocomplete="off">
+                    <input name="estado" type="text"  value="{{ form_data.estado|default_if_none:'' }}" class="form-control readonly-input" id="estado" autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputCidade" class="form-label">Cidade</label>
-                    <input name="cidade" type="text" value="{{ form_data.cidade|default_if_none:'' }}" class="form-control readonly-input" id="cidade" placeholder="Cidade" autocomplete="off">
+                    <input name="cidade" type="text" value="{{ form_data.cidade|default_if_none:'' }}" class="form-control readonly-input" id="cidade"  autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputBairro" class="form-label">Bairro</label>
-                    <input name="bairro" type="text" value="{{ form_data.bairro|default_if_none:'' }}" class="form-control readonly-input" id="bairro" placeholder="Bairro" autocomplete="off">
+                    <input name="bairro" type="text" value="{{ form_data.bairro|default_if_none:'' }}" class="form-control readonly-input" id="bairro"  autocomplete="off">
                 </div>
                 <div class="col">
                     <label for="inputRua" class="form-label">Rua</label>
-                    <input name="rua" type="text" value="{{ form_data.rua|default_if_none:'' }}" class="form-control readonly-input" id="rua" placeholder="Rua" autocomplete="off">
+                    <input name="rua" type="text" value="{{ form_data.rua|default_if_none:'' }}" class="form-control readonly-input" id="rua"  autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputcomp" class="form-label">Complemento</label>
-                    <input name="complemento" type="text" value="{{ form_data.complemento|default_if_none:'' }}" class="form-control readonly-input" id="inputcomp" placeholder="Complemento" autocomplete="off">
+                    <input name="complemento" type="text" value="{{ form_data.complemento|default_if_none:'' }}" class="form-control readonly-input" id="inputcomp"  autocomplete="off">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <label for="inputNum" class="form-label">Número</label>
-                    <input name="numero" type="number" value="{{ form_data.numero|default_if_none:'' }}" class="form-control readonly-input" id="inputNum" placeholder="Numero" autocomplete="off">
+                    <input name="numero" type="number" value="{{ form_data.numero|default_if_none:'' }}" class="form-control readonly-input" id="inputNum"  autocomplete="off">
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-center" style="margin-top: 70px;">
@@ -255,7 +281,6 @@
         })
 
     </script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 </body>

@@ -10,10 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'index/css/home.css' %}">
+    <script src="{% static 'index/js/javascript.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <style>
-        body {
+         body {
             font-family: 'Poppins', sans-serif;
         }
         .form-group {
@@ -25,6 +27,11 @@
             box-shadow: none;
             color: #414344;
             padding-left: 0;
+        }
+        .readonly-input:focus {
+            border: 2px solid rgb(189, 183, 183);
+            box-shadow: none;
+            outline: none;
         }
         .alert-success {
             color: #155724;
@@ -44,6 +51,26 @@
     <title>Editar Cliente</title>
 </head>
 <body>
+    <div id="mySidebar" class="sidebar bg-dark">
+        <a href="{% url 'cadastro_clientes' %}">
+            Clientes
+        </a>
+        <a href="{% url 'ordem_servico' %}">
+            Ordem de Serviço
+        </a>re
+        <a href="{% url 'servicos' %}">
+            Serviços
+        </a>
+        <a href="{% url 'usuarios' %}">
+            Usuários
+        </a>
+        <a href="{% url 'relatorios' %}?periodo=mensal">
+            Relatórios
+        </a>
+        <a href="{% url 'faturamento' %}">
+            Faturamento
+        </a>
+    </div>
     <div class="container mt-3 custom-container">
         <div class="d-flex justify-content-start align-items-center">
             <h2 class="me-auto text-success">Editar Cliente</h2>
@@ -235,7 +262,6 @@
         </table>
     </div>
     <script>
-
         let celular = document.getElementById('telefone');
         celular.addEventListener("input", function() {
             let limparValor = celular.value.replace(/\D/g, "").substring(0,11);
@@ -286,26 +312,7 @@
             } else if (inputcpf === 11) {
                 cpfcnpj.value += "-";
             }
-        });
-
-        function AlterarStatus(id_os, status_atual) {
-            var input_id = document.getElementById('os_id');
-            input_id.value = id_os;
-            var input_status = document.getElementById('atual_status');
-            input_status.value = status_atual;
-        }
-        $(document).ready(function() {
-
-            $('.change-status').click(function(event) {
-                event.preventDefault();
-                $('.option-box').hide();
-                $('#confirmationModal').modal('show');
-            });
-        });
-        $('.delete-button').click(function() {
-            var url = $(this).data('url');
-            $('#deleteForm').attr('action', url);
-        });
+        })
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

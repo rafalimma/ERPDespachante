@@ -349,11 +349,29 @@
     </div>
     <script>
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
+function Cliquefora(event) {
+    const sidebar = document.getElementById("mySidebar");
+    const toggle = document.querySelector(".menu-toggle");
 
-            sidebar.classList.toggle("active");
-        }
+    // Garante que clique no botão do menu não feche a sidebar
+    // se o elemento clicado não estiver dentro da side bar feche a side bar
+    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+        sidebar.classList.remove("active");
+        document.removeEventListener("click", Cliquefora);
+    }
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("mySidebar");
+
+    sidebar.classList.toggle("active");
+
+    if (sidebar.classList.contains("active")) {
+        document.addEventListener("click", Cliquefora);
+    } else {
+        document.removeEventListener("click", Cliquefora);
+    }
+}
         function MudarFrame(element) {
             const texto = document.getElementById('texto');
             const imagem = document.getElementById('imagem');
