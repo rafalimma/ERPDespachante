@@ -183,6 +183,7 @@ def clientes_grafico_calculo(periodo):
 
         grafico_html = fig.to_html(full_html=False, config=config)
         return grafico_html
+    
     elif periodo == "dias":
         dias, clientes_qtd = clientes_diarios()
 

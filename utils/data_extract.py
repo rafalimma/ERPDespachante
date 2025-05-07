@@ -51,6 +51,7 @@ def ordens_servico_diarias():
 
     dias = [os['data_servico'].strftime("%d/%m") for os in os_por_dia]
     quantidade_ordens = [os['order_count'] for os in os_por_dia]
+    print(f'dias -> {dias}, quantidade de ordens -> {quantidade_ordens}')
     return dias, quantidade_ordens
 
 def clientes_mensais():
@@ -85,8 +86,10 @@ def clientes_diarios():
         .annotate(cliente_count=Count('id'))
         .order_by('data_criacao')
     )
+    print('clientes por dia qury:', clientes_por_dia)
 
     dias = [clientes['data_criacao'].strftime("%d/%m") for clientes in clientes_por_dia]
     quantidade_clientes = [clientes['cliente_count'] for clientes in clientes_por_dia]
+    print(f'dias -> {dias}, quantidade de clientes -> {quantidade_clientes}')
 
     return dias, quantidade_clientes

@@ -276,22 +276,22 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="status" class="form-label">Status:</label>
-                                    <input type="text" class="form-control" id="status">
+                                    <input type="text" class="form-control" id="status_fatura">
                                 </div>
                                 <div class="col">
                                     <label for="">Data de vencimento</label>
                                     <input type="date" class="form-control" id="data_vencimento">
                                 </div>
                                 <div class="col">
-                                    <label for="n_parcelas">Número de parcelas</label>
+                                    <label for="n_parcelas">Número de parcelas/pagamentos</label>
                                     <input type="text" class="form-control" id="n_parcelas">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
+                                <!-- <div class="col">
                                     <label for="">Forma de pagamento</label>
                                     <input type="text" class="form-control" id="forma_pagamento">
-                                </div>
+                                </div> -->
                                 <div class="col">
                                     <label for="">Solicitante</label>
                                     <input type="text" class="form-control" id="solicitante">
@@ -311,8 +311,8 @@
                                     <input type="text" class="form-control" id="custo_final">
                                 </div>
                                 <div class="col">
-                                    <label for="">Valor Final</label>
-                                    <input type="text" class="form-control" id="valor_final">
+                                    <label for="">Valor Total</label>
+                                    <input type="text" class="form-control" id="valor_total_fatura">
                                 </div>
                             </div>
                             <div class="row mt-4">
@@ -352,7 +352,7 @@
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
                             {% if ordem_servico.status == "Entregue"%}
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#faturaModal">
+                            <a href="#" onclick="MostrarFatura('{{ ordem_servico.id }}', '{{ ordem_servico.valor_f }}')" data-bs-toggle="modal" data-bs-target="#faturaModal">
                                 <img src="{% static 'images/fatura.png' %}" style="width: 28px; height: 26px;" alt="fatura" title="FATURA">
                             </a>
                             {% endif %}
@@ -415,6 +415,13 @@
             input_id.value = id_os;
             var input_status = document.getElementById('atual_status');
             input_status.value = status_atual;
+        }
+        function MostrarFatura(id_os, valor_final_fat) {
+            // pega o id da os para colocar no input
+            var status_fat = document.getElementById('status_fatura');
+            var valor_total_fatura = document.getElementById('valor_total_fatura');
+            valor_total_fatura.value = valor_final_fat;
+            status_fat.value = 'pendente';
         }
         $(document).ready(function() {
 

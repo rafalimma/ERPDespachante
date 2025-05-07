@@ -22,6 +22,7 @@ class OrdemServico(models.Model):
     data_servico = models.DateField(default=datetime.date.today)
     desconto = models.CharField(max_length=30, default='')
     valor_f = models.CharField(max_length=30, default='')
+    custo_f = models.CharField(max_length=30, default='') # soma do custo dos serviços aplicados
     observacoes = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, default='')
     cpf_vendedor = models.CharField(max_length=20, default='')
