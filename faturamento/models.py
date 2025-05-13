@@ -2,18 +2,21 @@ from django.db import models
 from OS.models import OrdemServico
 from clientes.models import Cliente
 import datetime
+from datetime import timedelta
 # Create your models here.
+
+vencimento = datetime.date.today() + datetime.timedelta(days=3)
+print(vencimento)
 
 class Fatura(models.Model):
     os = models.ForeignKey(OrdemServico, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, default="") # cancelada, pendente, parcial, pago
-    forma_pagamento = models.CharField(max_length=50, default="", null=True)
-    data_vencimento = models.DateField(null=True, blank=True)
-    solicitante = models.CharField(max_length=100, default="")
+    data_vencimento = models.DateField(default=vencimento)
+    data_criacao = models.DateField(default=datetime.date.today)
+    solicitante = models.CharField(max_length=100, default='', null=True)
     tomador = models.CharField(max_length=100, default="", null=True)
     n_parcelas = models.IntegerField(default=1, null=True)
-    valor_final = models.CharField(max_length=50)
-    lucro_total = models.CharField(max_length=50, default="", null=True)
+    valor_final = models.CharField(max_length=50, default='', null=True)
 
 class Pagamento(models.Model):
     fatura = models.ForeignKey(Fatura, on_delete=models.CASCADE)

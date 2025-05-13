@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from clientes.models import Cliente
 from login.models import Filial
 from faturamento.models import Fatura
-from faturamento.views import criar_fatura
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from .models import OrdemServico, Servico, Servico_os, Documentos, Eventos
 from django.contrib import messages
@@ -51,7 +50,7 @@ def nova_ordem_de_servico(request):
         valor = request.POST.get('valor')
         chassi = request.POST.get('chassi')
         cor = request.POST.get('cor')
-        combustivel = request.POST.get('combustivel')
+        combustivel = request.POST.get('combustivel')   
         data_aq = request.POST.get('data')
         modelo = request.POST.get('modelo')
         ano_veiculo = request.POST.get('ano')
@@ -422,9 +421,9 @@ def atualizar_status(request):
                          status_atual=novo_status, observacoes=observacoes,
                          arquivo=documento)
         evento.save()
-        if novo_status == "Entregue":
-            print('vai criar a fatura')
-            criar_fatura(id_ordem_servico)
+        # if novo_status == "Entregue" or novo_status == "Serviço Faturado":
+        #     print('vai criar a fatura')
+        #     criar_fatura(id_ordem_servico)
         messages.success(request, f'Situação da ordem de serviço {id_ordem_servico} alterado para {novo_status}')
         return redirect('ordem_servico')
     else:

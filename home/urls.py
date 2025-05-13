@@ -58,4 +58,5 @@ urlpatterns = [
     path('relatorios', reportviews.relatorios, name='relatorios'),
     # faturamento
     path('faturamento', faturamentoviews.faturamento, name='faturamento'),
+    path('atualizar_fatura', faturamentoviews.atualizar_fatura, name='atualizar_fatura')
 ]

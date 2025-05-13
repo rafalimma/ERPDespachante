@@ -15,6 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
     <script src="{% static 'home/js/javascript.js' %}"></script>
+    <script src="https://kit.fontawesome.com/65f22fe718.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <title>Ordem de serviço</title>
 </head>
@@ -271,54 +272,60 @@
                         <h5 class="modal-title" id="faturaModalLabel">Detalhes da Fatura</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="">{% csrf_token %}
+                    <form method="POST" id="formfatura" action="{% url 'atualizar_fatura' %}">{% csrf_token %}
                         <div class="modal-body">
                             <div class="row">
+                                <input type="hidden" name="id_os" id="id_os_fatura">
                                 <div class="col">
                                     <label for="status" class="form-label">Status:</label>
-                                    <input type="text" class="form-control" id="status_fatura">
+                                    <input readonly name="status_fatura" type="text" class="form-control" id="status_fatura">
                                 </div>
                                 <div class="col">
                                     <label for="">Data de vencimento</label>
-                                    <input type="date" class="form-control" id="data_vencimento">
+                                    <input type="date" name="data_vencimento" class="form-control" id="data_vencimento">
                                 </div>
                                 <div class="col">
-                                    <label for="n_parcelas">Número de parcelas/pagamentos</label>
-                                    <input type="text" class="form-control" id="n_parcelas">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <!-- <div class="col">
-                                    <label for="">Forma de pagamento</label>
-                                    <input type="text" class="form-control" id="forma_pagamento">
-                                </div> -->
-                                <div class="col">
-                                    <label for="">Solicitante</label>
-                                    <input type="text" class="form-control" id="solicitante">
-                                </div>
-                                <div class="col">
-                                    <label for="">Tomador do serviço</label>
-                                    <input type="text" class="form-control" id="tomador">
+                                    <label for="n_parcelas">Número de parcelas/pagamentos *</label>
+                                    <input type="text" name="n_parcelas" class="form-control" id="n_parcelas" value="1">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <label for="">Arrecadação final</label>
-                                    <input type="text" class="form-control" id="arrecadacao">
+                                    <label for="">Solicitante *</label>
+                                    <input type="text" name="solicitante" class="form-control" id="solicitante">
                                 </div>
                                 <div class="col">
-                                    <label for="">Custo Final</label>
-                                    <input type="text" class="form-control" id="custo_final">
+                                    <label for="">Tomador do serviço *</label>
+                                    <input type="text" name="tomador" class="form-control" id="tomador">
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col">
-                                    <label for="">Valor Total</label>
-                                    <input type="text" class="form-control" id="valor_total_fatura">
+                                    <label for="">Valor Total *</label>
+                                    <input type="text" name="valor_total" class="form-control" id="valor_total_fatura">
                                 </div>
                             </div>
                             <div class="row mt-4">
-                                <div class="col">
-                                    <label for="">Lucro total</label>
-                                    <input type="text" class="form-control" id="lucro_total">
+                            </div>
+                        </div>
+                        <div class="gap-3 m-3">
+                            <button type="button" class="btn btn-success" onclick="mostrarPagamento()">
+                                <img src="{% static 'images/novo.png' %}" alt="adicionar pagamento"> Pagamento
+                            </button>
+                            <div id="FormPagamento" style="display: none;">
+                                <div class="row mt-4 d-flex mx-3 gap-3 border rounded p-3 bg-light">
+                                    <div class="col">
+                                        <label>Valor pago</label>
+                                        <input type="text" name="valor_pago" class="form-control" id="valor_pago">
+                                    </div>
+                                    <div class="col">
+                                        <label>Forma de pagamento</label>
+                                        <input type="text" name="forma_pagamento" class="form-control" id="forma_pagamento">
+                                    </div>
+                                    <div class="col">
+                                        <label>Data pagamento</label>
+                                        <input type="date" name="data_pagamento" class="form-control" id="data_pagamento">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -352,7 +359,7 @@
                                 <img src="{% static 'images/status.png' %}" style="width: 23px; height: 21px; margin-left: 9px;" alt="status" title="ALTERAR STATUS">
                             </a>
                             {% if ordem_servico.status == "Entregue"%}
-                            <a href="#" onclick="MostrarFatura('{{ ordem_servico.id }}', '{{ ordem_servico.valor_f }}')" data-bs-toggle="modal" data-bs-target="#faturaModal">
+                            <a href="#" onclick="MostrarFatura('{{ ordem_servico.id }}', '{{ ordem_servico.valor_f }}', '{{ ordem_servico.cliente_id.name }}')" data-bs-toggle="modal" data-bs-target="#faturaModal">
                                 <img src="{% static 'images/fatura.png' %}" style="width: 28px; height: 26px;" alt="fatura" title="FATURA">
                             </a>
                             {% endif %}
@@ -389,11 +396,31 @@
     </div>
     <script>
 
+        function mostrarPagamento() {
+            console.log('mosntrnadooo....');
+            const formPagamento = document.getElementById("FormPagamento");
+            if (formPagamento.style.display == 'none') {
+                console.log("mostrou o pagamento");
+                formPagamento.style.display = 'block';
+                const flagPagamento = document.createElement("input");
+                flagPagamento.setAttribute("type", "hidden");
+                flagPagamento.setAttribute("id", "flagPagamento");
+                flagPagamento.setAttribute("name", "contem_pagamento");
+                document.getElementById('formfatura').appendChild(flagPagamento);
+            } else {
+                formPagamento.style.display = 'none';
+                const flagPagamento = document.getElementById("flagPagamento");
+                if (flagPagamento) {
+                    flagPagamento.remove();
+                }
+            }
+        }
+
         $('.delete-button').click(function() {
             var url = $(this).data('url');
             $('#deleteForm').attr('action', url);
         });
-
+ 
         $(document).ready(function() {
             // Função para mostrar/ocultar o filtro
             $("#btnMostrarFiltro").click(function() {
@@ -416,12 +443,17 @@
             var input_status = document.getElementById('atual_status');
             input_status.value = status_atual;
         }
-        function MostrarFatura(id_os, valor_final_fat) {
+        function MostrarFatura(id_os, valor_final_fat, nome_cliente) {
+            console.log('id da OS ->', id_os)
             // pega o id da os para colocar no input
             var status_fat = document.getElementById('status_fatura');
             var valor_total_fatura = document.getElementById('valor_total_fatura');
+            var soliciatante = document.getElementById('solicitante');
+            var id_os_fatura = document.getElementById('id_os_fatura');
             valor_total_fatura.value = valor_final_fat;
             status_fat.value = 'pendente';
+            soliciatante.value = nome_cliente;
+            id_os_fatura.value = id_os
         }
         $(document).ready(function() {
 
