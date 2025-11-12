@@ -58,5 +58,7 @@ urlpatterns = [
     path('relatorios', reportviews.relatorios, name='relatorios'),
     # faturamento
     path('faturamento', faturamentoviews.faturamento, name='faturamento'),
-    path('atualizar_fatura', faturamentoviews.atualizar_fatura, name='atualizar_fatura')
+    path('atualizar_fatura', faturamentoviews.atualizar_fatura, name='atualizar_fatura'),
+    # teste
+    path('teste', clienteviews.teste, name='teste')
 ]

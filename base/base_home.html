@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title> {% block title %}{% endblock  %}</title>
     <style>
         #Divoptions {
@@ -135,8 +136,9 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
     <script>
-
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
         $(document).ready(function () {
             $('#profile').click(function(event) {
                 event.stopPropagation(); // Impede que o clique feche a div imediatamente
